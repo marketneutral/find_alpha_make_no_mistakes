@@ -8,7 +8,8 @@ format:
     menu: false
     slide-number: c/t
 theme:
-  - moon
+  - dark
+  - speculative.scss
 ---
 
 ## Disclaimer

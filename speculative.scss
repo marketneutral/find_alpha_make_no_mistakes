@@ -1,0 +1,26 @@
+/*-- scss:defaults --*/
+// the Speculative Decoding blog's palette, so the figures sit on the same background
+$body-bg: #0a0e1a;
+$body-color: #c0c4cf;
+$link-color: #3ee87a;
+$selection-bg: #3ee87a;
+$presentation-heading-color: #e8eaf0;
+$presentation-heading-font: "IBM Plex Sans", "Helvetica Neue", Helvetica, sans-serif;
+$presentation-heading-text-transform: none;
+$presentation-heading-font-weight: 600;
+$font-family-sans-serif: "IBM Plex Sans", "Helvetica Neue", Helvetica, sans-serif;
+$font-family-monospace: "IBM Plex Mono", Menlo, monospace;
+$code-block-bg: #131927;
+$code-block-border-color: #2a3344;
+$code-color: #e8c97a;
+$presentation-h1-font-size: 2.0em;
+$presentation-h2-font-size: 1.3em;
+
+/*-- scss:rules --*/
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap");
+.reveal strong { color: #e8eaf0; }
+.reveal table th { color: #e8eaf0; border-bottom-color: #2a3344; }
+.reveal table td { border-bottom-color: #2a3344; }
+.reveal .slide-number { color: #6b7280; background: transparent; }
+.reveal .progress span { background: #3ee87a; }
+.reveal h1 { color: #3ee87a; }
