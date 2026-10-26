@@ -1,4 +1,4 @@
-# find alpha, make no mistakes
+# "find alpha. make no mistakes."
 ### Guest Lecture for MIT 18.642 *Topics in Mathematics with Applications in Finance*
 ### By Jonathan Larkin
 ### November 3, 2026
@@ -7,7 +7,7 @@ Can an AI agent do quantitative research without fooling itself? Three parts:
 
 1. **qex**, a small language for quant alphas, so a hypothesis is one line.
 2. **autoresearch**, a coding agent that proposes, tests, and keeps or discards changes against a score.
-3. **find alpha, make no mistakes**, the loop rebuilt for finance and run once on data it never saw.
+3. **"find alpha. make no mistakes."**, the loop rebuilt for finance and run once on data it never saw.
 
 Each part has a companion post on my blog, [*Speculative Decoding*](https://marketneutral.github.io).
 

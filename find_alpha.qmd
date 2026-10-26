@@ -1,5 +1,5 @@
 ---
-title: "find alpha, make no mistakes"
+title: '"find alpha. make no mistakes."'
 subtitle: "Guest Lecture for MIT 18.642<br>*Topics in Mathematics with Applications in Finance*"
 author: "Jonathan Larkin"
 date: "November 3, 2026"
@@ -58,7 +58,7 @@ Can an AI agent do quantitative research without fooling itself?
 ::: {.incremental}
 1. **qex**: a small language for alphas, so a hypothesis is one line
 2. **autoresearch**: an agent that proposes, tests, keeps or discards
-3. **find alpha, make no mistakes**: the loop rebuilt for finance, and run once on data it never saw
+3. **"find alpha. make no mistakes."**: the loop rebuilt for finance, and run once on data it never saw
 :::
 
 
@@ -270,7 +270,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 :::
 
 
-# find alpha, make no mistakes
+# "find alpha. make no mistakes."
 
 ## The experiment {.smaller}
 
@@ -511,7 +511,7 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - Nagel, S. "Evaporating Liquidity." *Review of Financial Studies* 25(7), 2012.
 - Romera-Paredes, B. et al. "Mathematical Discoveries from Program Search with Large Language Models." *Nature*, 2024.
 - Wiecki, T., Campbell, A., Lent, J. and Stauth, J. "All that Glitters Is Not Gold." SSRN, 2016.
-- Blog posts: [qex](https://marketneutral.github.io/posts/qex/), [autoresearch](https://marketneutral.github.io/posts/ai-scientist/), [find alpha, make no mistakes](https://marketneutral.github.io/posts/autoresearch-alpha/)
+- Blog posts: [qex](https://marketneutral.github.io/posts/qex/), [autoresearch](https://marketneutral.github.io/posts/ai-scientist/), ["find alpha. make no mistakes."](https://marketneutral.github.io/posts/autoresearch-alpha/)
 
 ## Thank You!
 
