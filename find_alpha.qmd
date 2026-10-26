@@ -1,7 +1,9 @@
 ---
 title: "find alpha, make no mistakes"
-subtitle: "Guest Lecture at MIT"
+subtitle: "Guest Lecture for MIT 18.642<br>*Topics in Mathematics with Applications in Finance*"
 author: "Jonathan Larkin"
+date: "November 3, 2026"
+date-format: "MMMM D, YYYY"
 format:
   revealjs:
     self-contained: true

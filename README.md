@@ -1,6 +1,7 @@
 # find alpha, make no mistakes
-### Guest Lecture at MIT
+### Guest Lecture for MIT 18.642 *Topics in Mathematics with Applications in Finance*
 ### By Jonathan Larkin
+### November 3, 2026
 
 Can an AI agent do quantitative research without fooling itself? Three parts:
 
