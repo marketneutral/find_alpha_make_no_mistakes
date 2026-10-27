@@ -1042,7 +1042,34 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility ro
 
 ![](images/alpha-bayes.svg){width="85%"}
 
-BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **24%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed weekly 0.78. $P(\mathrm{SR}_{\text{test}} > 0) = 0.99$.
+BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. If nothing had changed, an 8.6-year stretch would look this weak **1 time in 4**: an ordinary draw, not evidence of decay. $P(\mathrm{SR}_{\text{test}} > 0) = 0.99$.
+
+## Reading the Bayes result {.smaller}
+
+**The question:** if 2018–2026 came from exactly the same process as 2004–2017, how unusual is a test Sharpe of 0.78?
+
+**The answer:** replay 8.6 years of that unchanged strategy, and **1 time in 4** the Sharpe comes out 0.78 or lower, from luck alone.
+
+::: columns
+::: {.column width="52%"}
+| share at or below 0.78 | what it would mean |
+|---:|---|
+| 1–5% | the test looks unlike validation: decay |
+| **24%** | **a typical draw: no sign of decay** |
+| ~50% | right where validation said |
+:::
+::: {.column width="48%"}
+::: {.incremental}
+- A **posterior predictive check** (Gelman, Meng and Stern 1996): could the validation model have produced this test?
+- P(test Sharpe < validation) = 0.88: probably *some* shrinkage, as the winner's curse predicts
+- And P(test Sharpe > 0) = **0.99**: the edge is almost surely real
+:::
+:::
+:::
+
+. . .
+
+[8.6 years cannot tell a little decay from bad luck. Both fit, and both leave a real, positive edge.]{.pq-note}
 
 ## The crash switch, out of sample
 
@@ -1134,6 +1161,7 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 ## References: overfitting
 
 ::: {.refs}
+- Gelman, A., Meng, X.-L. and Stern, H. "Posterior Predictive Assessment of Model Fitness via Realized Discrepancies." *Statistica Sinica* 6(4), 1996.
 - Bousquet, O. and Elisseeff, A. "Stability and Generalization." *Journal of Machine Learning Research* 2, 2002.
 - Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O. and Roth, A. "The Reusable Holdout: Preserving Validity in Adaptive Data Analysis." *Science* 349(6248), 2015.
 - Russo, D. and Zou, J. "Controlling Bias in Adaptive Data Analysis Using Information Theory." *AISTATS*, 2016.
