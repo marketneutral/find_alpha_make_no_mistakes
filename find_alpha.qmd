@@ -504,7 +504,7 @@ The agent starts from these and may test, combine, or abandon any of them, or go
 6. The crash has a known state; be small in it
 :::
 ::: {.column width="50%"}
-7. **In the crash state, switch to reversal**
+7. In the crash state, switch to reversal
 8. Gradual moves continue; jumps do not
 9. Closeness to the 52-week high is a better anchor
 10. `decay_linear` is almost always a free lunch
@@ -512,21 +512,6 @@ The agent starts from these and may test, combine, or abandon any of them, or go
 12. Expect the edge to decay, and expect crowding
 :::
 :::
-
-## One belief, in full: belief 7 {.mid}
-
-> *In the crash state, do not just shrink: switch to reversal.*
-
-::: {.incremental}
-- **Mechanism:** a momentum crash is a reversal by construction. The past losers rally hardest off the low, so the right book in that state is long the losers, not a smaller momentum book.
-- **Paper:** Daniel and Moskowitz (2016), the option-like payoff of the loser side in a rebound
-- **The cost of being wrong:** a momentum book held backwards in a normal market, so the condition must be rare and specific
-- **Prediction:** a hard switch helps the worst fold a lot and the median a little; a soft switch helps both less and hurts less
-:::
-
-. . .
-
-[Hold on to that prediction. Trial 1 tests the hard switch; trial 22 tests the soft one.]{.pq-note}
 
 ## The augmented loop
 
