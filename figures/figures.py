@@ -3,10 +3,13 @@
     uv run --project ~/dev/alpha_lab python figures/figures.py
 
 Writes images/eval-deals.svg (how the evaluator deals 2004-2017 into folds), images/eval-folds.svg (one deal's
-six fold scores for the final book, as the agent saw them) and images/alpha-worth.svg (what each part of the
+six fold scores for the final book, as the agent saw them), images/eval-alldeals.svg and images/eval-noise.svg (every possible
+deal, and how much one call's score moves with the number of deals; from figures/partitions.json, written by partitions.py as run 3
+saw it) and images/alpha-worth.svg (what each part of the
 book is worth: the score change when the agent removed it). Every number is from the run's notebook
 (results.tsv) or the evaluator's output for the final trial; nothing here is recomputed.
 """
+import itertools, json
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -95,6 +98,58 @@ def fig_folds():
     ax.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
     save(fig, "eval-folds")
 
+def all_deals(items):
+    if not items:
+        yield []; return
+    for i, b in enumerate(items[1:]):
+        for d in all_deals(items[1:i + 1] + items[i + 2:]):
+            yield [(items[0], b)] + d
+
+def fig_noise():
+    P = json.load(open("figures/partitions.json"))
+    f = P["final"]; pair = {tuple(map(int, k.split(","))): v for k, v in f["pairs"].items()}
+    med = np.array([np.median([pair[p] for p in d]) for d in all_deals(list(range(12)))])
+    # every possible deal: the final book's median fold on each
+    fig, ax = plt.subplots(figsize=(10.0, 5.6))
+    ax.hist(med, bins=40, color="#4b5563", zorder=2)
+    ax.axvline(f["exact_median"], color=ACC, lw=2.2, zorder=3)
+    top = ax.get_ylim()[1]
+    ax.text(f["exact_median"] + 0.025, top * 0.97, f"the average over all {len(med):,}: {f['exact_median']:.2f}",
+            color=ACC, fontsize=15, va="top")
+    ax.text(med.min(), top * 0.97, f"one deal can say\nanything from {med.min():.2f}", color=INK2, fontsize=14, va="top")
+    ax.text(med.max(), top * 0.6, f"…to {med.max():.2f}", color=INK2, fontsize=14, ha="right", va="top")
+    ax.set_xlabel(f"median-fold utility of the final book, on each of the {len(med):,} possible deals", fontsize=14)
+    ax.set_yticks([])
+    for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0); ax.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
+    save(fig, "eval-alldeals")
+    # what one call reports, minus the exact score: 95% range
+    rows = [("seed, 50 deals", P["seed"], "50"), ("final, 1 deal", f, "1"), ("final, 50 deals", f, "50"),
+            ("final, 500 deals", f, "500"), (f"final, all {len(med):,}", f, None)]
+    lim = 0.13
+    fig, ax = plt.subplots(figsize=(10.0, 5.6))
+    ax.axvspan(-0.03, 0.03, color=ACC, alpha=0.13, lw=0, zorder=1)
+    ax.text(0, len(rows) - 0.4, "±0.03: the keep bar", ha="center", va="bottom", color=ACC, fontsize=14)
+    for k, (name, b, n) in enumerate(rows):
+        y = len(rows) - 1 - k
+        ax.text(-lim - 0.01, y, name, ha="right", va="center", color=INK2, fontsize=15)
+        if n is None:
+            ax.plot([0], [y], "o", color=ACC, ms=10, zorder=3)
+            ax.text(0.01, y, "exact: no noise", va="center", color=ACC, fontsize=14)
+            continue
+        lo, _, hi, sd = b["calls"][n]["median"]; ex = b["exact_median"]
+        lo, hi = lo - ex, hi - ex
+        c = INK2 if (hi - lo) / 2 <= 0.03 else RED
+        ax.plot([max(lo, -lim), min(hi, lim)], [y, y], color=c, lw=8, solid_capstyle="butt", zorder=2)
+        ax.text(min(hi, lim) + 0.007, y, f"±{(hi - lo) / 2:.2f}" + ("  (off the chart)" if hi > lim else ""),
+                va="center", color=c, fontsize=14)
+    ax.axvline(0, color=RULE, lw=1, zorder=0)
+    ax.set_xlim(-lim, lim + 0.07); ax.set_ylim(-0.6, len(rows) - 0.05); ax.set_yticks([])
+    ax.set_xlabel("what one call reports, minus the exact score (95% of calls)", fontsize=14)
+    for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0); ax.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
+    save(fig, "eval-noise")
+
 def fig_worth():
     # utility change when the agent took a part out, in the book of the day (results.tsv)
     parts = [("residual momentum", "T56", 1.473, 0.592), ("crash switch", "T27", 1.101, 0.622),
@@ -121,4 +176,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_deals(); fig_folds(); fig_worth()
+    fig_deals(); fig_folds(); fig_noise(); fig_worth()

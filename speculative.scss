@@ -33,7 +33,7 @@ $presentation-h2-font-size: 1.3em;
 .reveal .pullquote { border: 1px solid #2a3344; border-left: 3px solid #3ee87a; background: #131927;
                      padding: 0.7em 0.95em; margin: 0.4em 0; font-size: 0.72em; line-height: 1.45; color: #e8eaf0; }
 .reveal .pullquote p { margin: 0; }
-.reveal .pq-note { color: #9aa1ad; font-size: 0.6em; }
+.reveal .pq-note { display: block; color: #9aa1ad; font-size: 0.6em; line-height: 1.35; }
 // trial cards: the agent's claim, then the outcome, in its own words
 .reveal .trial { border: 1px solid #2a3344; border-left: 3px solid #6b7280; background: #131927; border-radius: 4px;
                  padding: 0.4em 0.8em; margin: 0.4em 0; font-size: 0.64em; line-height: 1.4; text-align: left; }
@@ -59,3 +59,11 @@ $presentation-h2-font-size: 1.3em;
 // signal to book: the weight column, the expression's output, in a wash of the accent green
 .reveal .book-weights th:nth-child(4), .reveal .book-weights td:nth-child(4) { background: rgba(62, 232, 122, 0.13); }
 .reveal .book-weights th:nth-child(4) { color: #3ee87a; }
+// permissions slide: allowed in the accent green, denied muted
+.reveal .perm-allow > p strong { color: #3ee87a; }
+.reveal .perm-deny > p strong { color: #9aa1ad; }
+.reveal .perm-allow ul, .reveal .perm-deny ul { font-size: 0.8em; }
+.reveal .perm-allow { padding-right: 1.2em; box-sizing: border-box; }
+// inline code never breaks inside itself
+.reveal p code, .reveal li code { white-space: nowrap; }
+.reveal .slides section.smaller h2 { font-size: 1.625em; }
