@@ -9,6 +9,8 @@ format:
     self-contained: true
     menu: false
     slide-number: c/t
+    include-after-body: qex-highlight.html
+    code-line-numbers: false
 theme:
   - dark
   - speculative.scss
@@ -81,8 +83,8 @@ $$
 
 ## A one-line alpha
 
-```python
-signal = qex("rank(-returns(20) / volatility(60))")
+```qex
+rank(-returns(20) / volatility(60))
 ```
 
 ::: {.incremental}
@@ -91,6 +93,26 @@ signal = qex("rank(-returns(20) / volatility(60))")
 - The style of Kakushadze's *101 Formulaic Alphas* (2016)
 - Open source: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser)
 :::
+
+## From a belief to a line {.smaller}
+
+The shortest path from "I think markets behave like this" to code that tests it:
+
+```qex
+# Stocks that fell last week bounce back.
+rank(-returns(5))
+
+# ...relative to their sector,
+group_demean(rank(-returns(5)), 'sector')
+
+# ...measured in units of how much the stock usually moves,
+group_demean(rank(-returns(5) / volatility(60)), 'sector')
+
+# ...and I do not want to trade every wiggle.
+decay_linear(group_demean(rank(-returns(5) / volatility(60)), 'sector'), 10)
+```
+
+Each clause is one operator. No loops, no index alignment, no `axis=`, no warmup, no NaN handling, no peeking at tomorrow: none of it is the belief, and all of it is where the bugs live.
 
 ## Why a language? {.smaller}
 
@@ -103,29 +125,111 @@ signal = qex("rank(-returns(20) / volatility(60))")
 - **Review is constant time.** The only kind of review that scales to machine-generated research.
 :::
 
-## Three axes
+## Three axes: the data {.smaller}
 
-```python
-# time series: down the rows, one ticker at a time
-ts_mean(close(), 20)
-ts_corr(returns(1), volume(1), 20)
+Tickers across the columns, dates down the rows. Real closes, March 2025:
 
-# cross-sectional: across the columns, one day at a time
-rank(returns(20))
-zscore(returns(20))
+| close() | AAPL | MSFT | XOM | CVX | JPM |
+|---|---:|---:|---:|---:|---:|
+| Mar 3 | 238.03 | 388.49 | 107.76 | **153.09** | 260.62 |
+| Mar 4 | 235.93 | 388.61 | 107.54 | **152.00** | 250.25 |
+| Mar 5 | 235.74 | 401.02 | 105.44 | **150.81** | 251.53 |
+| Mar 6 | 235.33 | 396.89 | 107.62 | 152.95 | 246.54 |
+| Mar 7 | 239.07 | 393.31 | 109.02 | 156.34 | 242.28 |
+| Mar 10 | 227.48 | 380.16 | 111.80 | 157.57 | 232.22 |
 
-# group: cross-sectional within a bucket
-group_demean(returns(60) / volatility(60), 'sector')
+Every operator works down the columns (**time series**), across the rows (**cross-sectional**), or across the rows within a bucket (**group**).
+
+## Time series: down each column {.smaller}
+
+```qex
+ts_mean(close(), 3)
 ```
 
-. . .
+| ts_mean(close(), 3) | AAPL | MSFT | XOM | CVX | JPM |
+|---|---:|---:|---:|---:|---:|
+| Mar 3 | – | – | – | – | – |
+| Mar 4 | – | – | – | – | – |
+| Mar 5 | 236.57 | 392.71 | 106.91 | **151.97** | 254.13 |
+| Mar 6 | 235.67 | 395.51 | 106.87 | 151.92 | 249.44 |
+| Mar 7 | 236.71 | 397.07 | 107.36 | 153.37 | 246.78 |
+| Mar 10 | 233.96 | 390.12 | 109.48 | 155.62 | 240.35 |
 
-```python
-let mom    = returns(60),
-    vol    = volatility(60),
-    sharpe = mom / vol
-in rank(sharpe) * sign(mom)
+CVX on March 5: $(153.09 + 152.00 + 150.81)/3 = 151.97$. No other stock enters. The first two rows are warmup, and warmup is the engine's job.
+
+## Cross-sectional: across each row {.smaller}
+
+```qex
+rank(returns(1))
 ```
+
+::: {.columns style="font-size: 0.78em;"}
+::: {.column width="50%"}
+| ret % | AAPL | MSFT | XOM | CVX | JPM |
+|---|---:|---:|---:|---:|---:|
+| 3/4 | −0.88 | +0.03 | −0.20 | −0.71 | −3.98 |
+| 3/5 | −0.08 | +3.19 | −1.95 | −0.78 | +0.51 |
+| 3/6 | −0.17 | −1.03 | +2.07 | +1.42 | −1.98 |
+| 3/7 | +1.59 | −0.90 | +1.30 | +2.22 | −1.73 |
+| 3/10 | **−4.85** | **−3.34** | **+2.55** | **+0.79** | **−4.15** |
+:::
+::: {.column width="50%"}
+| rank | AAPL | MSFT | XOM | CVX | JPM |
+|---|---:|---:|---:|---:|---:|
+| 3/4 | 0.4 | 1.0 | 0.8 | 0.6 | 0.2 |
+| 3/5 | 0.6 | 1.0 | 0.2 | 0.4 | 0.8 |
+| 3/6 | 0.6 | 0.4 | 1.0 | 0.8 | 0.2 |
+| 3/7 | 0.8 | 0.4 | 0.6 | 1.0 | 0.2 |
+| 3/10 | **0.2** | **0.6** | **1.0** | **0.8** | **0.4** |
+:::
+:::
+
+`rank` returns each stock's percentile within the day, 0 to 1: with five stocks, 0.2 to 1.0. March 10 was a tech sell-off: AAPL worst (0.2), XOM best (1.0). A rank keeps the order and throws away the size, so one outlier cannot dominate.
+
+## Group: across the row, within a bucket {.smaller}
+
+```qex
+group_demean(returns(1), 'sector')
+```
+
+| group_demean(…), % | AAPL | MSFT | XOM | CVX | JPM |
+|---|---:|---:|---:|---:|---:|
+| Mar 4 | −0.46 | +0.46 | +0.25 | −0.25 | 0.00 |
+| Mar 5 | −1.64 | +1.64 | −0.58 | +0.58 | 0.00 |
+| Mar 6 | +0.43 | −0.43 | +0.32 | −0.32 | 0.00 |
+| Mar 7 | +1.25 | −1.25 | −0.46 | +0.46 | 0.00 |
+| Mar 10 | **−0.75** | **+0.75** | **+0.88** | **−0.88** | **0.00** |
+
+AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. What is left is each stock against its peers.
+
+## From a signal to a book {.smaller}
+
+```qex
+scale(demean(rank(returns(1))))
+```
+
+::: columns
+::: {.column width="50%"}
+| March 10 | rank | demean | weight |
+|---|---:|---:|---:|
+| AAPL | 0.2 | −0.4 | −0.333 |
+| MSFT | 0.6 | 0.0 | 0.000 |
+| XOM | 1.0 | +0.4 | +0.333 |
+| CVX | 0.8 | +0.2 | +0.167 |
+| JPM | 0.4 | −0.2 | −0.167 |
+| sum | 3.0 | **0.0** | **0.000** |
+| sum of abs | 3.0 | 1.2 | **1.000** |
+:::
+::: {.column width="50%"}
+::: {.incremental}
+- `demean` subtracts the day's average rank (0.6): the weights sum to zero, **dollar-neutral**
+- `scale` divides by the sum of absolute values (1.2): **gross of one**
+- 50 cents long, 50 cents short per dollar of gross
+- `group_demean(…, 'sector')` instead: sector-neutral too
+- Returns "on GMV" are per dollar of exactly this book
+:::
+:::
+:::
 
 ## Lazy trees, no lookahead, shared work {.smaller}
 
@@ -145,19 +249,27 @@ in rank(sharpe) * sign(mom)
 
 ## Example: reversal, technician-style {.smaller}
 
-Where the close sits in its own five-day range, inverted, ranked, sector-demeaned, smoothed:
-
-```python
-raw   = "-(close() - ts_min(low(), 5)) / (ts_max(high(), 5) - ts_min(low(), 5))"
-book  = f"group_demean(rank({raw}), 'sector')"
-alpha = qex(f"decay_linear({book}, 10)")
+::: columns
+::: {.column width="58%"}
+```qex
+let lo   = ts_min(low(), 5),
+    hi   = ts_max(high(), 5),
+    pos  = (close() - lo) / (hi - lo),
+    book = group_demean(rank(-pos), 'sector')
+in scale(decay_linear(book, 10))
 ```
 
 ::: {.incremental}
+- `pos`: where the close sits in its five-day range, 0 at the low, 1 at the high; rank `-pos` buys closes near the low
 - Jegadeesh (1990), Lehmann (1990): last week's losers beat last week's winners
-- Nagel (2012): reversal is pay for providing liquidity, and spikes when liquidity evaporates
-- Khandani and Lo (2007): Lehmann's contrarian rule as *the* stat arb strategy of August 2007
+- Nagel (2012): reversal is pay for providing liquidity
+- Khandani and Lo (2007): *the* stat arb strategy of August 2007
 - Technicians call it *Williams %R*; it works once you think cross-sectionally
+:::
+:::
+::: {.column width="42%"}
+![](images/qex-range-graph.svg){width="100%"}
+:::
 :::
 
 ## Does it sort returns?
@@ -303,7 +415,7 @@ Seed: −1%/yr on validation. Final: 13%/yr at Sharpe 1.08 on validation, **13.5
 
 ## The seed
 
-```python
+```qex
 let mom   = delay(returns(231), 21),
     vol   = volatility(60),
     score = group_demean(mom / vol, 'sector')
@@ -421,7 +533,7 @@ worst:   -0.510
 
 ## What it built
 
-```python
+```qex
 let r     = returns(1),
     mk    = r - demean(r),
     m1    = ts_sum(mk, 252),
