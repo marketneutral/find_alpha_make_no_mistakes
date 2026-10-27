@@ -583,31 +583,52 @@ One deal can grade the final book anywhere from 1.00 to 2.03. All 10,395 average
 
 Each bar: where 95% of calls land, around the score all 10,395 deals would give.
 
-## The keep rule
+## The keep rule {.smaller}
 
-A change is kept only if
+Karpathy's rule is one line: keep if the score improves. Here a change is compared with the **best book kept so far**, the one it edits, and kept only if all three hold:
 
-1. median-fold utility rises by more than **0.03**, the noise, measured by scoring the seed 8 times
-2. worst-fold utility falls by no more than **0.13**, its own noise
-3. the book stays **eligible**
+$$
+\underbrace{\Delta\,\overline{u}_{\text{median}} \;>\; 0.03}_{\text{climb}}
+\qquad\wedge\qquad
+\underbrace{\Delta\,\overline{u}_{\text{worst}} \;\ge\; -0.13}_{\text{hold the floor}}
+\qquad\wedge\qquad
+\underbrace{\text{eligible}}_{\text{stay tradeable}}
+$$
+
+$\overline{u}$: a fold utility averaged over the 50 deals. $\Delta$: against the best kept book. Eligibility binds once the best is eligible; the seed was not, and trial 2 made it so.
+
+**Where the two numbers come from:** the seed, scored eight times before the run.
+
+::: {.keep-table}
+| | eight calls | spread | the rule |
+|---|---|---:|---|
+| median fold | −0.099 to −0.076 | 0.023 | must rise by more than **0.03** |
+| worst fold | −1.025 to −0.899 | 0.126 | may fall by at most **0.13** |
+:::
 
 . . .
 
-Otherwise `git checkout <best> -- alpha.qex`. Either way, the attempt is logged: claim, outcome, numbers.
+Otherwise `git checkout <best> -- alpha.qex`. Either way the attempt is logged: claim, outcome, numbers.
 
-## Counting the trials {.smaller}
+## Climb the median, hold the floor {.smaller}
 
-Every trial prints the **deflated Sharpe ratio** of Bailey and López de Prado (2014), the probability the Sharpe is real given $N$ strategies tried:
+::: columns
+::: {.column width="46%"}
+![](images/eval-keep-map.svg){width="100%"}
+:::
+::: {.column width="54%"}
+::: {.incremental}
+- **An objective and a constraint.** Climb the median; only guard the worst. Score may not be bought with crash risk.
+- **Why 0.13 is four times 0.03:** the worst fold is a minimum over six, and which fold holds 2008 changes with every deal. The noisier number gets the wider tolerance.
+- **The asymmetry has a cost.** A change that only makes the worst fold better is reset. The rule never climbs safety. Trial 30 will show it.
+- **The floor is relative, so it can creep:** fourteen keeps could give back 14 × 0.13. They did not; the worst rose from −0.96 to +0.40.
+:::
+:::
+:::
 
-$$
-\widehat{\mathrm{PSR}}(\mathrm{SR}_0) = \Phi\!\left(\frac{(\widehat{\mathrm{SR}} - \mathrm{SR}_0)\sqrt{T-1}}{\sqrt{1 - \hat\gamma_3 \widehat{\mathrm{SR}} + \frac{\hat\gamma_4 - 1}{4}\widehat{\mathrm{SR}}^2}}\right)
-$$
+. . .
 
-$$
-\mathrm{SR}_0 = \sqrt{\mathbb{V}[\widehat{\mathrm{SR}}_n]}\left((1-\gamma)\,\Phi^{-1}\!\left(1-\tfrac{1}{N}\right) + \gamma\,\Phi^{-1}\!\left(1-\tfrac{1}{N e}\right)\right)
-$$
-
-$N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows, the seed and sixty trials. It informs the agent; it does not decide keeps.
+[The bar was set on the seed. The noise grows with the score; hold that thought.]{.pq-note}
 
 ## The run
 
@@ -834,6 +855,12 @@ T38, earlier: ***"A safer book the keep rule does not reward."***
 - **The final book:** its folds disagree far more (0.20 to 3.15), so ±0.06. Near the top the keep rule is partly a coin flip. **T50 saw it: the same book, written two ways, scored 0.058 apart.**
 :::
 
+## Sixty decisions, one map {.mid}
+
+![](images/alpha-keep-applied.svg){.r-stretch fig-align="center"}
+
+14 kept, 46 reset: 38 did not clear the bar, 7 fell through bar and floor together, none on the floor alone. Three gains inside the noise refused; five safer books refused; the tolerance let two through.
+
 ## Act 4: what each part is worth
 
 ![](images/alpha-worth.svg){.r-stretch fig-align="center"}
@@ -1024,7 +1051,7 @@ $$
 ::: {.incremental}
 - History noise $\sigma \approx 0.27$ Sharpe, $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
 - That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective $k$ is far smaller.
-- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The deflated Sharpe (Bailey and López de Prado) is this calculation done properly.
+- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The **deflated Sharpe ratio** (Bailey and López de Prado 2014) is this calculation done properly: `eval.py` prints it after every trial. It informs the agent and constrains nothing. Appendix.
 :::
 
 . . .
@@ -1245,6 +1272,20 @@ $$
 :::
 
 [Same caveat: an Occam bound is for a fixed class under i.i.d. sampling, and sixty adaptive trials are neither. The lever it names, description length, is real; the digits are not.]{.pq-note}
+## Counting the trials {.smaller}
+
+Every trial prints the **deflated Sharpe ratio** of Bailey and López de Prado (2014), the probability the Sharpe is real given $N$ strategies tried:
+
+$$
+\widehat{\mathrm{PSR}}(\mathrm{SR}_0) = \Phi\!\left(\frac{(\widehat{\mathrm{SR}} - \mathrm{SR}_0)\sqrt{T-1}}{\sqrt{1 - \hat\gamma_3 \widehat{\mathrm{SR}} + \frac{\hat\gamma_4 - 1}{4}\widehat{\mathrm{SR}}^2}}\right)
+$$
+
+$$
+\mathrm{SR}_0 = \sqrt{\mathbb{V}[\widehat{\mathrm{SR}}_n]}\left((1-\gamma)\,\Phi^{-1}\!\left(1-\tfrac{1}{N}\right) + \gamma\,\Phi^{-1}\!\left(1-\tfrac{1}{N e}\right)\right)
+$$
+
+$N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows, the seed and sixty trials. It informs the agent; it does not decide keeps.
+
 ## Keeping it honest: permissions {.mid}
 
 `claude -p --permission-mode dontAsk`: any tool call off the allowlist is denied, and no one is there to say yes.

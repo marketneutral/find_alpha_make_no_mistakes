@@ -75,3 +75,4 @@ $presentation-h2-font-size: 1.3em;
 .reveal .lab-table col { width: auto !important; }
 .reveal .lab-table table { table-layout: auto; width: 100%; }
 .reveal .lab-table td:not(:nth-child(2)), .reveal .lab-table th:not(:nth-child(2)) { white-space: nowrap; }
+.reveal .keep-table td, .reveal .keep-table th { white-space: nowrap; padding: 0.22em 0.9em; }

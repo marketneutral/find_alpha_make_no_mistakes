@@ -9,7 +9,7 @@ saw it) and images/alpha-worth.svg (what each part of the
 book is worth: the score change when the agent removed it). Every number is from the run's notebook
 (results.tsv) or the evaluator's output for the final trial; nothing here is recomputed.
 """
-import itertools, json
+import csv, itertools, json
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -24,8 +24,8 @@ plt.rcParams.update({
     "figure.facecolor": BG, "axes.facecolor": BG, "savefig.facecolor": BG, "axes.edgecolor": RULE,
 })
 
-def save(fig, name):
-    fig.savefig(f"images/{name}.svg", bbox_inches="tight", pad_inches=0.2)
+def save(fig, name, pad=0.2):
+    fig.savefig(f"images/{name}.svg", bbox_inches="tight", pad_inches=pad)
     plt.close(fig); print("wrote", f"images/{name}.svg")
 
 # The validation period's 3,524 trading days cut into 12 blocks (np.array_split), 21 days purged from each end:
@@ -168,6 +168,73 @@ def fig_noise():
     ax.tick_params(length=0); ax.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
     save(fig, "eval-noise")
 
+BAR, FLOOR = 0.03, -0.13                                                            # the keep rule's two numbers
+
+def keep_replay():
+    """Every trial's change in median-fold and worst-fold utility against the best book kept so far (results.tsv)."""
+    rows = list(csv.DictReader(open("figures/progress/lab/results.tsv"), delimiter="\t"))
+    bu, bw = float(rows[0]["utility"]), float(rows[0]["worst"])
+    pts = []
+    for i, r in enumerate(rows[1:], 1):
+        u, w = float(r["utility"]), float(r["worst"])
+        pts.append((i, r["status"] == "keep", u - bu, w - bw))
+        if r["status"] == "keep":
+            bu, bw = u, w
+    return pts
+
+def keep_map(ax, xlim, ylim, fs, long=True):
+    """The keep rule as a region: median up by more than the bar, worst down by no more than the floor."""
+    ax.add_patch(Rectangle((BAR, FLOOR), xlim[1] - BAR, ylim[1] - FLOOR, fc=ACC, alpha=0.12, lw=0, zorder=0))
+    ax.axhline(0, color=RULE, lw=0.8, zorder=1); ax.axvline(0, color=RULE, lw=0.8, zorder=1)
+    ax.axvline(BAR, color=ACC, lw=1.4, ls=(0, (4, 3)), zorder=2); ax.axhline(FLOOR, color=RED, lw=1.4, ls=(0, (4, 3)), zorder=2)
+    if long:
+        ax.text(BAR + 0.008, ylim[1] - 0.02, "the bar: +0.03,\nthe seed's noise", color=ACC, fontsize=fs, va="top")
+        ax.text(xlim[0] + 0.012, FLOOR - 0.025, "the floor: \u22120.13, the worst fold's noise", color=RED, fontsize=fs, va="top")
+    else:
+        ax.text(BAR + 0.008, ylim[0] + 0.03, "the bar: +0.03", color=ACC, fontsize=fs, va="bottom")
+        ax.text(xlim[1] - 0.01, FLOOR - 0.025, "the floor: \u22120.13", color=RED, fontsize=fs, va="top", ha="right")
+    ax.set_xlim(*xlim); ax.set_ylim(*ylim)
+    ax.set_xlabel("\u0394 median-fold utility vs the best book so far", fontsize=fs + 1)
+    ax.set_ylabel("\u0394 worst-fold utility vs the best", fontsize=fs + 1)
+    for sp in ("top", "right"): ax.spines[sp].set_visible(False)
+    ax.tick_params(length=0, labelsize=fs); ax.grid(False)
+
+def fig_keep():
+    xlim, ylim = (-0.62, 0.36), (-0.6, 0.66)
+    # the empty map: the rule itself
+    fig, ax = plt.subplots(figsize=(5.6, 5.0))
+    keep_map(ax, xlim, ylim, 14.5)
+    ax.text(0.2, 0.3, "keep", color=ACC, fontsize=26, fontweight="bold", ha="center", va="center")
+    ax.text(-0.3, 0.1, "reset:\nno gain beyond\nthe noise", color=INK2, fontsize=16, ha="center", va="center", linespacing=1.35)
+    ax.text(-0.3, -0.4, "reset:\nbroke the floor", color=RED, fontsize=16, ha="center", va="center", linespacing=1.35)
+    ax.text(-0.3, 0.48, "safer, but not kept", color=MUTED, fontsize=15, ha="center", va="center", style="italic")
+    save(fig, "eval-keep-map", pad=0.35)
+    # the same map with the sixty trials on it
+    pts = keep_replay()
+    fig, ax = plt.subplots(figsize=(10.4, 5.6))
+    keep_map(ax, xlim, ylim, 12.5, long=False)
+    for i, kept, dx, dy in pts:
+        cx, cy = max(dx, xlim[0] + 0.012), dy
+        if kept:
+            ax.scatter([cx], [cy], s=64, color=ACC, edgecolor=BG, lw=1.2, zorder=4)
+        else:
+            ax.scatter([cx], [cy], s=30, color=MUTED, alpha=0.8, lw=0, zorder=3, marker="<" if dx < xlim[0] else "o")
+    labels = {1: ("T1", 8, 0, "left"), 2: ("T2", 8, 0, "left"), 31: ("T31", 8, 0, "left"),
+              19: ("T19", -7, 9, "right"), 32: ("T32", -7, -4, "right"),
+              30: ("T30: worst +0.33, median \u22120.08", -8, 8, "right"), 42: ("T42", 8, 2, "left"), 38: ("T38", -7, -2, "right"),
+              55: ("T55", 0, 11, "center"), 51: ("T51", 6, 6, "left"), 50: ("T50", -7, -9, "right"),
+              27: ("T27: the switch removed", 8, -4, "left"), 56: ("T56: \u22120.88, raw momentum", 10, 4, "left")}
+    P = {i: (max(dx, xlim[0] + 0.012), dy, kept) for i, kept, dx, dy in pts}
+    for i, (t, ox, oy, ha) in labels.items():
+        x, y, kept = P[i]
+        ax.annotate(t, (x, y), xytext=(ox, oy), textcoords="offset points", fontsize=11.5, color=ACC if kept else INK2, va="center", ha=ha)
+    arrow = dict(arrowstyle="-", color=MUTED, lw=0.9, shrinkB=4)
+    ax.annotate("T14: +0.030, exactly the bar", P[14][:2], xytext=(0.35, -0.44), textcoords="data", fontsize=11.5, color=INK2, ha="right", va="center", arrowprops=arrow)
+    ax.annotate("T7 and T16: kept, inside the tolerance", P[16][:2], xytext=(0.35, -0.27), textcoords="data", fontsize=11.5, color=ACC, ha="right", va="center", arrowprops=dict(arrow, color=ACC))
+    ax.scatter([], [], s=64, color=ACC, label="kept, 14"); ax.scatter([], [], s=30, color=MUTED, label="reset, 46")
+    ax.legend(frameon=False, fontsize=12, loc="upper left", labelcolor=INK2)
+    save(fig, "alpha-keep-applied", pad=0.3)
+
 def fig_worth():
     # utility change when the agent took a part out, in the book of the day (results.tsv)
     parts = [("residual momentum", "T56", 1.473, 0.592), ("crash switch", "T27", 1.101, 0.622),
@@ -194,4 +261,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_keep(); fig_worth()
