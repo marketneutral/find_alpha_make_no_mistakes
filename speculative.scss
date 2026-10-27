@@ -29,3 +29,8 @@ $presentation-h2-font-size: 1.3em;
 .reveal .refs li { margin: 0.12em 0; }
 // hanging punctuation: the opening quote sits in the margin, so the text of both lines aligns
 .reveal .hang-quote h1, .reveal h1.hang-quote { text-indent: -0.476em; }
+// the blog's callout: a pull quote in a panel with an accent rule
+.reveal .pullquote { border: 1px solid #2a3344; border-left: 3px solid #3ee87a; background: #131927;
+                     padding: 0.7em 0.95em; margin: 0.4em 0; font-size: 0.72em; line-height: 1.45; color: #e8eaf0; }
+.reveal .pullquote p { margin: 0; }
+.reveal .pq-note { color: #9aa1ad; font-size: 0.6em; }

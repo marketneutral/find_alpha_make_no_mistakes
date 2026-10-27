@@ -585,7 +585,31 @@ in decay_linear(power(a, 3), 3)
 
 Residual momentum under a market-state switch, plus a sector reversal sleeve, cubed. 32 nodes.
 
-## Did it hold up? {.smaller}
+## What it built, in plain English
+
+Written the way the beliefs were written going in:
+
+::: {.pullquote}
+I believe that a stock which has beaten its sector over the past year,
+counting only the part of its return the market did not explain, will keep
+beating it, so I own it, and I short the ones that lagged. I skip the last
+month, because last month's moves reverse. I watch the market as a whole.
+When it is calm and has not fallen far, I hold full momentum. When it has
+fallen, I hold less, nothing at a 10% fall and the reverse at 20%, because
+the losers are about to rebound. When it is turbulent, I hold full momentum
+only if the market is up 10% on the year, nothing if it is flat, and the
+reverse if it is down 10%. Separately, I bet that a stock which lagged its
+sector last month will bounce. I add the two views and cube the sum, so I
+bet most where they agree and almost nothing where they are lukewarm.
+:::
+
+[The book rules are the evaluator's, not the agent's: dollar-neutral, gross one, 5% cap per name.]{.pq-note}
+
+## Did it hold up?
+
+![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
+
+## Did it hold up? The numbers {.smaller}
 
 | | period | Sharpe | return / yr | net of 10 bps | max drawdown |
 |---|---|---:|---:|---:|---:|
