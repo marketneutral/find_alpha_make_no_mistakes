@@ -2942,7 +2942,7 @@ L 301.54375 368.12877
 " style="fill: none; stroke: #6b7280; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="text_22">
-    <text style="font-size: 10px; font-family: 'IBM Plex Mono, DejaVu Sans Mono, monospace', monospace; text-anchor: start; fill: #c0c4cf" x="309.54375" y="371.62877" transform="rotate(-0 309.54375 371.62877)">net of 2 bps</text>
+    <text style="font-size: 10px; font-family: 'IBM Plex Mono, DejaVu Sans Mono, monospace', monospace; text-anchor: start; fill: #c0c4cf" x="309.54375" y="371.62877" transform="rotate(-0 309.54375 371.62877)">net of 2 bps tcost</text>
    </g>
   </g>
  </g>

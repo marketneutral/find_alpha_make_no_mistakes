@@ -23,4 +23,4 @@ This presentation was created using [Quarto](https://quarto.org/). The final ren
 ./render.sh
 ```
 
-The figures in `images/` come from the blog posts' analysis scripts; the code for the experiment in part 3 is in [alpha_lab](https://github.com/marketneutral/alpha_lab) and the language in [alpha-parser](https://github.com/marketneutral/alpha-parser).
+The figures in `images/` come from the blog posts' analysis scripts, except the evaluator and ablation figures, which `figures/figures.py` draws from the run's notebook; the code for the experiment in part 3 is in [alpha_lab](https://github.com/marketneutral/alpha_lab) and the language in [alpha-parser](https://github.com/marketneutral/alpha-parser).

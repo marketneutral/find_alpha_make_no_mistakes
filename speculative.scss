@@ -34,3 +34,27 @@ $presentation-h2-font-size: 1.3em;
                      padding: 0.7em 0.95em; margin: 0.4em 0; font-size: 0.72em; line-height: 1.45; color: #e8eaf0; }
 .reveal .pullquote p { margin: 0; }
 .reveal .pq-note { color: #9aa1ad; font-size: 0.6em; }
+// trial cards: the agent's claim, then the outcome, in its own words
+.reveal .trial { border: 1px solid #2a3344; border-left: 3px solid #6b7280; background: #131927; border-radius: 4px;
+                 padding: 0.4em 0.8em; margin: 0.4em 0; font-size: 0.64em; line-height: 1.4; text-align: left; }
+.reveal .trial.keep { border-left-color: #3ee87a; }
+.reveal .trial p { margin: 0.25em 0; }
+.reveal .trial .t-head { display: block; font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.86em; font-weight: 600; color: #9aa1ad; }
+.reveal .trial.keep .t-head { color: #3ee87a; }
+.reveal .trial .t-lab { font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.78em; text-transform: uppercase;
+                        letter-spacing: 0.06em; color: #6b7280; margin-right: 0.45em; }
+.reveal .trial .t-num { display: block; font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.84em; color: #9aa1ad; margin-top: 0.15em; }
+.reveal .trial em { color: #c0c4cf; }
+.reveal .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.55em; margin: 0.3em 0 0.5em; }
+.reveal .chain .trial { margin: 0; font-size: 0.58em; }
+.reveal pre.evaluator { font-size: 0.5em; line-height: 1.4; background: #131927; border: 1px solid #2a3344; box-shadow: none;
+                        width: 100%; margin: 0.3em 0; }
+.reveal pre.evaluator code { color: #c0c4cf; background: transparent; }
+.reveal .belief-table table { font-size: 0.56em; }
+.reveal .belief-table td, .reveal .belief-table th { padding: 0.16em 0.7em; white-space: nowrap; }
+.reveal .ladder pre.qex { font-size: 0.86em; }
+// between full size and .smaller
+.reveal .slides section.mid { font-size: 0.8em; }
+.reveal .slides section.mid h2 { font-size: 1.625em; }
+// signal to book: the weight column, the expression's output, on the code panel's background
+.reveal .book-weights th:nth-child(4), .reveal .book-weights td:nth-child(4) { background: #131927; }

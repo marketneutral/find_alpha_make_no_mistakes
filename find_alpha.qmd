@@ -46,7 +46,7 @@ This presentation is for informational purposes only and reflects my personal vi
 
 ## About Me
 
-Managing Director at **Columbia Investment Management Co., LLC**, generalist allocator, lead Data Science and Research. Formerly CIO at **Quantopian**, Global Head of Equities and **Millennium Management LLC**, and Co-Head of Equity Derivatives Trading at **JPMorgan**.
+Managing Director at **Columbia Investment Management Co., LLC**, generalist allocator, lead Data Science and Research. Formerly CIO at **Quantopian**, Global Head of Equities at **Millennium Management LLC**, and Co-Head of Equity Derivatives Trading at **JPMorgan**.
 
 - X/Twitter [@jonathanrlarkin](https://x.com/jonathanrlarkin)
 - LinkedIn [linkedin.com/in/quantfinance](https://linkedin.com/in/quantfinance)
@@ -63,7 +63,7 @@ Can an AI agent do quantitative research without fooling itself?
 ::: {.incremental}
 1. **qex**: a small language for alphas, so a hypothesis is one line
 2. **autoresearch**: an agent that proposes, tests, keeps or discards
-3. **"find alpha. make no mistakes."**: the loop rebuilt for finance, and run once on data it never saw
+3. **"find alpha. make no mistakes."**: the loop rebuilt for finance
 :::
 
 
@@ -97,10 +97,10 @@ rank(-returns(5))
 :::
 
 ::: {.refs}
-qex is open source: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser). The style follows Kakushadze's *101 Formulaic Alphas* (2016).
+qex is open source: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser).
 :::
 
-## From a belief to a line {.smaller}
+## From a belief to a line {.smaller .ladder}
 
 Refine the belief one clause at a time, and the expression follows:
 
@@ -115,12 +115,13 @@ group_demean(rank(-returns(5)), 'sector')
 group_demean(rank(-returns(5) / volatility(60)), 'sector')
 
 # ...and I do not want to trade every wiggle.
-decay_linear(group_demean(rank(-returns(5) / volatility(60)), 'sector'), 10)
+decay_linear(group_demean(rank(-returns(5) / volatility(60)),
+                          'sector'), 10)
 ```
 
 Each clause is one operator. No loops, no index alignment, no `axis=`, no warmup, no NaN handling, no peeking at tomorrow: none of it is the belief, and all of it is where the bugs live.
 
-## Why a language? {.smaller}
+## Why a language? {.mid}
 
 ::: {.incremental}
 - **The expression is the hypothesis, not the implementation.** Everything else is engine, written once.
@@ -218,7 +219,7 @@ scale(demean(rank(returns(1))))
 ```
 
 ::: columns
-::: {.column width="50%"}
+::: {.column width="50%" .book-weights}
 | March 10 | rank | demean | weight |
 |---|---:|---:|---:|
 | AAPL | 0.2 | −0.4 | −0.333 |
@@ -247,19 +248,14 @@ $$
 
 ## Lazy trees, no lookahead, shared work {.smaller}
 
-::: columns
-::: {.column width="45%"}
 ::: {.incremental}
 - Parsing builds a tree; nothing is computed until `evaluate(data)`
 - **Every operation looks backward.** `delay(x, -1)` is an error, not a too-good backtest.
 - Event-aware operators for sparse data (earnings): roll over the last *N observations*, not *N days*
 - A set of signals is one graph; each unique sub-expression is computed once
 :::
-:::
-::: {.column width="55%"}
-![](images/qex-signal-graph.svg){width="100%"}
-:::
-:::
+
+![](images/qex-signal-graph.svg){.r-stretch fig-align="center"}
 
 ## Why the cross-section? {.smaller}
 
@@ -279,8 +275,6 @@ $$
 
 ## Example: reversal, technician-style {.smaller}
 
-::: columns
-::: {.column width="58%"}
 ```qex
 let lo   = ts_min(low(), 5),
     hi   = ts_max(high(), 5),
@@ -296,34 +290,33 @@ in scale(decay_linear(book, 10))
 - Khandani and Lo (2007): *the* stat arb strategy of August 2007
 - Technicians call it *Williams %R*; it works once you think cross-sectionally
 :::
-:::
-::: {.column width="42%"}
-![](images/qex-range-graph.svg){width="100%"}
-:::
-:::
+
+## The tree qex builds
+
+![](images/qex-range-graph.svg){.r-stretch fig-align="center"}
 
 ## Does it sort returns?
 
-![](images/qex-quintiles.svg){width="85%"}
+![](images/qex-quintiles.svg){.r-stretch fig-align="center"}
 
-S&P 500 members (survivorship-biased!), 2010-2025, gross of costs. Monotonic quintiles; top-minus-bottom 8.3%/yr.
+S&P 500 members (today, survivorship-biased!), 2010–⁠2025, gross of costs. Monotonic quintiles; top-minus-bottom 8.3%/yr.
 
 ## How it did, through time {.smaller}
 
-![](images/qex-gross-vs-net.svg){width="90%" fig-align="center"}
+![](images/qex-gross-vs-net.svg){.r-stretch fig-align="center"}
 
-Cumulative return on gross, 2010-2025, dollar-neutral and rebalanced daily. Gross, both versions end near +78%. Net of 2 bps tcost, the unsmoothed book ends at −8% and the ten-day decay at **+39%**.
+Cumulative return on gross, 2010–⁠2025, dollar-neutral and rebalanced daily. Gross, both versions end near +78%. Net of 2 bps tcost, the unsmoothed book ends at −8% and the ten-day decay at **+39%**.
 
 ## Smoothing is (almost) a free lunch {.smaller}
 
 | Range, daily | Turnover / day | Gross on GMV | Gross Sharpe | Net at 2 bps tcost | Net Sharpe | Max DD |
 |---|---:|---:|---:|---:|---:|---:|
-| no smoothing | 84% | +3.8% | 0.98 | −0.5% | −0.13 | −21% |
+| unsmoothed | 84% | +3.8% | 0.98 | −0.5% | −0.13 | −21% |
 | **decay 10** | **32%** | **+3.8%** | **0.90** | **+2.2%** | **0.52** | **−15%** |
 
 . . .
 
-![](images/qex-ic-by-horizon.svg){width="70%"}
+![](images/qex-ic-by-horizon.svg){.r-stretch fig-align="center"}
 
 The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
 
@@ -340,17 +333,17 @@ The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops
 
 ## Science is a loop
 
-![](images/scientific-method.svg){width="75%"}
+![](images/scientific-method.svg){.r-stretch fig-align="center"}
 
 The highlighted step, proposing the hypothesis, has always needed a person.
 
 ## When there is a slope
 
-![](images/gradient-descent.svg){width="90%"}
+![](images/gradient-descent.svg){.r-stretch fig-align="center"}
 
 If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = \theta_k - \eta \nabla L(\theta_k)$. Nobody decides what to try next.
 
-## "There is no slope." {.smaller}
+## "There is no slope."
 
 ::: {.incremental}
 - Most hypotheses are programs, protocols, features, molecules: discrete, and each test is expensive
@@ -361,23 +354,16 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 
 ## Karpathy's autoresearch (March 2026) {.smaller}
 
-::: columns
-::: {.column width="40%"}
 ::: {.incremental}
-- `program.md`: the problem, written by a person
-- `train.py`: the only file the agent may edit
-- `prepare.py`: data and test, out of reach
+- `program.md`: the problem, written by a person. `train.py`: the only file the agent may edit. `prepare.py`: data and test, out of reach.
 - Every trial: 5 minutes; keep if `val_bpb` improves, else `git reset`
 :::
-:::
-::: {.column width="60%"}
-![](images/autoresearch-loop.svg){width="100%"}
-:::
-:::
+
+![](images/autoresearch-loop.svg){.r-stretch fig-align="center"}
 
 ## One overnight run
 
-![](images/autoresearch-progress.svg){width="85%"}
+![](images/autoresearch-progress.svg){.r-stretch fig-align="center"}
 
 14 of 82 changes kept. Note the last kept change, in red: **a new random seed**.
 
@@ -394,7 +380,7 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 
 Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocations −61%, all 974 tests passing.
 
-## What it means for finance {.smaller}
+## What it means for finance {.mid}
 
 ::: {.incremental}
 - The obvious mapping: the artifact is signal code, the score is a backtest Sharpe on a hold-out, keep if it goes up
@@ -405,7 +391,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - The red dot again: a new random seed is not a better model, and the loop kept it
 :::
 
-## What would have to change {.smaller}
+## What would have to change {.mid}
 
 ::: {.incremental}
 1. **Require the claim before the test**: mechanism, counterparty, persistence, and a prediction of *where* it helps
@@ -420,27 +406,27 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 
 # "find alpha. make no mistakes." {.hang-quote}
 
-## The experiment {.smaller}
+## The experiment {.mid}
 
 ::: {.incremental}
-- **The agent:** Claude Code, headless, one session, 60 trials, 55 minutes, ~$20
+- **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
 - **The artifact:** one qex expression, `alpha.qex`
 - **The seed:** textbook momentum that *loses money* on the scored period
 - **The problem:** keep the momentum premium, avoid the crashes (Daniel and Moskowitz 2016)
 - **The beliefs:** twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period
 - **The periods:**
-  - inspection 1999-2003: the agent may look
-  - validation 2004-2017: the agent sees only summary numbers
+  - inspection 1999–⁠2003: the agent may look
+  - validation 2004–⁠2017: the agent sees only summary numbers
   - test 2018 to Aug 2026: sealed; I ran it once, after trial 60
 :::
 
 ## The result first
 
-![](images/alpha-gross-vs-net.svg){width="85%"}
+![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
 
 Seed: −1%/yr on validation. Final: 13%/yr at Sharpe 1.08 on validation, **13.5%/yr at Sharpe 0.76 on the sealed test**.
 
-## Data and book {.smaller}
+## Data and book {.mid}
 
 ::: {.incremental}
 - **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, ADV ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
@@ -459,37 +445,62 @@ in decay_linear(score / vol, 10)
 ```
 
 ::: {.incremental}
-- 12-1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
-- Validation Sharpe −0.25; **−1.96 in the crash state**
+- 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
+- As the agent saw it: validation Sharpe −0.25; **−1.96 in the crash state**
 - Loses 8 bps per dollar traded, before costs
 :::
 
 ## The score {.smaller}
 
-Per fold, on cost-free P&L:
+Each fold is scored on cost-free P&L:
 
 $$
 \text{utility} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
 $$
 
 ::: {.incremental}
-- 2004-2017 cut into 12 blocks (~14 months), dealt at random into 6 folds, 21-day embargo at block edges
-- Each call: **50 random deals**; report the mean over deals of the **median fold** and of the **worst fold**
-- Median fold: no single stretch carries the score. Worst fold: the crash guard. Fresh deals: no fixed hold-out to please. 50 deals: a good score is not the luck of one cut.
-- **Eligible:** turnover in 1-70%/day, margin ≥ 5 bps per dollar traded
+- **Fitness** is the score of *Finding Alphas* (Tulchinsky et al. 2019): Sharpe, scaled up by return and down by trading
+- Turnover below 12.5% a day is not charged, and the agent will notice
+- **Nodes:** every operator, constant and field in the parsed expression. Each costs 0.003, AIC in spirit.
+- A fold scores −∞ if the book holds fewer than 50 names or runs outside 1–70% turnover a day
+- **Eligible:** the whole validation book runs 1–70% turnover a day and earns ≥ 5 bps per dollar traded
 :::
 
-## The keep rule {.smaller}
+## The evaluator: deal the history
+
+![](images/eval-deals.svg){.r-stretch fig-align="center"}
+
+2004–⁠2017 in twelve blocks of about fourteen months, dealt at random into six folds of two blocks, 21 days purged at every edge. Fifty fresh deals on every call.
+
+## The evaluator: score each fold
+
+![](images/eval-folds.svg){.r-stretch fig-align="center"}
+
+The final book, deal 1, as the agent saw it: median **1.54**, worst **0.20**. Over all 50 deals: median **1.47**, worst **0.40**.
+
+## Why it is built this way {.smaller}
+
+::: {.incremental}
+- **Nothing is fit, so there is no training fold.** Each fold is just a stretch of history to score the fixed expression on.
+- **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
+- **Embargo:** 21 days purged at every block edge, so no rolling window or forward return straddles two folds
+- **Median fold:** no single stretch can carry the score
+- **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
+- **Fresh random deals on every call:** there is no fixed hold-out to climb
+- **50 deals:** a good score is not the luck of one cut, and the noise is measurable. The seed scored 8 times: median −0.076 to −0.099.
+:::
+
+## The keep rule
 
 A change is kept only if
 
-1. median-fold utility rises by more than **0.03** (noise, measured by scoring the seed 8 times)
-2. worst-fold utility falls by no more than **0.13** (its own noise)
+1. median-fold utility rises by more than **0.03**, the noise, measured by scoring the seed 8 times
+2. worst-fold utility falls by no more than **0.13**, its own noise
 3. the book stays **eligible**
 
 . . .
 
-Otherwise `git checkout <best> -- alpha.qex`, and log the attempt either way.
+Otherwise `git checkout <best> -- alpha.qex`. Either way, the attempt is logged: claim, outcome, numbers.
 
 ## Counting the trials {.smaller}
 
@@ -503,67 +514,251 @@ $$
 \mathrm{SR}_0 = \sqrt{\mathbb{V}[\widehat{\mathrm{SR}}_n]}\left((1-\gamma)\,\Phi^{-1}\!\left(1-\tfrac{1}{N}\right) + \gamma\,\Phi^{-1}\!\left(1-\tfrac{1}{N e}\right)\right)
 $$
 
-$N$ = rows in the notebook so far, $\gamma$ the Euler-Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows. It informs the agent; it does not decide keeps.
+$N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows. It informs the agent; it does not decide keeps.
 
 ## The augmented loop
 
-![](images/alpha-augmented-loop.svg){width="100%"}
+![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-What the agent sees after each trial: score, worst fold, eligibility, whole-period Sharpe/return/turnover/margin, one deal's six folds with their years, regime splits, the deflated Sharpe. **Never a price.**
+What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never a price.**
 
 ## The run
 
 <figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: score and worst slice over sixty trials"></figure>
 
-## Acts 1 and 2: fix the obvious, build the engine {.smaller}
+## Every trial is a card
 
-::: {.incremental}
-- **T1, crash switch** (belief 7): flip momentum when the market is down over 2y and 1m vol > 1y vol. Crash-state Sharpe −1.96 → +3.32.
-- **T2, delete a line**: the seed divided by vol twice ($w \propto m/\sigma^2$). One deletion and the book is eligible.
-- **T6, a 1-month reversal sleeve**: fitness does not charge turnover below 12.5%/day, so a fast sleeve rides free
-- **T8, residual momentum** (Blitz, Huij, Martens 2011): rank on $r_{i,t} - \hat\beta_i\, r_{m,t}$. Predicted the worst fold would gain more than the median; it did.
-- **T14-17, concentration**, the agent's own idea: signed square, then a **cube**
+Before each test, the agent writes a **claim**: which belief, the mechanism, and a prediction of *where* the score should move. After it, an **outcome**. Sixty of them, in its own words.
+
+::: {.trial .keep}
+[T1 · kept · belief 7 · the crash switch]{.t-head}
+
+[claim]{.t-lab} Where the crash state holds, the momentum score flips sign to reversal. *Mechanism: the crash is the past losers rebounding hardest.* Predict crash-state Sharpe turns positive, **worst fold improves a lot, median a little.**
+
+::: {.fragment}
+[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [utility −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
 :::
+:::
+
+## Act 1: fix the obvious
+
+::: {.trial .keep}
+[T2 · kept · belief 11, removed · delete a line]{.t-head}
+
+[claim]{.t-lab} Drop the final 1/vol: the score is already mom/vol, so the seed sizes by mom/vol² and the book piles into low-vol names whose momentum carries little return. Predict higher return and margin.
+
+::: {.fragment}
+[outcome]{.t-lab} Now eligible: margin 14.3 bps. **Belief 11 as written was costing return without buying safety.** [utility 0.01 → 0.32]{.t-num}
+:::
+:::
+
+::: {.trial .keep .fragment}
+[T4 · kept · belief 4 · the right volatility]{.t-head}
+
+[claim]{.t-lab} Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. *60-day vol is noisy and spikes right after big moves, so it mis-ranks names.* Predict a small median gain.
+
+::: {.fragment}
+[outcome]{.t-lab} Calm Sharpe 0.32 to 0.45, crash unchanged. **Larger than predicted.** [utility 0.32 → 0.43]{.t-num}
+:::
+:::
+
+## Act 2: build the engine
+
+::: {.trial .keep}
+[T6 · kept · belief 2, as a sleeve · a second, faster bet]{.t-head}
+
+[claim]{.t-lab} Add a sector-relative 1-month reversal sleeve. The last month reverses (Jegadeesh 1990; *known 35 years, probably mostly priced*), and **fitness does not charge turnover below 0.125, so a fast sleeve rides free.**
+
+::: {.fragment}
+[outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [utility 0.43 → 0.56]{.t-num}
+:::
+:::
+
+::: {.trial .keep .fragment}
+[T8 · kept · belief 5 · residual momentum]{.t-head}
+
+[claim]{.t-lab} Rank on returns net of beta times the market. *Removes time-varying market beta from the ranking* (Blitz, Huij, Martens). Predict median up, **worst up more than median.**
+
+::: {.fragment}
+[outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [utility 0.64 → 0.74]{.t-num}
+:::
+:::
+
+## Learning across trials
+
+The agent reads its own notebook. Four trials, one idea:
+
+::: {.chain}
+::: {.trial .reset}
+[T14 · reset]{.t-head}
+
+Square the signal. Return up, but turnover 0.15 eats the gain. *Concentration works if turnover is held down.*
+:::
+
+::: {.trial .reset}
+[T15 · reset]{.t-head}
+
+A 3-day decay. Turnover 0.12 to 0.09, as predicted, but some edge is lost. Reset.
+:::
+
+::: {.trial .keep}
+[T16 · kept]{.t-head}
+
+*"T14 showed a·|a| lifts return… T15 showed a 3-day decay cuts turnover."* Both. **As predicted.** 0.74 → 0.78
+:::
+
+::: {.trial .keep}
+[T17 · kept]{.t-head}
+
+Cube it instead, one node fewer. **As predicted, larger than expected.** 0.78 → 0.89
+:::
+:::
+
+. . .
+
+None of this was in the beliefs. It came from the shape of the score and a hunch that "the edge sits in the tails".
 
 ## The cube {.smaller}
 
-![](images/alpha-cube.svg){width="85%"}
+![](images/alpha-cube.svg){.r-stretch fig-align="center"}
 
 ::: {.incremental}
-- Gross is fixed, so magnitude only allocates the dollar; cubing keeps the ranking and moves weight to the tails
+- Gross is fixed, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
 - Same Sharpe, **twice the return** per dollar of gross, in sample and out
-- Emergent, and a rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends; return is convex in the signal
+- A rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
 :::
 
-## Act 3: the crash argument {.smaller}
+## Act 3: the crash argument
 
-::: {.incremental}
-- **T22, soft switch:** momentum weight $w = \text{clip}(10 \cdot r^{1y}_m, -1, 1)$ when turbulent. The belief predicted it would help less; it beat the hard switch on both numbers.
-- **T24, beta hedge** (Grundy and Martin 2001): the crash is a market event, so hedge the market. Kept.
-- **T27: is the switch still needed?** The agent asked, and wrote down in advance what would settle it.
+::: {.trial .keep}
+[T22 · kept · belief 7 · soft beats hard]{.t-head}
+
+[claim]{.t-lab} When 1-month market vol is above 1-year vol, the momentum weight is clip(10 × 1-year market return, −1, 1) instead of a hard −1. Predict, *per belief 7*, worst slightly lower.
+
+::: {.fragment}
+[outcome]{.t-lab} **Better than belief 7 predicted: the soft switch beats the hard one on median and worst.** [utility 0.89 → 1.00]{.t-num}
+:::
 :::
 
-## Trial 27, as the agent saw it {.smaller}
+::: {.trial .keep .fragment}
+[T24 · kept · Grundy and Martin (2001) · a beta hedge]{.t-head}
 
-**Claim:** *Remove the crash switch now that the book is beta-hedged. Grundy-Martin: hedging factor exposure removes most momentum crash risk... if worst falls >0.13, belief 7 still earns its keep.*
+[claim]{.t-lab} Make the book beta-neutral too. *Hedging factor exposure keeps the return, drops the risk.* Predict worst up, median flat.
 
+::: {.fragment}
+[outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [utility 1.00 → 1.10]{.t-num}
+:::
+:::
+
+## Trial 27, as the agent saw it
+
+The book is now beta-hedged. Is the crash switch still needed?
+
+::: {.trial .reset}
+[T27 · reset · belief 7 against Grundy and Martin]{.t-head}
+
+[claim]{.t-lab} Remove the crash switch now that the book is beta-hedged. *Grundy–Martin: hedging factor exposure removes most momentum crash risk, and the crash is a beta event.* Predict crash-state Sharpe falls sharply, worst falls; **if worst falls more than 0.13, belief 7 still earns its keep.**
+:::
+
+```{.evaluator}
+utility: 0.622     (best 1.101)
+worst:   -0.510    (best 0.023)
+  fold 0: Sharpe -0.48  return/yr -3.6%  years 2009-2011
+  crash state  Sharpe -1.53  return/yr -15.1%  (137 days)
 ```
-utility: 0.622
-worst:   -0.510
-  fold 0: utility -0.349  fitness -0.26  Sharpe -0.48  return/yr  -3.6%  ...  years 2009-2011
-           crash state      Sharpe -1.53 return/yr -15.1% (137 days);  calm Sharpe  0.78 return/yr  +4.3%
-```
 
-**Outcome:** *Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta. Reset.*
-
-## The deep-bear rule {.smaller}
-
-::: {.incremental}
-- The switch acts only when 1m vol > 1y vol. But a vol spike inflates the 1y number, so the switch turns off **while the market is still deep in its hole and the losers are still rallying**. That is 2009.
-- T30: a depth rule for calm markets: shrink momentum below −10% on the year, reverse below −20%. Worst fold 0.02 → 0.35; median fell. Reset.
-- T31: both rules. The vol rule earns the median, the depth rule saves the rebound. Worst fold 0.02 → 0.32, kept.
-- **Act 4, prune:** remove vol scaling (return 8% → 13%); remove the agent's own hedge (+0.10: the 504-day residual had already removed the beta)
+::: {.trial .reset .fragment}
+[outcome]{.t-lab} **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset.
 :::
+
+## A reset that pointed the way
+
+The vol rule switches off when 1-month vol falls back under the inflated 1-year vol, **while the market is still deep in its hole and the losers are still rallying.** That is 2009.
+
+::: {.trial .reset .fragment}
+[T30 · reset · belief 7 · the deep-bear rule]{.t-head}
+
+[claim]{.t-lab} Full momentum when the market is up on the year, zero at −10%, full reversal below −20%, with no vol condition.
+
+[outcome]{.t-lab} Utility 1.10 to 1.02, reset by the rule, **but worst 0.02 to 0.35, the best worst fold so far.** The deep-bear rule catches the rebound, while the vol condition earns the median. ***Next: combine them.***
+:::
+
+::: {.trial .keep .fragment}
+[T31 · kept · both rules]{.t-head}
+
+[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
+:::
+
+## Wrong, and it says why
+
+::: {.trial .reset}
+[T11 · reset · the crash flip on raw momentum]{.t-head}
+
+[claim]{.t-lab} In the crash state, flip raw (beta-loaded) momentum instead of residual. *The rebound payoff is the high-beta past losers.* Predict crash-state Sharpe up.
+
+::: {.fragment}
+[outcome]{.t-lab} Crash-state Sharpe fell 2.45 to 1.80, **the opposite of the prediction.** The residual flip pays more: the beta bet is noisier than the stock-specific reversal.
+:::
+:::
+
+::: {.trial .keep .fragment}
+[T54 · kept · removal · drop the agent's own hedge]{.t-head}
+
+[claim]{.t-lab} Measure what the T24 hedge is worth now. Predict median down 0.05–0.15.
+
+::: {.fragment}
+[outcome]{.t-lab} +0.10: **the prediction was wrong.** With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. ***A component that paid in T24 stopped paying after later changes.***
+:::
+:::
+
+## It knows what noise looks like
+
+::: {.trial .reset}
+[T50 · reset · the same book, written shorter]{.t-head}
+
+[claim]{.t-lab} Write the switch in its equivalent short form. Same book, fewer nodes. Predict utility up by the charge saved, ~+0.025.
+
+::: {.fragment}
+[outcome]{.t-lab} 1.376 to 1.318. The same book, so the −0.058 is partition noise. **A direct read on the noise at this level, about ±0.05; T47's 1.376 was probably a favorable draw.**
+:::
+:::
+
+::: {.trial .reset .fragment}
+[T55 · reset · a 0.2% winsorize before the cube]{.t-head}
+
+[outcome]{.t-lab} Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. **Second time this change wins every whole-period measure but not the median fold. Flagged for the human.**
+:::
+
+. . .
+
+T38, earlier: ***"A safer book the keep rule does not reward."***
+
+## Act 4: what each part is worth
+
+![](images/alpha-worth.svg){.r-stretch fig-align="center"}
+
+The agent's own ablations, each in the book of its day. Residual momentum is the core; the crash switch, the most valuable belief.
+
+## The beliefs, scored
+
+::: {.belief-table}
+| | belief | verdict | evidence |
+|--:|---|---|---|
+| 1 | Winners keep winning, against their sector | the premise | every book |
+| 2 | Skip the last month | **held** | T10 −0.15; sleeve T52 −0.45 |
+| 3 | Measure against the sector | inputs only | T5, T37; not T18, T36 |
+| 4 | Scale by own volatility | removed | T33 +0.05 |
+| 5 | The unexplained part continues | **held: the core** | T56 −0.88 |
+| 6 | Be small in the crash state | failed | T28 |
+| 7 | In the crash, switch to reversal | **held: most valuable** | T27 −0.48 |
+| 8 | Gradual moves continue | failed | T26 |
+| 9 | The 52-week high anchors | failed | T20 |
+| 10 | Decay is a free lunch | **held** | T21, T57, T60 |
+| 11 | Size by own risk | removed | T2 +0.31 |
+| 12 | Expect decay and crowding | context | |
+:::
+
+[Twice it reached outside the list, for Nagel (2012) and Chordia, Roll and Subrahmanyam (2008), naming each paper's age first. Both were reset.]{.pq-note}
 
 ## What it built
 
@@ -620,7 +815,9 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 . . .
 
-Validation 2004-2017, test 2018 to Aug 2026. The return held; volatility rose (12% → 18%), so Sharpe fell by a third. The seed earned nothing over the same years.
+Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility rose (12% → 18%), so Sharpe fell by a third. The seed earned nothing over the same years.
+
+[Re-computed after the run on a corrected warehouse (a market-cap fix); the notebook's numbers, which the agent saw, differ slightly.]{.pq-note}
 
 ## Is it real? Bayes has entered the chat {.smaller}
 
@@ -628,40 +825,40 @@ Validation 2004-2017, test 2018 to Aug 2026. The return held; volatility rose (1
 
 ![](images/alpha-bayes.svg){width="85%"}
 
-BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **41%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed 0.74. $P(\mathrm{SR}_{\text{test}} > 0) = 0.97$.
+BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **41%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed weekly 0.74. $P(\mathrm{SR}_{\text{test}} > 0) = 0.97$.
 
 ## The crash switch, out of sample
 
-![](images/alpha-crash-switch.svg){width="80%"}
+![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
 
-2009 junk rally (Mar-Jun): seed −13.6%, final **+14.6%**. No test-period bear market cost more than 6%.
+2009 junk rally (Mar–Jun): seed −13.6%, final **+14.6%**. No test-period bear market cost more than 6%.
 
-## The drawdown it did not see {.smaller}
+## The drawdown it did not see {.mid}
 
 ::: {.incremental}
 - Mid-June to late July 2026: **−27% in six weeks**, unrecovered at the end of the data
 - The switch sat at full momentum: the market was calm and up on the year
 - The loss was on the **long** side: last year's winners unwinding (−20% longs, −5% shorts; one name at the 5% cap cost 5%)
-- Daniel-Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
+- Daniel–Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
 - The cube makes it worse: ~1,500 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
 :::
 
-## What I learned {.smaller}
+## What I learned {.mid}
 
 ::: {.incremental}
 - **The written claims were the most valuable output.** Most resets were predicted; the wrong predictions came with explanations.
 - **Measure the noise at the top, not just at the start.** Seed noise ±0.02; the same book written two ways scored 0.058 apart at utility ~1.4.
 - **The keep rule cannot accept a pure worst-case improvement**, a strange blind spot for a crash problem
 - **The loop finds a local optimum, and which one depends on its path.** The hedge paid at T24 and paid again when removed at T54. Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
-- **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999-2003, nearly halved the score on 2004-2017.
+- **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999–⁠2003, nearly halved the score on 2004–⁠2017.
 :::
 
-## Conclusions {.smaller}
+## Conclusions {.mid}
 
 ::: {.incremental}
 - A closed language (qex) makes an alpha a hypothesis an agent can propose and a machine can check
 - An autoresearch loop will find noise in a backtest unless the evaluator is rebuilt: claims, moving folds, complexity charge, trial counts, a sealed period
-- Rebuilt, it took a losing textbook strategy to one that held up on 8.5 unseen years, and it argued with evidence about *why*
+- Rebuilt, it took a losing textbook strategy to one that held up on 8.6 unseen years, and it argued with evidence about *why*
 - The model has read the news through 2026; no held-out period closes that leak
 - **The only test clean of all of it is the one that starts today, live**
 :::
@@ -714,7 +911,7 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - Jegadeesh, N. and Titman, S. "Returns to Buying Winners and Selling Losers." *Journal of Finance* 48(1), 1993.
 - Kruschke, J. K. "Bayesian Estimation Supersedes the t Test." *Journal of Experimental Psychology: General* 142(2), 2013.
 - Novy-Marx, R. "Is Momentum Really Momentum?" *Journal of Financial Economics* 103(3), 2012.
-- Also cited above: Bailey and López de Prado (2014), Karpathy (2026), Nagel (2012).
+- Also cited above: Bailey and López de Prado (2014), Jegadeesh (1990), Karpathy (2026), Nagel (2012), Tulchinsky et al. (2019).
 :::
 
 ## Thank You!
