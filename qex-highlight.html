@@ -34,6 +34,7 @@
     }
     return out;
   }
+  window.qexHighlight = highlight;                        // the run chart's tooltips colour qex the same way
   document.querySelectorAll("pre.qex code, code.qex").forEach((el) => { el.innerHTML = highlight(el.textContent); });
 })();
 </script>

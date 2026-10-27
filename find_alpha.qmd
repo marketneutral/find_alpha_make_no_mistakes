@@ -9,7 +9,9 @@ format:
     self-contained: true
     menu: false
     slide-number: c/t
-    include-after-body: qex-highlight.html
+    include-after-body:
+      - qex-highlight.html
+      - progress-hover.html
     code-line-numbers: false
     html-math-method: katex
 theme:
@@ -467,7 +469,7 @@ in decay_linear(score / vol, 10)
 Per fold, on cost-free P&L:
 
 $$
-\text{utility} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; 0.003 \times \text{nodes}
+\text{utility} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
 $$
 
 ::: {.incremental}
@@ -511,9 +513,7 @@ What the agent sees after each trial: score, worst fold, eligibility, whole-peri
 
 ## The run
 
-![](images/alpha-progress.svg){width="90%"}
-
-60 trials, 14 kept. Median-fold utility −0.09 → 1.47; worst fold −0.96 → +0.40.
+<figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: score and worst slice over sixty trials"></figure>
 
 ## Acts 1 and 2: fix the obvious, build the engine {.smaller}
 
