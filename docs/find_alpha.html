@@ -1938,7 +1938,7 @@ in decay_linear(score / vol, 10)</code></pre>
 <h2>The evaluator: run once, grade many times</h2>
 <ul>
 <li class="fragment"><strong>Run once.</strong> The expression runs day by day over 2004–2017: one continuous series of daily P&amp;L. Nothing is fit. The evaluator only chooses <em>which days count</em>.</li>
-<li class="fragment"><strong>Cut.</strong> The 3,524 trading days become 12 blocks of about 14 months. 21 days are trimmed from both ends of every block, so no window or forward return spans two folds.</li>
+<li class="fragment"><strong>Cut.</strong> The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.</li>
 <li class="fragment"><strong>Deal.</strong> Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each.</li>
 <li class="fragment"><strong>Grade.</strong> Score each fold on its own days: six utilities. Keep the <strong>median</strong> and the <strong>worst</strong>.</li>
 <li class="fragment"><strong>Repeat.</strong> 50 deals, fixed in <code>eval.py</code>. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.</li>
@@ -1958,7 +1958,7 @@ in decay_linear(score / vol, 10)</code></pre>
 <h2>Why it is built this way</h2>
 <ul>
 <li class="fragment"><strong>Blocks, not days:</strong> returns cluster in regimes, and a fourteen-month block keeps a regime whole</li>
-<li class="fragment"><strong>Embargo:</strong> 21 days purged at every block edge, so no rolling window or forward return straddles two folds</li>
+<li class="fragment"><strong>Embargo:</strong> 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.</li>
 <li class="fragment"><strong>Median fold:</strong> no single stretch can carry the score. The final book’s 3.15, the fold with 2008, does not count.</li>
 <li class="fragment"><strong>Worst fold:</strong> the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.</li>
 </ul>
@@ -2503,6 +2503,43 @@ in decay_linear(power(a, 3), 3)</code></pre>
 </table>
 <div class="fragment">
 <p>Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.</p>
+</div>
+</section>
+<section id="a-hold-out-nobody-planned" class="slide level2 mid">
+<h2>A hold-out nobody planned</h2>
+<p>The embargo trims the <strong>same 504 days</strong> on every deal. They are never scored, so the agent climbed sixty trials without them: a hold-out inside 2004–⁠2017.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">scored days (3,020)</th>
+<th style="text-align: right;">never-scored days (504)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seed, nobody selected it</td>
+<td style="text-align: right;">Sharpe −0.27</td>
+<td style="text-align: right;">Sharpe −0.05</td>
+</tr>
+<tr class="even">
+<td><strong>final book, selected on the scored days</strong></td>
+<td style="text-align: right;"><strong>Sharpe 1.41</strong></td>
+<td style="text-align: right;"><strong>Sharpe 0.54</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li class="fragment">The selected book shrinks on the days it was never graded on; the unselected seed does not</li>
+<li class="fragment">The winner’s curse, measured inside the in-sample period, before the sealed test</li>
+<li class="fragment">Two years of data: a Sharpe standard error of about 0.7, so the gap is about 1.1 standard errors. Suggestive alone; convincing next to the test.</li>
+</ul>
 </div>
 </section>
 <section id="the-winners-curse" class="slide level2 mid">

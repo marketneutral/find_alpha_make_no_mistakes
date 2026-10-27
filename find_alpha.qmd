@@ -568,7 +568,7 @@ $$
 
 ::: {.incremental}
 - **Run once.** The expression runs day by day over 2004–2017: one continuous series of daily P&L. Nothing is fit. The evaluator only chooses *which days count*.
-- **Cut.** The 3,524 trading days become 12 blocks of about 14 months. 21 days are trimmed from both ends of every block, so no window or forward return spans two folds.
+- **Cut.** The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.
 - **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each.
 - **Grade.** Score each fold on its own days: six utilities. Keep the **median** and the **worst**.
 - **Repeat.** 50 deals, fixed in `eval.py`. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.
@@ -590,7 +590,7 @@ The final book, deal 1, as the agent saw it: median **1.54**, worst **0.20**. Ov
 
 ::: {.incremental}
 - **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
-- **Embargo:** 21 days purged at every block edge, so no rolling window or forward return straddles two folds
+- **Embargo:** 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.
 - **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
 - **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
 :::
@@ -1069,6 +1069,23 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 . . .
 
 Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
+
+## A hold-out nobody planned {.smaller}
+
+The embargo trims the **same 504 days** on every deal. They are never scored, so the agent climbed sixty trials without them: a hold-out inside 2004–⁠2017.
+
+| | scored: 3,020 days | never scored: 504 days |
+|---|---:|---:|
+| seed (not selected) | Sharpe −0.27 | Sharpe −0.05 |
+| **final book (selected)** | **Sharpe 1.41** | **Sharpe 0.54** |
+
+. . .
+
+::: {.incremental}
+- The selected book shrinks on the days it was never graded on; the unselected seed does not
+- The winner's curse, measured inside the in-sample period, before the sealed test
+- Two years of data: a Sharpe standard error of about 0.7, so the gap is about 1.1 standard errors. Suggestive alone; convincing next to the test.
+:::
 
 ## The winner's curse {.mid}
 
