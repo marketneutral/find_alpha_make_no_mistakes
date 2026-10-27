@@ -655,7 +655,6 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - Kruschke, J. K. "Bayesian Estimation Supersedes the t Test." *Journal of Experimental Psychology: General* 142(2), 2013.
 - Novy-Marx, R. "Is Momentum Really Momentum?" *Journal of Financial Economics* 103(3), 2012.
 - Also cited above: Bailey and López de Prado (2014), Karpathy (2026), Nagel (2012).
-- Blog post: ["find alpha. make no mistakes."](https://marketneutral.github.io/posts/autoresearch-alpha/)
 :::
 
 ## Thank You!

@@ -9,7 +9,7 @@ Can an AI agent do quantitative research without fooling itself? Three parts:
 2. **autoresearch**, a coding agent that proposes, tests, and keeps or discards changes against a score.
 3. **"find alpha. make no mistakes."**, the loop rebuilt for finance and run once on data it never saw.
 
-Each part has a companion post on my blog, [*Speculative Decoding*](https://marketneutral.github.io).
+The first two parts have companion posts on my blog, [*Speculative Decoding*](https://marketneutral.github.io).
 
 This presentation is for informational purposes only and reflects my personal views and interests. It does not constitute investment advice and is not representative of any current or former employer. The information presented is based on publicly available sources.
 
