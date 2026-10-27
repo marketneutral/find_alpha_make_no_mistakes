@@ -411,7 +411,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 3. **Charge for complexity**: fit minus a charge per parameter, AIC in spirit
 4. **Count the trials**: deflate the winner's Sharpe (Bailey and López de Prado 2014)
 5. **Seed the search** with the firm's own view
-6. **Measure the consensus**: McLean and Pontiff (2016), predictor returns −58% after publication
+6. **Measure the consensus**: McLean and Pontiff (2016), returns 26% lower out of sample, 58% lower after publication
 7. **Keep one period the loop never touches**, and use it once
 :::
 
@@ -437,6 +437,15 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - **Test, 2018 to Aug 2026.** Sealed: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
+## Momentum, and how it crashes {.smaller}
+
+::: {.incremental}
+- **Momentum:** own the stocks that did best over the past year, short the ones that did worst, and skip the most recent month (*12–1*). One of the oldest effects in equities (Jegadeesh and Titman 1993), found in every asset class (Asness, Moskowitz and Pedersen 2013).
+- **The flaw:** every decade or so it loses in a few months what it made in years. In 2009 the past year's losers rallied 150% off the March low, and a long-short momentum book lost about three quarters of its value.
+- **Crashes are not random** (Daniel and Moskowitz 2016): they come after the market has fallen, when volatility is high, in a sharp rebound, and almost entirely on the short side. By then the past losers are the highest-beta stocks in the market.
+- **The crash state, as the evaluator measures it:** the market is down over the past two years, *and* its 1-month volatility is above its 1-year volatility.
+:::
+
 ## The seed
 
 ```qex
@@ -449,7 +458,7 @@ in decay_linear(score / vol, 10)
 ::: {.incremental}
 - 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
 - Validation Sharpe −0.25; **−1.96 in the crash state**
-- Loses 8 bps per dollar traded, before costs
+- **Margin** −8 bps: it loses 8 bps per dollar traded, before costs
 :::
 
 ## The experiment {.mid}
@@ -461,6 +470,44 @@ in decay_linear(score / vol, 10)
 - **The beliefs:** twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period
 - **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
 :::
+
+## Twelve beliefs: the firm's view, written down {.smaller}
+
+The agent starts from these, tests them, and may disagree with any of them. Every change must say which belief it tests.
+
+::: columns
+::: {.column width="50%" .belief-left}
+1. Past-year winners, against their sector, keep winning
+2. Skip the most recent month
+3. Measure against the sector; hold the book sector-neutral
+4. Measure momentum in units of the stock's own volatility
+5. The part the market did not explain is what continues
+6. The crash has a known state; be small in it
+:::
+::: {.column width="50%"}
+7. **In the crash state, switch to reversal**
+8. Gradual moves continue; jumps do not
+9. Closeness to the 52-week high is a better anchor
+10. `decay_linear` is almost always a free lunch
+11. Size each name by its own risk
+12. Expect the edge to decay, and expect crowding
+:::
+:::
+
+## One belief, in full: belief 7 {.mid}
+
+> *In the crash state, do not just shrink: switch to reversal.*
+
+::: {.incremental}
+- **Mechanism:** a momentum crash is a reversal by construction. The past losers rally hardest off the low, so the right book in that state is long the losers, not a smaller momentum book.
+- **Paper:** Daniel and Moskowitz (2016), the option-like payoff of the loser side in a rebound
+- **The cost of being wrong:** a momentum book held backwards in a normal market, so the condition must be rare and specific
+- **Prediction:** a hard switch helps the worst fold a lot and the median a little; a soft switch helps both less and hurts less
+:::
+
+. . .
+
+[Hold on to that prediction. Trial 1 tests the hard switch; trial 22 tests the soft one.]{.pq-note}
 
 ## Keeping it honest: permissions {.mid}
 
@@ -538,6 +585,15 @@ Each deal shuffles the 12 blocks and pairs them into 6 folds. Fold 1, in green, 
 ![](images/eval-folds.svg){.r-stretch fig-align="center"}
 
 The final book, deal 1, as the agent saw it: median **1.54**, worst **0.20**. Over all 50 deals: median **1.47**, worst **0.40**.
+
+## Why it is built this way {.mid}
+
+::: {.incremental}
+- **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
+- **Embargo:** 21 days purged at every block edge, so no rolling window or forward return straddles two folds
+- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
+- **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
+:::
 
 ## How many ways are there to deal? {.mid}
 
@@ -671,7 +727,7 @@ Before each test, the agent writes a **claim**: which belief, the mechanism, and
 [claim]{.t-lab} Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. *60-day vol is noisy and spikes right after big moves, so it mis-ranks names.* Predict a small median gain.
 
 ::: {.fragment}
-[outcome]{.t-lab} Calm Sharpe 0.32 to 0.45, crash unchanged. **Larger than predicted.** [utility 0.32 → 0.43]{.t-num}
+[outcome]{.t-lab} Sharpe outside the crash state 0.32 to 0.45, in it unchanged. **Larger than predicted.** [utility 0.32 → 0.43]{.t-num}
 :::
 :::
 
@@ -680,7 +736,7 @@ Before each test, the agent writes a **claim**: which belief, the mechanism, and
 ::: {.trial .keep}
 [T6 · kept · belief 2, as a sleeve · a second, faster bet]{.t-head}
 
-[claim]{.t-lab} Add a sector-relative 1-month reversal sleeve. The last month reverses (Jegadeesh 1990; *known 35 years, probably mostly priced*), and **fitness does not charge turnover below 0.125, so a fast sleeve rides free.**
+[claim]{.t-lab} Add a sector-relative 1-month reversal *sleeve*, a second bet alongside the first. The last month reverses (Jegadeesh 1990; *known 35 years, probably mostly priced*), and **fitness does not charge turnover below 0.125, so a fast sleeve rides free.**
 
 ::: {.fragment}
 [outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [utility 0.43 → 0.56]{.t-num}
@@ -690,7 +746,7 @@ Before each test, the agent writes a **claim**: which belief, the mechanism, and
 ::: {.trial .keep .fragment}
 [T8 · kept · belief 5 · residual momentum]{.t-head}
 
-[claim]{.t-lab} Rank on returns net of beta times the market. *Removes time-varying market beta from the ranking* (Blitz, Huij, Martens). Predict median up, **worst up more than median.**
+[claim]{.t-lab} Rank on the *residual*: each stock's return net of beta times the market. *Removes time-varying market beta from the ranking* (Blitz, Huij, Martens). Predict median up, **worst up more than median.**
 
 ::: {.fragment}
 [outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [utility 0.64 → 0.74]{.t-num}
@@ -780,6 +836,8 @@ worst:   -0.510    (best 0.023)
   crash state  Sharpe -1.53  return/yr -15.1%  (137 days)
 ```
 
+[The evaluator's own output; it counts folds from 0.]{.pq-note}
+
 ::: {.trial .reset .fragment}
 [outcome]{.t-lab} **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset.
 :::
@@ -799,7 +857,7 @@ The vol rule switches off when 1-month vol falls back under the inflated 1-year 
 ::: {.trial .keep .fragment}
 [T31 · kept · both rules]{.t-head}
 
-[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
+[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
 :::
 
 ## Wrong, and it says why
@@ -925,6 +983,8 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 ![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
 
+[The steep start is the inspection period, which the agent could look at, and it holds the dot-com bubble and bust: one long momentum trade, then one long reversal.]{.pq-note}
+
 ## Did it hold up? The numbers {.smaller}
 
 | | period | Sharpe | return / yr | net of 10 bps | max drawdown |
@@ -966,7 +1026,7 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 
 ## Reading the Bayes result {.smaller}
 
-**The question:** if 2018–2026 came from exactly the same process as 2004–2017, how unusual is a test Sharpe of 0.78?
+**The question:** if 2018–2026 came from exactly the same process as 2004–2017, how unusual is a test Sharpe of 0.78 (weekly P&L; 0.77 daily)?
 
 **The answer:** replay 8.6 years of that unchanged strategy, and **1 time in 4** the Sharpe comes out 0.78 or lower, from luck alone.
 
@@ -990,16 +1050,6 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 . . .
 
 [8.6 years cannot tell a little decay from bad luck. Both fit, and both leave a real, positive edge.]{.pq-note}
-
-## Why it is built this way {.mid}
-
-::: {.incremental}
-- **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
-- **Embargo:** 21 days purged at every block edge, so no rolling window or forward return straddles two folds
-- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
-- **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
-- **Many splits, not one:** no single split for sixty trials to learn. All of them are still 2004–2017.
-:::
 
 ## What the deals do, and don't {.mid}
 
@@ -1155,6 +1205,7 @@ $$
 
 ::: {.refs}
 - Almgren, R. and Chriss, N. "Optimal Portfolios from Ordering Information." *Journal of Risk* 9(1), 2006. Circulated as "Portfolios from Sorts."
+- Asness, C. S., Moskowitz, T. J. and Pedersen, L. H. "Value and Momentum Everywhere." *Journal of Finance* 68(3), 2013.
 - Barroso, P. and Santa-Clara, P. "Momentum Has Its Moments." *Journal of Financial Economics* 116(1), 2015.
 - Blitz, D., Huij, J. and Martens, M. "Residual Momentum." *Journal of Empirical Finance* 18(3), 2011.
 - Chordia, T., Roll, R. and Subrahmanyam, A. "Liquidity and Market Efficiency." *Journal of Financial Economics* 87(2), 2008.
