@@ -12,27 +12,44 @@
 .reveal .qx-com { color: #6b7280; font-style: italic; }
 .reveal .qx-var { color: #c8a8ff; }
 .reveal .qx-op { color: #c0c4cf; }
+.reveal .qx-line { display: inline-block; width: 100%; box-sizing: border-box; margin: 0 -0.4em; padding: 0 0.4em; }
+.reveal .qx-ins { background: rgba(62, 232, 122, 0.16); }
+.reveal .qx-del { background: rgba(255, 107, 74, 0.14); }
+.reveal .qx-del .qx-t { text-decoration: line-through; text-decoration-color: rgba(255, 107, 74, 0.7); }
+.reveal .diff pre.qex code { padding-left: 1.5em !important; }
+.reveal .diff .qx-line { position: relative; }
+.reveal .diff .qx-line::before { position: absolute; left: -0.85em; width: 1em; text-align: center; font-weight: 600; }
+.reveal .diff .qx-ins::before { content: "+"; color: #3ee87a; }
+.reveal .diff .qx-del::before { content: "\2212"; color: #ff6b4a; }
+.reveal .lg-ins { color: #3ee87a; } .reveal .lg-del { color: #ff6b4a; text-decoration: line-through; }
 </style>
 <script>
 (function () {
   const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+  // a line ending in " #+" was added or changed by a trial, " #-" removed: tinted, marker dropped (figures/trial_diffs.py)
   function highlight(src) {
-    const bound = new Set([...src.matchAll(/(?:^[ \t]*(?:let[ \t]+)?|\blet[ \t]+)([A-Za-z_]\w*)[ \t]*=(?!=)/gm)].map((m) => m[1]));
+    const lines = src.split("\n"), marks = lines.map((l) => / #([+-])$/.exec(l));
+    const clean = lines.map((l, i) => (marks[i] ? l.slice(0, marks[i].index) : l));
+    const bound = new Set([...clean.join("\n").matchAll(/(?:^[ \t]*(?:let[ \t]+)?|\blet[ \t]+)([A-Za-z_]\w*)[ \t]*=(?!=)/gm)].map((m) => m[1]));
     const re = /(#[^\n]*)|(\s+)|\b(let|in)\b|('[^']*')|(\d+(?:\.\d+)?)|([A-Za-z_]\w*)(?=\s*\()|([A-Za-z_]\w*)|([<>]=?|==|[-+*\/&|=])|(.)/g;
     const span = (c, x) => `<span class="qx-${c}">${esc(x)}</span>`;
-    let out = "", m;
-    while ((m = re.exec(src))) {
-      if (m[1]) out += span("com", m[1]);
-      else if (m[2]) out += m[2];
-      else if (m[3]) out += span("kw", m[3]);
-      else if (m[4]) out += span("str", m[4]);
-      else if (m[5]) out += span("num", m[5]);
-      else if (m[6]) out += span("fn", m[6]);
-      else if (m[7]) out += bound.has(m[7]) ? span("var", m[7]) : esc(m[7]);
-      else if (m[8]) out += span("op", m[8]);
-      else out += esc(m[9]);
-    }
-    return out;
+    const one = (line) => {
+      let out = "", m;
+      re.lastIndex = 0;
+      while ((m = re.exec(line))) {
+        if (m[1]) out += span("com", m[1]);
+        else if (m[2]) out += m[2];
+        else if (m[3]) out += span("kw", m[3]);
+        else if (m[4]) out += span("str", m[4]);
+        else if (m[5]) out += span("num", m[5]);
+        else if (m[6]) out += span("fn", m[6]);
+        else if (m[7]) out += bound.has(m[7]) ? span("var", m[7]) : esc(m[7]);
+        else if (m[8]) out += span("op", m[8]);
+        else out += esc(m[9]);
+      }
+      return out;
+    };
+    return clean.map((l, i) => (marks[i] ? `<span class="qx-line ${marks[i][1] === "+" ? "qx-ins" : "qx-del"}"><span class="qx-t">${one(l)}</span></span>` : one(l))).join("\n");
   }
   window.qexHighlight = highlight;                        // the run chart's tooltips colour qex the same way
   document.querySelectorAll("pre.qex code, code.qex").forEach((el) => { el.innerHTML = highlight(el.textContent); });

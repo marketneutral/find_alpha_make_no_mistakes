@@ -658,6 +658,34 @@ Before each test, the agent writes a **claim**: which belief, the mechanism, and
 :::
 :::
 
+## Trial 1, as a diff {.smaller}
+
+::: {.columns .diff .wide}
+::: {.column width="40%"}
+::: {.trial .keep}
+[T1 · kept · belief 7 · the crash switch]{.t-head}
+
+[claim]{.t-lab} Where the crash state holds, the momentum score flips sign to reversal. *Mechanism: the crash is the past losers rebounding hardest.* Predict crash-state Sharpe turns positive, **worst fold improves a lot, median a little.**
+
+[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [utility −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 1 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'), #+
+    mk    = mr - demean(mr), #+
+    crash = (ts_sum(mk, 504) < 0) #+
+            & (ts_std(mk, 21) > ts_std(mk, 252)), #+
+    mom   = delay(returns(231), 21),
+    vol   = volatility(60),
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(score / vol, 10) #-
+in decay_linear(where(crash, -score, score) / vol, 10) #+
+```
+:::
+:::
+
 ## Act 1: fix the obvious
 
 ::: {.trial .keep}
@@ -895,8 +923,8 @@ The agent's own removal tests, each measured against the best book at the time. 
 ## What it built
 
 ```qex
-let r     = returns(1),
-    mk    = r - demean(r),
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
     m1    = ts_sum(mk, 252),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252),
                   max(min(10 * m1, 1), -1),

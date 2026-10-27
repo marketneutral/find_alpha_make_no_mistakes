@@ -76,3 +76,11 @@ $presentation-h2-font-size: 1.3em;
 .reveal .lab-table table { table-layout: auto; width: 100%; }
 .reveal .lab-table td:not(:nth-child(2)), .reveal .lab-table th:not(:nth-child(2)) { white-space: nowrap; }
 .reveal .keep-table td, .reveal .keep-table th { white-space: nowrap; padding: 0.22em 0.9em; }
+// trial slides: before / card / after, or diff / card; the code panels run small so a whole book fits
+.reveal .diff pre.qex { font-size: 0.5em; line-height: 1.38; margin: 0.15em 0; }
+.reveal .diff.wide pre.qex { font-size: 0.57em; }
+.reveal .diff.wide .trial { font-size: 0.64em; }
+.reveal .diff .panel-lab { display: block; font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.5em; color: #6b7280;
+                           text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.25em; }
+.reveal .diff .trial { font-size: 0.58em; margin: 0; }
+.reveal .diff .column { padding: 0 0.35em; box-sizing: border-box; }
