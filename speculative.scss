@@ -24,3 +24,6 @@ $presentation-h2-font-size: 1.3em;
 .reveal .slide-number { color: #6b7280; background: transparent; }
 .reveal .progress span { background: #3ee87a; }
 .reveal h1 { color: #3ee87a; }
+// reference slides: small, tight, no scrolling
+.reveal .refs { font-size: 0.52em; line-height: 1.28; }
+.reveal .refs li { margin: 0.12em 0; }

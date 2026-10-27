@@ -606,24 +606,57 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - **The only test clean of all of it is the one that starts today, live**
 :::
 
-## References {.smaller .scrollable}
+## References: qex
 
-- Almgren, R. and Chriss, N. "Optimal Portfolios from Ordering Information." *Journal of Risk* 9(1), 2006.
-- Bailey, D. H. and López de Prado, M. "The Deflated Sharpe Ratio." *Journal of Portfolio Management* 40(5), 2014.
-- Blitz, D., Huij, J. and Martens, M. "Residual Momentum." *Journal of Empirical Finance* 18(3), 2011.
-- Daniel, K. and Moskowitz, T. J. "Momentum Crashes." *Journal of Financial Economics* 122(2), 2016.
+::: {.refs}
+- Doherty, K. "More Risk, Less Speed: Hudson River Mints Billions Slowing Down." *Bloomberg*, December 2025.
 - Grinold, R. C. "The Fundamental Law of Active Management." *Journal of Portfolio Management* 15(3), 1989.
-- Grundy, B. D. and Martin, J. S. "Understanding the Nature of the Risks and the Source of the Rewards to Momentum Investing." *Review of Financial Studies* 14(1), 2001.
+- Grinold, R. C. and Kahn, R. N. *Active Portfolio Management*, 2nd ed. McGraw-Hill, 2000.
 - Jegadeesh, N. "Evidence of Predictable Behavior of Security Returns." *Journal of Finance* 45(3), 1990.
 - Kakushadze, Z. "101 Formulaic Alphas." *Wilmott* 2016(84), 2016.
-- Karpathy, A. [autoresearch](https://github.com/karpathy/autoresearch), 2026.
 - Khandani, A. E. and Lo, A. W. "What Happened to the Quants in August 2007?" *Journal of Investment Management* 5(4), 2007.
-- Kruschke, J. K. "Bayesian Estimation Supersedes the t Test." *Journal of Experimental Psychology: General* 142(2), 2013.
-- McLean, R. D. and Pontiff, J. "Does Academic Research Destroy Stock Return Predictability?" *Journal of Finance* 71(1), 2016.
+- Larkin, J. *qex: a domain-specific language for quant alphas.* [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser)
+- Lehmann, B. N. "Fads, Martingales, and Market Efficiency." *Quarterly Journal of Economics* 105(1), 1990.
 - Nagel, S. "Evaporating Liquidity." *Review of Financial Studies* 25(7), 2012.
-- Romera-Paredes, B. et al. "Mathematical Discoveries from Program Search with Large Language Models." *Nature*, 2024.
+- Tulchinsky, I. et al. *Finding Alphas: A Quantitative Approach to Building Trading Strategies*, 2nd ed. Wiley, 2019.
+- Blog post: [qex: a small language for quant alphas](https://marketneutral.github.io/posts/qex/)
+:::
+
+## References: autoresearch
+
+::: {.refs}
+- Karpathy, A. [autoresearch](https://github.com/karpathy/autoresearch), including `program.md`, 2026.
+- Shopify/liquid [#2056](https://github.com/Shopify/liquid/pull/2056): the Liquid result, benchmark table and methodology.
+- Cobelli and Sanvito. "Agentic Design of Compositional Descriptors via Autoresearch for Materials Science Applications." arXiv 2605.14671, 2026.
+- Anthropic. [`skill-creator`](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md), including `scripts/run_loop`.
+- McLean, R. D. and Pontiff, J. "Does Academic Research Destroy Stock Return Predictability?" *Journal of Finance* 71(1), 2016.
 - Wiecki, T., Campbell, A., Lent, J. and Stauth, J. "All that Glitters Is Not Gold." SSRN, 2016.
-- Blog posts: [qex](https://marketneutral.github.io/posts/qex/), [autoresearch](https://marketneutral.github.io/posts/ai-scientist/), ["find alpha. make no mistakes."](https://marketneutral.github.io/posts/autoresearch-alpha/)
+- Sutton, R. "The Bitter Lesson." 2019.
+- Bailey, D. H. and López de Prado, M. "The Deflated Sharpe Ratio." *Journal of Portfolio Management* 40(5), 2014.
+- López de Prado, M. *Advances in Financial Machine Learning.* Wiley, 2018.
+- Rolnick, D., Veit, A., Belongie, S. and Shavit, N. "Deep Learning is Robust to Massive Label Noise." 2017.
+- Romera-Paredes, B. et al. "Mathematical Discoveries from Program Search with Large Language Models." *Nature*, 2024.
+- DeepMind. "AlphaEvolve: A Gemini-Powered Coding Agent for Designing Advanced Algorithms." 2025.
+- Blog post: [autoresearch: sparks of an AI scientist](https://marketneutral.github.io/posts/ai-scientist/)
+:::
+
+## References: "find alpha"
+
+::: {.refs}
+- Almgren, R. and Chriss, N. "Optimal Portfolios from Ordering Information." *Journal of Risk* 9(1), 2006. Circulated as "Portfolios from Sorts."
+- Barroso, P. and Santa-Clara, P. "Momentum Has Its Moments." *Journal of Financial Economics* 116(1), 2015.
+- Blitz, D., Huij, J. and Martens, M. "Residual Momentum." *Journal of Empirical Finance* 18(3), 2011.
+- Chordia, T., Roll, R. and Subrahmanyam, A. "Liquidity and Market Efficiency." *Journal of Financial Economics* 87(2), 2008.
+- Da, Z., Gurun, U. G. and Warachka, M. "Frog in the Pan: Continuous Information and Momentum." *Review of Financial Studies* 27(7), 2014.
+- Daniel, K. and Moskowitz, T. J. "Momentum Crashes." *Journal of Financial Economics* 122(2), 2016.
+- George, T. J. and Hwang, C.-Y. "The 52-Week High and Momentum Investing." *Journal of Finance* 59(5), 2004.
+- Grundy, B. D. and Martin, J. S. "Understanding the Nature of the Risks and the Source of the Rewards to Momentum Investing." *Review of Financial Studies* 14(1), 2001.
+- Jegadeesh, N. and Titman, S. "Returns to Buying Winners and Selling Losers." *Journal of Finance* 48(1), 1993.
+- Kruschke, J. K. "Bayesian Estimation Supersedes the t Test." *Journal of Experimental Psychology: General* 142(2), 2013.
+- Novy-Marx, R. "Is Momentum Really Momentum?" *Journal of Financial Economics* 103(3), 2012.
+- Also cited above: Bailey and López de Prado (2014), Karpathy (2026), Nagel (2012).
+- Blog post: ["find alpha. make no mistakes."](https://marketneutral.github.io/posts/autoresearch-alpha/)
+:::
 
 ## Thank You!
 
