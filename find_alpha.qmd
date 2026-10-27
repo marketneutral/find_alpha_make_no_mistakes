@@ -644,21 +644,9 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 <figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: score and worst slice over sixty trials"></figure>
 
-## Every trial is a card
+## Trial 1: the crash switch {.smaller}
 
-Before each test, the agent writes a **claim**: which belief, the mechanism, and a prediction of *where* the score should move. It is committed to git before the evaluator runs. After it, an **outcome**. Sixty of them, in its own words.
-
-::: {.trial .keep}
-[T1 · kept · belief 7 · the crash switch]{.t-head}
-
-[claim]{.t-lab} Where the crash state holds, the momentum score flips sign to reversal. *Mechanism: the crash is the past losers rebounding hardest.* Predict crash-state Sharpe turns positive, **worst fold improves a lot, median a little.**
-
-::: {.fragment}
-[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [utility −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
-:::
-:::
-
-## Trial 1, as a diff {.smaller}
+Before each test the agent writes a **claim**: which belief, the mechanism, and where the score should move. It is committed to git before the evaluator runs. After it, an **outcome**. Sixty of them, in its own words. On the right, the change to `alpha.qex`.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -667,7 +655,9 @@ Before each test, the agent writes a **claim**: which belief, the mechanism, and
 
 [claim]{.t-lab} Where the crash state holds, the momentum score flips sign to reversal. *Mechanism: the crash is the past losers rebounding hardest.* Predict crash-state Sharpe turns positive, **worst fold improves a lot, median a little.**
 
+::: {.fragment}
 [outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [utility −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
+:::
 :::
 :::
 ::: {.column width="60%"}
@@ -686,8 +676,10 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 :::
 :::
 
-## Act 1: fix the obvious
+## Act 1, trial 2: delete a line {.smaller}
 
+::: {.columns .diff .wide}
+::: {.column width="40%"}
 ::: {.trial .keep}
 [T2 · kept · belief 11, removed · delete a line]{.t-head}
 
@@ -697,8 +689,28 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 [outcome]{.t-lab} Now eligible: margin 14.3 bps. **Belief 11 as written was costing return without buying safety.** [utility 0.01 → 0.32]{.t-num}
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 2 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 504) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    mom   = delay(returns(231), 21),
+    vol   = volatility(60),
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(where(crash, -score, score) / vol, 10) #-
+in decay_linear(where(crash, -score, score), 10) #+
+```
+:::
+:::
 
-::: {.trial .keep .fragment}
+## Act 1, trial 4: the right volatility {.smaller}
+
+::: {.columns .diff .wide}
+::: {.column width="40%"}
+::: {.trial .keep}
 [T4 · kept · belief 4 · the right volatility]{.t-head}
 
 [claim]{.t-lab} Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. *60-day vol is noisy and spikes right after big moves, so it mis-ranks names.* Predict a small median gain.
@@ -707,9 +719,27 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 [outcome]{.t-lab} Sharpe outside the crash state 0.32 to 0.45, in it unchanged. **Larger than predicted.** [utility 0.32 → 0.43]{.t-num}
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 4 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 504) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    mom   = delay(returns(231), 21),
+    vol   = volatility(60), #-
+    vol   = volatility(252), #+
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(where(crash, -score, score), 10)
+```
+:::
+:::
 
-## Act 2: build the engine
+## Act 2, trial 6: a second, faster bet {.smaller}
 
+::: {.columns .diff .wide}
+::: {.column width="40%"}
 ::: {.trial .keep}
 [T6 · kept · belief 2, as a sleeve · a second, faster bet]{.t-head}
 
@@ -719,14 +749,52 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 [outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [utility 0.43 → 0.56]{.t-num}
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 6 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 504) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    mom   = delay(returns(231), 21),
+    vol   = volatility(252),
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(where(crash, -score, score), 10)
+   - group_demean(returns(21) / vol, 'sector') #+
+```
+:::
+:::
 
-::: {.trial .keep .fragment}
+## Act 2, trial 8: residual momentum {.smaller}
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .keep}
 [T8 · kept · belief 5 · residual momentum]{.t-head}
 
 [claim]{.t-lab} Rank on the *residual*: each stock's return net of beta times the market. *Removes time-varying market beta from the ranking* (Blitz, Huij, Martens). Predict median up, **worst up more than median.**
 
 ::: {.fragment}
 [outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [utility 0.64 → 0.74]{.t-num}
+:::
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 8 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 252) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    mom   = delay(returns(231), 21), #-
+    vol   = volatility(252),
+    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk, #+
+    mom   = delay(ts_sum(rr, 231), 21), #+
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(where(crash, -score, score), 10)
+   - group_demean(returns(21) / vol, 'sector')
+```
 :::
 :::
 
@@ -776,8 +844,10 @@ Nothing in the beliefs pointed here. The agent read it off the shape of the scor
 - A rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
 :::
 
-## Act 3: the crash argument
+## Act 3, trial 22: soft beats hard {.smaller}
 
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
 ::: {.trial .keep}
 [T22 · kept · belief 7 · soft beats hard]{.t-head}
 
@@ -787,8 +857,34 @@ Nothing in the beliefs pointed here. The agent read it off the shape of the scor
 [outcome]{.t-lab} **Better than belief 7 predicted: the soft switch beats the hard one on median and worst.** [utility 0.89 → 1.00]{.t-num}
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 22 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 252) < 0) #-
+            & (ts_std(mk, 21) > ts_std(mk, 252)), #-
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252), #+
+                  max(min(10 * ts_sum(mk, 252), 1), -1), #+
+                  1), #+
+    vol   = volatility(252),
+    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+    a     = decay_linear(where(crash, -score, score), 10) #-
+    a     = decay_linear(w * score, 10) #+
+            - group_demean(returns(21) / vol, 'sector')
+in decay_linear(power(a, 3), 3)
+```
+:::
+:::
 
-::: {.trial .keep .fragment}
+## Act 3, trial 24: a beta hedge {.smaller}
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .keep}
 [T24 · kept · Grundy and Martin (2001) · a beta hedge]{.t-head}
 
 [claim]{.t-lab} Make the book beta-neutral too. *Hedging factor exposure keeps the return, drops the risk.* Predict worst up, median flat.
@@ -797,13 +893,43 @@ Nothing in the beliefs pointed here. The agent read it off the shape of the scor
 [outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [utility 1.00 → 1.10]{.t-num}
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 24 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
+                  max(min(10 * ts_sum(mk, 252), 1), -1),
+                  1),
+    vol   = volatility(252),
+    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk, #-
+    b     = ts_beta(returns(1), mk, 252), #+
+    rr    = returns(1) - b * mk, #+
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21) / vol, 'sector'),
+in decay_linear(power(a, 3), 3) #-
+    s     = power(a, 3) * field('member'), #+
+    bd    = demean(b * field('member')), #+
+    sb    = s * bd, #+
+    bb    = bd * bd #+
+in decay_linear(s #+
+                - bd #+
+                * (sb - demean(sb)) #+
+                / (bb - demean(bb)), #+
+                3) #+
+```
+:::
+:::
 
-[The switch reads the market's one-year return; the agent shortened the window from the evaluator's two years at trial 7.]{.pq-note}
-
-## Trial 27, as the agent saw it
+## Trial 27, as the agent saw it {.smaller}
 
 The book is now beta-hedged. Is the crash switch still needed?
 
+::: {.columns .diff .wide .long}
+::: {.column width="46%"}
 ::: {.trial .reset}
 [T27 · reset · belief 7 against Grundy and Martin]{.t-head}
 
@@ -822,27 +948,131 @@ worst:   -0.510    (best 0.023)
 ::: {.trial .reset .fragment}
 [outcome]{.t-lab} **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset.
 :::
+:::
+::: {.column width="54%"}
+[alpha.qex after trial 27 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252), #-
+                  max(min(10 * ts_sum(mk, 252), 1), -1), #-
+                  1), #-
+    vol   = volatility(252),
+    b     = ts_beta(returns(1), mk, 252),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+    a     = decay_linear(w * score, 10) #-
+    a     = decay_linear(score, 10) #+
+            - group_demean(returns(21) / vol, 'sector'),
+    s     = power(a, 3) * field('member'), #-
+    s     = power(a, 3), #+
+    bd    = demean(b * field('member')),
+    sb    = s * bd,
+    bb    = bd * bd
+in decay_linear(s
+                - bd
+                * (sb - demean(sb))
+                / (bb - demean(bb)),
+                3)
+```
+:::
+:::
 
-## A reset that pointed the way
+## Trial 30: a reset that pointed the way {.smaller}
 
 The vol rule switches off when 1-month vol falls back under the inflated 1-year vol, **while the market is still deep in its hole and the losers are still rallying.** That is 2009.
 
-::: {.trial .reset .fragment}
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .reset}
 [T30 · reset · belief 7 · the deep-bear rule]{.t-head}
 
 [claim]{.t-lab} Full momentum when the market is up on the year, zero at −10%, full reversal below −20%, with no vol condition.
 
+::: {.fragment}
 [outcome]{.t-lab} Utility 1.10 to 1.02, reset by the rule, **but worst 0.02 to 0.35, the best worst fold so far.** The deep-bear rule catches the rebound, while the vol condition earns the median. ***Next: combine them.***
 :::
-
-::: {.trial .keep .fragment}
-[T31 · kept · both rules]{.t-head}
-
-[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 30 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252), #-
+                  max(min(10 * ts_sum(mk, 252), 1), -1), #-
+                  1), #-
+    w     = max(min(10 * ts_sum(mk, 252) + 1, 1), -1), #+
+    vol   = volatility(252),
+    b     = ts_beta(returns(1), mk, 252),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21) / vol, 'sector'),
+    s     = power(a, 3) * field('member'),
+    bd    = demean(b * field('member')),
+    sb    = s * bd,
+    bb    = bd * bd
+in decay_linear(s
+                - bd
+                * (sb - demean(sb))
+                / (bb - demean(bb)),
+                3)
+```
+:::
 :::
 
-## Wrong, and it says why
+## Trial 31: both rules {.smaller}
 
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .keep}
+[T31 · kept · belief 7 · both rules]{.t-head}
+
+[claim]{.t-lab} Combine the two. When 1-month vol is above 1-year vol, w = clip(10 × 1-year return), as now; otherwise w = clip(10 × 1-year return + 1), so a deep bear still shrinks or flips momentum after vol subsides. *T30 showed the depth rule saves the rebound fold while the vol rule earns the median.* Predict worst up strongly, median flat to up.
+
+::: {.fragment}
+[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
+:::
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 31 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    m1    = ts_sum(mk, 252), #+
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
+                  max(min(10 * ts_sum(mk, 252), 1), -1), #-
+                  1), #-
+                  max(min(10 * m1, 1), -1), #+
+                  max(min(10 * m1 + 1, 1), -1)), #+
+    vol   = volatility(252),
+    b     = ts_beta(returns(1), mk, 252),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21) / vol, 'sector'),
+    s     = power(a, 3) * field('member'),
+    bd    = demean(b * field('member')),
+    sb    = s * bd,
+    bb    = bd * bd
+in decay_linear(s
+                - bd
+                * (sb - demean(sb))
+                / (bb - demean(bb)),
+                3)
+```
+:::
+:::
+
+## Trial 11: wrong, and it says why {.smaller}
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
 ::: {.trial .reset}
 [T11 · reset · the crash flip on raw momentum]{.t-head}
 
@@ -852,8 +1082,32 @@ The vol rule switches off when 1-month vol falls back under the inflated 1-year 
 [outcome]{.t-lab} Crash-state Sharpe fell 2.45 to 1.80, **the opposite of the prediction.** The residual flip pays more: the beta bet is noisier than the stock-specific reversal.
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 11 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 252) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    vol   = volatility(252),
+    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+in decay_linear(where(crash, -score, score), 10) #-
+    raw   = group_demean(delay(returns(231), 21) / vol, #+
+                         'sector') #+
+in decay_linear(where(crash, -raw, score), 10) #+
+   - group_demean(returns(21) / vol, 'sector')
+```
+:::
+:::
 
-::: {.trial .keep .fragment}
+## Trial 54: wrong the other way {.smaller}
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .keep}
 [T54 · kept · removal · drop the agent's own hedge]{.t-head}
 
 [claim]{.t-lab} Measure what the T24 hedge is worth now. Predict median down 0.05–0.15.
@@ -862,9 +1116,40 @@ The vol rule switches off when 1-month vol falls back under the inflated 1-year 
 [outcome]{.t-lab} +0.10: **the prediction was wrong.** With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. ***A component that paid in T24 stopped paying after later changes.***
 :::
 :::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 54 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    m1    = ts_sum(mk, 252),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
+                  max(min(10 * m1, 1), -1),
+                  max(min(10 * m1 + 1, 1), -1)),
+    b     = ts_beta(returns(1), mk, 504),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21), 'sector')
+    s     = power(a, 3) * field('member'), #-
+    bd    = demean(b * field('member')), #-
+    sb    = s * bd, #-
+    bb    = bd * bd #-
+in decay_linear(s #-
+                - bd #-
+                * (sb - demean(sb)) #-
+                / (bb - demean(bb)), #-
+                3) #-
+in decay_linear(power(a, 3), 3) #+
+```
+:::
+:::
 
-## It knows what noise looks like
+## Trial 50: the same book, written shorter {.smaller}
 
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
 ::: {.trial .reset}
 [T50 · reset · the same book, written shorter]{.t-head}
 
@@ -874,14 +1159,75 @@ The vol rule switches off when 1-month vol falls back under the inflated 1-year 
 [outcome]{.t-lab} 1.376 to 1.318. The same book, so the −0.058 is partition noise. **A direct read on the noise at this level, about ±0.05; T47's 1.376 was probably a favorable draw.**
 :::
 :::
-
-::: {.trial .reset .fragment}
-[T55 · reset · a 0.2% winsorize before the cube]{.t-head}
-
-[outcome]{.t-lab} Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. **Second time this change wins every whole-period measure but not the median fold. Flagged for the human.**
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 50 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    m1    = ts_sum(mk, 252), #-
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252), #-
+                  max(min(10 * m1, 1), -1), #-
+                  max(min(10 * m1 + 1, 1), -1)), #-
+    w     = max(min(10 * ts_sum(mk, 252) #+
+                    + (ts_std(mk, 21) <= ts_std(mk, 252)), #+
+                    1), #+
+                -1), #+
+    b     = ts_beta(returns(1), mk, 504),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21), 'sector'),
+    s     = power(a, 3) * field('member'), #-
+    s     = power(a, 3), #+
+    bd    = demean(b * field('member')),
+    sb    = s * bd,
+    bb    = bd * bd
+in decay_linear(s
+                - bd
+                * (sb - demean(sb))
+                / (bb - demean(bb)),
+                3)
+```
+:::
 :::
 
-. . .
+## Trial 55: a safer book {.smaller}
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .reset}
+[T55 · reset · a 0.2% winsorize before the cube]{.t-head}
+
+[claim]{.t-lab} Winsorize the combined signal at 0.2% / 99.8% before the cube. *Without the hedge, the few most extreme names, takeover jumps, data spikes, stale bankrupt names, carry more cube weight.* Predict Sharpe up, worst up, return down slightly, median flat to up.
+
+::: {.fragment}
+[outcome]{.t-lab} Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. **Second time this change wins every whole-period measure but not the median fold. Flagged for the human.**
+:::
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 55 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    m1    = ts_sum(mk, 252),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
+                  max(min(10 * m1, 1), -1),
+                  max(min(10 * m1 + 1, 1), -1)),
+    b     = ts_beta(returns(1), mk, 504),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom, 'sector'),
+    a     = decay_linear(w * score, 10) #-
+    a     = winsorize(decay_linear(w * score, 10) #+
+                      - group_demean(returns(21), 'sector'),
+                      0.002) #+
+in decay_linear(power(a, 3), 3)
+```
+:::
+:::
 
 T38, earlier: ***"A safer book the keep rule does not reward."***
 

@@ -28,7 +28,7 @@ def trial(n, width=46):
     for i, r in enumerate(ROWS[1:], 1):
         if i == n:
             a, b = expr(best, width), expr(r["commit"], width)
-            key = lambda l: re.sub(r"^\s*(let\s+)?", "", l)                    # 'let' moves when a binding is added above
+            key = lambda l: re.sub(r"^\s*(let\s+)?", "", l).rstrip(",")        # 'let' and trailing commas move when bindings are added
             return a, b, difflib.SequenceMatcher(None, [key(l) for l in a], [key(l) for l in b], autojunk=False).get_opcodes()
         if r["status"] == "keep":
             best = r["commit"]

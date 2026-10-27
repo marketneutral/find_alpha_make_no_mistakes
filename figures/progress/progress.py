@@ -94,7 +94,7 @@ def fmt(expr, col):
     expr = expr.strip()
     if col + len(expr) <= WIDTH:
         return [expr]
-    ops = _top_level(expr, [" - ", " + ", " & "])
+    ops = _top_level(expr, [" - ", " + ", " & "]) or _top_level(expr, [" * ", " / "])   # products only when sums will not do
     if ops:
         cuts = [i for i, _ in ops]
         parts = [expr[x + (x > 0):y] for x, y in zip([0] + cuts, cuts + [len(expr)])]
