@@ -420,21 +420,23 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 
 ## Data and book {.mid}
 
+US equities, 1999 to August 2026. One long-short book, rebuilt every day from one qex expression.
+
 ::: {.incremental}
-- **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, ADV ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
+- **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, average daily volume ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
 - **Book construction**, the same for every expression: demean; scale to a gross of one, $\sum_i \lvert w_i \rvert = 1$; cap each name at $\lvert w_i \rvert \le 5\%$; repeat until all three hold
 - **Delay 1:** signal from data through the close of $t$, traded at the close of $t+1$
-- The agent chooses *which* stocks get weight, never how big the book is
+- The agent chooses *which* stocks get weight, never how big the book is, so every expression is judged on the same dollar
 :::
 
-## Three periods, never mixed
+## Three periods, never mixed {.nostretch .mid}
 
-![](images/alpha-periods.svg){width="100%"}
+![](images/alpha-periods.svg){width="92%" fig-align="center"}
 
 ::: {.incremental}
-- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything, through `explore.py`.
+- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything, through `explore.py`. For debugging expressions and forming hunches; never scored.
 - **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary numbers, never a price.
-- **Test, 2018 to Aug 2026.** Sealed: the evaluator never loads it. I ran it once, after trial 60.
+- **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
 ## Momentum, and how it crashes {.smaller}
@@ -457,19 +459,22 @@ in decay_linear(score / vol, 10)
 
 ::: {.incremental}
 - 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
-- Validation Sharpe −0.25; **−1.96 in the crash state**
+- Validation Sharpe −0.25, lost mostly in the crash state: **−1.96 there**
 - **Margin** −8 bps: it loses 8 bps per dollar traded, before costs
 :::
 
-## The experiment {.mid}
+## The experiment {.smaller}
+
+**The question:** given a real problem and a sealed test, does what the amended loop builds hold up on data it never saw?
 
 ::: {.incremental}
 - **The problem:** earn a momentum premium, and avoid the crashes (Daniel and Moskowitz 2016)
 - **The artifact:** one qex expression, `alpha.qex`
-- **The seed:** textbook momentum that *loses money* on the scored period
+- **The seed:** textbook momentum that *loses money* on validation, 2004–⁠2017
 - **The beliefs:** twelve, most grounded in a paper with a mechanism and a falsifiable prediction; every paper predates the test period
-- **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
-- **Enforced, not trusted:** a tool allowlist means the agent cannot run the test, read the data, or see earlier runs. An allowlist, not a sandbox: the transcript is the check (appendix).
+- **The agent:** Claude Code with Opus 5.5, headless (no human in the loop), one session, 60 trials, 55 minutes, ~$20
+- **Enforced, not trusted:** a tool allowlist: no test, no data, no earlier runs. Not a sandbox; the transcript is the check (appendix).
+- **The leak no wall closes:** the model has read about 2020 and 2022. Audited: no year after 2017 in any claim. Watched, not closed.
 :::
 
 ## The lab: same shape as Karpathy's
@@ -492,7 +497,7 @@ in decay_linear(score / vol, 10)
 
 ## Twelve beliefs codified in `program.md` {.smaller}
 
-The agent starts from these and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
+I wrote these twelve from the literature. The agent starts from them and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
 
 ::: columns
 ::: {.column width="50%" .belief-left}
@@ -517,11 +522,11 @@ The agent starts from these and may test, combine, or abandon any of them, or go
 
 ![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never a price.**
+The loop with the finance changes; the next slides define each box. What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never a price.**
 
 ## The score {.smaller}
 
-Each fold is scored on cost-free P&L:
+A *fold*, one stretch of history (next slide), is scored on its cost-free P&L:
 
 $$
 \text{utility} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
@@ -529,10 +534,10 @@ $$
 
 ::: {.incremental}
 - **Fitness** is the score of *Finding Alphas* (Tulchinsky et al. 2019): Sharpe, scaled up by return and down by trading
-- Turnover below 12.5% a day is not charged, and the agent will notice
+- Turnover, the share of the book traded each day, is not charged below 12.5%, and the agent will notice
 - **Nodes:** every operator, constant and field in the parsed expression. Each costs 0.003, AIC in spirit.
 - A fold scores −∞ if the book holds fewer than 50 names or runs outside 1–70% turnover a day
-- **Eligible:** the whole validation book runs 1–70% turnover a day and earns ≥ 5 bps per dollar traded
+- **Eligible:** the whole validation book runs 1–70% turnover a day and earns a margin of ≥ 5 bps per dollar traded
 :::
 
 ## The evaluator: run once, grade many times {.mid}
@@ -555,14 +560,14 @@ Each deal shuffles the 12 blocks and pairs them into 6 folds. Fold 1, in green, 
 
 ![](images/eval-folds.svg){.r-stretch fig-align="center"}
 
-The final book, deal 1, as the agent saw it: median **1.54**, worst **0.20**. Over all 50 deals: median **1.47**, worst **0.40**.
+An example: the book the run ends with, on one deal, as the agent saw it: median **1.54**, worst **0.20**. Over all 50 deals: median **1.47**, worst **0.40**.
 
 ## Why it is built this way {.mid}
 
 ::: {.incremental}
 - **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
 - **Embargo:** 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.
-- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
+- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not set the score.
 - **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
 :::
 
@@ -602,7 +607,7 @@ $$
 \mathrm{SR}_0 = \sqrt{\mathbb{V}[\widehat{\mathrm{SR}}_n]}\left((1-\gamma)\,\Phi^{-1}\!\left(1-\tfrac{1}{N}\right) + \gamma\,\Phi^{-1}\!\left(1-\tfrac{1}{N e}\right)\right)
 $$
 
-$N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows. It informs the agent; it does not decide keeps.
+$N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows, the seed and sixty trials. It informs the agent; it does not decide keeps.
 
 ## The run
 
@@ -610,7 +615,7 @@ $N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\h
 
 ## Every trial is a card
 
-Before each test, the agent writes a **claim**: which belief, the mechanism, and a prediction of *where* the score should move. After it, an **outcome**. Sixty of them, in its own words.
+Before each test, the agent writes a **claim**: which belief, the mechanism, and a prediction of *where* the score should move. It is committed to git before the evaluator runs. After it, an **outcome**. Sixty of them, in its own words.
 
 ::: {.trial .keep}
 [T1 · kept · belief 7 · the crash switch]{.t-head}
@@ -674,7 +679,7 @@ The agent reads its own notebook. Four trials, one idea:
 ::: {.trial .reset}
 [T14 · reset]{.t-head}
 
-Square the signal. Return up, but turnover 0.15 eats the gain. *Concentration works if turnover is held down.*
+Signed square, a·|a|. Return up, but turnover 0.15 eats the gain. *Concentration works if turnover is held down.*
 :::
 
 ::: {.trial .reset}
@@ -698,7 +703,7 @@ Cube it instead, one node fewer. **As predicted, larger than expected.** 0.78 �
 
 . . .
 
-None of this was in the beliefs. It came from the shape of the score and a hunch that "the edge sits in the tails".
+Nothing in the beliefs pointed here. The agent read it off the shape of the score, and a hunch that "the edge sits in the tails".
 
 ## The cube {.smaller}
 
@@ -707,6 +712,8 @@ None of this was in the beliefs. It came from the shape of the score and a hunch
 ::: {.incremental}
 - Gross is fixed, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
 - About the same Sharpe, **twice the return** per dollar of gross, in sample and out
+- At the same Sharpe, nothing is created: 2× leverage on the linear book gives the same P&L and risk. Fitness rewards it anyway, because it is return *on gross one*: the dollar is fixed, so the cube is the only way to make it work harder.
+- The real-world case: the same P&L from half the gross is half the financing, borrow and impact
 - A rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
 :::
 
@@ -731,6 +738,8 @@ None of this was in the beliefs. It came from the shape of the score and a hunch
 [outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [utility 1.00 → 1.10]{.t-num}
 :::
 :::
+
+[The switch reads the market's one-year return; the agent shortened the window from the evaluator's two years at trial 7.]{.pq-note}
 
 ## Trial 27, as the agent saw it
 
@@ -829,12 +838,12 @@ T38, earlier: ***"A safer book the keep rule does not reward."***
 
 ![](images/alpha-worth.svg){.r-stretch fig-align="center"}
 
-The agent's own ablations, each in the book of its day. Residual momentum is the core; the crash switch, the most valuable belief.
+The agent's own removal tests, each measured against the best book at the time. Residual momentum is the core; the crash switch, the most valuable belief.
 
 ## The beliefs, scored
 
 ::: {.belief-table}
-| | belief | verdict | evidence |
+| | belief | verdict | evidence: trial, Δ utility |
 |--:|---|---|---|
 | 1 | Winners keep winning, against their sector | the premise | every book |
 | 2 | Skip the last month | **held** | T10 −0.15; sleeve T52 −0.45 |
@@ -909,7 +918,7 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 . . .
 
-Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility rose (12% → 18%), so Sharpe fell by about 40%. The seed earned nothing over the same years.
+Validation 2004–⁠2017, test 2018 to Aug 2026. Net of 10 bps per dollar traded, a conservative all-in cost for liquid US equities. The return held; volatility rose (12% → 18%), so Sharpe fell by about 40%. The seed earned nothing over the same years.
 
 [Run as recorded. The universe screen later turned out to leak future share splits into market cap; re-scored on corrected data, the test Sharpe is 0.76 instead of 0.77.]{.pq-note}
 
@@ -917,7 +926,7 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility ro
 
 ![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
 
-2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. No test-period bear market cost more than 5%.
+In sample, the 2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. Out of sample the switch fired in Q4 2018, COVID and 2022, and no test-period bear market cost more than 5%.
 
 ## The drawdown it did not see {.mid}
 
@@ -928,6 +937,8 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility ro
 - Daniel–Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
 - The cube makes it worse: ~2,100 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
 :::
+
+[No one trades a single signal alone; a real book combines many, under risk limits. What is on test here is the method.]{.pq-note}
 
 ## Is it real? Bayes has entered the chat {.smaller}
 
@@ -965,6 +976,8 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 [8.6 years cannot tell a little decay from bad luck. Both fit, and both leave a real, positive edge.]{.pq-note}
 
 ## What the deals do, and don't {.mid}
+
+The sharper question: sixty trials climbed a score on 2004–⁠2017. How much of the 1.26 is fit to those years?
 
 ::: {.incremental}
 - **They stop the agent learning one exam.** With a fixed split, sixty trials can climb that split's luck. Here a change only scores if it helps on most pairings of years (median) and hurts on none (worst). A change that only helps in 2008 barely moves the median.
@@ -1014,47 +1027,9 @@ $$
 - Observed: validation 1.26 → test 0.77, a drop of **0.49**. The deflated Sharpe (Bailey and López de Prado) is this calculation done properly.
 :::
 
-## Information theory: what the choice knows {.smaller}
+. . .
 
-The overfitting gap is bounded by the **mutual information** between the sample and what you chose from it (Russo and Zou 2016; Xu and Raginsky 2017):
-
-$$
-\Big|\, \mathbb{E}\big[\,\text{in-sample} - \text{out-of-sample}\,\big] \Big| \;\le\; \sqrt{\frac{2\sigma^2\; I(S;\, W)}{n}}
-$$
-
-$S$: the data. $W$: the strategy chosen. $n$: the sample size. A choice that carries few bits about this particular history cannot have fit it much.
-
-::: {.incremental}
-- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never a price**.
-- **Few, small steps.** Sixty one-line edits in a closed grammar.
-- **A threshold.** A keep must clear the noise, so small, lucky wins are not kept.
-:::
-
-## Information theory: the reusable holdout {.mid}
-
-Every look at a hold-out, acted on, leaks information about it. After enough adaptive looks, the hold-out is part of the training set (Dwork, Feldman, Hardt, Pitassi, Reingold and Roth 2015).
-
-::: {.incremental}
-- Their fix, **Thresholdout**: answer from the hold-out only when it disagrees with the training data by more than a threshold, and add noise to the answer
-- The evaluator is a crude version: random deals add noise, and the keep bar is a threshold
-- Each keep/reset is about one bit. Sixty trials leak at most tens of bits through the keep decisions; the printed numbers leak more.
-- Why the test period is run **once**: a second look would make it one more hold-out the loop has seen
-:::
-
-## Information theory: Occam's razor, in bits {.mid}
-
-If a strategy takes $L(h)$ bits to write down, then with probability $1 - \delta$ (the Occam bound):
-
-$$
-\text{in-sample} - \text{out-of-sample} \;\le\; \sqrt{\frac{L(h)\,\ln 2 \;+\; \ln(1/\delta)}{2n}}
-$$
-
-::: {.incremental}
-- Shorter descriptions overfit less. A qex expression **is** a short description.
-- The complexity charge, 0.003 per node, is a price per symbol: minimum description length, AIC in spirit
-- The final book is 32 nodes, a few hundred bits. A pandas notebook of the same idea is thousands of lines: no bound to speak of.
-- The closed grammar is not just convenient for the agent. It caps how much the strategy can encode about 2004–2017.
-:::
+[Information theory says the same thing three ways: the gap is bounded by the bits the choice carries about the sample, every look at a hold-out leaks some, and a short description cannot carry many. Appendix.]{.pq-note}
 
 ## Overfitting defences, in one table {.mid}
 
@@ -1085,6 +1060,7 @@ $$
 - The keep bar can then mean *any real improvement*, not *beat the noise*.
 - It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
 - The randomness was only ever a cheap way to estimate this average.
+- And decide about the embargo: drop it, or keep those 504 days as a deliberate hold-out, scored once
 :::
 
 ## Conclusions {.mid}
@@ -1224,6 +1200,51 @@ $$
 - **Fifty deals is a 0.5% sample** of the 10,395.
 :::
 
+## Information theory: what the choice knows {.smaller}
+
+The overfitting gap is bounded by the **mutual information** between the sample and what you chose from it (Russo and Zou 2016; Xu and Raginsky 2017):
+
+$$
+\Big|\, \mathbb{E}\big[\,\text{in-sample} - \text{out-of-sample}\,\big] \Big| \;\le\; \sqrt{\frac{2\sigma^2\; I(S;\, W)}{n}}
+$$
+
+$S$: the data. $W$: the strategy chosen. $n$: the sample size. A choice that carries few bits about this particular history cannot have fit it much.
+
+[A guide, not a number. The bounds on these three slides assume independent samples and a fixed hypothesis class; trading days are correlated and the agent's class is everything qex can express. Take the direction and the levers, not the digits.]{.pq-note}
+
+::: {.incremental}
+- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never a price**.
+- **Few, small steps.** Sixty one-line edits in a closed grammar.
+- **A threshold.** A keep must clear the noise, so small, lucky wins are not kept.
+:::
+
+## Information theory: the reusable holdout {.mid}
+
+Every look at a hold-out, acted on, leaks information about it. After enough adaptive looks, the hold-out is part of the training set (Dwork, Feldman, Hardt, Pitassi, Reingold and Roth 2015).
+
+::: {.incremental}
+- Their fix, **Thresholdout**: answer from the hold-out only when it disagrees with the training data by more than a threshold, and add noise to the answer
+- The evaluator is a crude version: random deals add noise, and the keep bar is a threshold
+- Each keep/reset is about one bit. Sixty trials leak at most tens of bits through the keep decisions; the printed numbers leak more.
+- Why the test period is run **once**: a second look would make it one more hold-out the loop has seen
+:::
+
+## Information theory: Occam's razor, in bits {.mid}
+
+If a strategy takes $L(h)$ bits to write down, then with probability $1 - \delta$ (the Occam bound):
+
+$$
+\text{in-sample} - \text{out-of-sample} \;\le\; \sqrt{\frac{L(h)\,\ln 2 \;+\; \ln(1/\delta)}{2n}}
+$$
+
+::: {.incremental}
+- Shorter descriptions overfit less. A qex expression **is** a short description.
+- The complexity charge, 0.003 per node, is a price per symbol: minimum description length, AIC in spirit
+- The final book is 32 nodes, a few hundred bits. A pandas notebook of the same idea is thousands of lines: no bound to speak of.
+- The closed grammar is not just convenient for the agent. It caps how much the strategy can encode about 2004–2017.
+:::
+
+[Same caveat: an Occam bound is for a fixed class under i.i.d. sampling, and sixty adaptive trials are neither. The lever it names, description length, is real; the digits are not.]{.pq-note}
 ## Keeping it honest: permissions {.mid}
 
 `claude -p --permission-mode dontAsk`: any tool call off the allowlist is denied, and no one is there to say yes.
