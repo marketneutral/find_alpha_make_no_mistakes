@@ -457,7 +457,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 
 ![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
 
-Seed: −1%/yr on validation. Final: 13%/yr at Sharpe 1.08 on validation, **13.5%/yr at Sharpe 0.76 on the sealed test**.
+Seed: −1%/yr on validation. Final: 15%/yr at Sharpe 1.26 on validation, **13.6%/yr at Sharpe 0.77 on the sealed test**.
 
 ## Data and book {.mid}
 
@@ -479,7 +479,7 @@ in decay_linear(score / vol, 10)
 
 ::: {.incremental}
 - 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
-- As the agent saw it: validation Sharpe −0.25; **−1.96 in the crash state**
+- Validation Sharpe −0.25; **−1.96 in the crash state**
 - Loses 8 bps per dollar traded, before costs
 :::
 
@@ -650,7 +650,7 @@ $$
 ::: {.incremental}
 - History noise $\sigma \approx 0.27$ Sharpe, $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
 - That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective $k$ is far smaller.
-- Observed: validation 1.08 → test 0.76, a drop of **0.32**. The deflated Sharpe (Bailey and López de Prado) is this calculation done properly.
+- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The deflated Sharpe (Bailey and López de Prado) is this calculation done properly.
 :::
 
 ## Information theory: what the choice knows {.smaller}
@@ -675,7 +675,7 @@ Every look at a hold-out, acted on, leaks information about it. After enough ada
 
 ::: {.incremental}
 - Their fix, **Thresholdout**: answer from the hold-out only when it disagrees with the training data by more than a threshold, and add noise to the answer
-- The evaluator, by accident, is a crude version: random deals add noise, and the keep bar is a threshold
+- The evaluator is a crude version: random deals add noise, and the keep bar is a threshold
 - Each keep/reset is about one bit. Sixty trials leak at most tens of bits through the keep decisions; the printed numbers leak more.
 - Why the test period is run **once**: a second look would make it one more hold-out the loop has seen
 :::
@@ -841,7 +841,7 @@ None of this was in the beliefs. It came from the shape of the score and a hunch
 
 ::: {.incremental}
 - Gross is fixed, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
-- Same Sharpe, **twice the return** per dollar of gross, in sample and out
+- About the same Sharpe, **twice the return** per dollar of gross, in sample and out
 - A rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
 :::
 
@@ -1025,14 +1025,16 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 | | period | Sharpe | return / yr | net of 10 bps | max drawdown |
 |---|---|---:|---:|---:|---:|
-| seed | validation | −0.23 | −1.0% | −2.3% | −27% |
-| seed | **test** | 0.12 | +0.9% | −0.4% | −19% |
-| final | validation | 1.08 | +12.9% | +9.9% | −24% |
-| final | **test** | **0.76** | **+13.5%** | **+10.5%** | −27% |
+| seed | validation | −0.25 | −1.1% | −2.4% | −28% |
+| seed | **test** | 0.09 | +0.7% | −0.6% | −20% |
+| final | validation | 1.26 | +14.8% | +11.8% | −21% |
+| final | **test** | **0.77** | **+13.6%** | **+10.6%** | −26% |
 
 . . .
 
-Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility rose (12% → 18%), so Sharpe fell by a third. The seed earned nothing over the same years.
+Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility rose (12% → 18%), so Sharpe fell by about 40%. The seed earned nothing over the same years.
+
+[Run as recorded. The universe screen later turned out to leak future share splits into market cap; re-scored on corrected data, the test Sharpe is 0.76 instead of 0.77.]{.pq-note}
 
 ## Is it real? Bayes has entered the chat {.smaller}
 
@@ -1040,22 +1042,22 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility ro
 
 ![](images/alpha-bayes.svg){width="85%"}
 
-BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **41%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed weekly 0.74. $P(\mathrm{SR}_{\text{test}} > 0) = 0.97$.
+BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **24%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed weekly 0.78. $P(\mathrm{SR}_{\text{test}} > 0) = 0.99$.
 
 ## The crash switch, out of sample
 
 ![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
 
-2009 junk rally (Mar–Jun): seed −13.6%, final **+14.6%**. No test-period bear market cost more than 6%.
+2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. No test-period bear market cost more than 5%.
 
 ## The drawdown it did not see {.mid}
 
 ::: {.incremental}
-- Mid-June to late July 2026: **−27% in six weeks**, unrecovered at the end of the data
+- Mid-June to late July 2026: **−26% in six weeks**, unrecovered at the end of the data
 - The switch sat at full momentum: the market was calm and up on the year
-- The loss was on the **long** side: last year's winners unwinding (−20% longs, −5% shorts; one name at the 5% cap cost 5%)
+- The loss was on the **long** side: last year's winners unwinding (−20% longs, −5% shorts; one name alone cost 4.5%)
 - Daniel–Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
-- The cube makes it worse: ~1,500 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
+- The cube makes it worse: ~2,100 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
 :::
 
 ## What I learned {.mid}
@@ -1126,11 +1128,17 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - Jegadeesh, N. and Titman, S. "Returns to Buying Winners and Selling Losers." *Journal of Finance* 48(1), 1993.
 - Kruschke, J. K. "Bayesian Estimation Supersedes the t Test." *Journal of Experimental Psychology: General* 142(2), 2013.
 - Novy-Marx, R. "Is Momentum Really Momentum?" *Journal of Financial Economics* 103(3), 2012.
+- Also cited above: Bailey and López de Prado (2014), Jegadeesh (1990), Karpathy (2026), Nagel (2012), Tulchinsky et al. (2019).
+:::
+
+## References: overfitting
+
+::: {.refs}
 - Bousquet, O. and Elisseeff, A. "Stability and Generalization." *Journal of Machine Learning Research* 2, 2002.
 - Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O. and Roth, A. "The Reusable Holdout: Preserving Validity in Adaptive Data Analysis." *Science* 349(6248), 2015.
 - Russo, D. and Zou, J. "Controlling Bias in Adaptive Data Analysis Using Information Theory." *AISTATS*, 2016.
 - Xu, A. and Raginsky, M. "Information-Theoretic Analysis of Generalization Capability of Learning Algorithms." *NeurIPS*, 2017.
-- Also cited above: Bailey and López de Prado (2014), Jegadeesh (1990), Karpathy (2026), Nagel (2012), Tulchinsky et al. (2019).
+- Also cited above: Bailey and López de Prado (2014).
 :::
 
 ## Thank You!
