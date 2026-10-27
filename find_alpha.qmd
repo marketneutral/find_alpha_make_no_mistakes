@@ -11,6 +11,7 @@ format:
     slide-number: c/t
     include-after-body: qex-highlight.html
     code-line-numbers: false
+    html-math-method: katex
 theme:
   - dark
   - speculative.scss
@@ -66,37 +67,40 @@ Can an AI agent do quantitative research without fooling itself?
 
 # qex
 
-## What is an alpha? {.smaller}
+## The idea
+
+Every alpha starts as a sentence about markets:
+
+> *"Stocks that fell last week bounce back."*
 
 ::: {.incremental}
-- A forecast $s_{i,t}$ for every stock $i$ on every day $t$, turned into a dollar-neutral book:
-$$
-w_{i,t} = \frac{s_{i,t} - \bar{s}_t}{\sum_j \lvert s_{j,t} - \bar{s}_t \rvert}, \qquad \sum_i w_{i,t} = 0, \qquad \sum_i \lvert w_{i,t} \rvert = 1
-$$
-- P&L on gross market value: $r^{p}_{t+1} = \sum_i w_{i,t}\, r_{i,t+1}$
-- Why cross-sectional? Grinold's **Fundamental Law of Active Management**:
-$$
-IR \approx IC \times \sqrt{BR}
-$$
-- Each forecast carries little skill ($IC$ of a few percent), so breadth $BR$ does the work
+- Testing it the usual way is an afternoon of pandas: rolling windows, index alignment, `axis=` arguments, warmup, missing data, and the care not to peek at tomorrow
+- None of that is the idea, and all of it is where the bugs live
+- **qex: the shortest path from "I think markets behave like this" to code that tests it**
 :::
 
 ## A one-line alpha
 
+> *"Stocks that fell last week bounce back."*
+
 ```qex
-rank(-returns(20) / volatility(60))
+rank(-returns(5))
 ```
 
 ::: {.incremental}
-- Rank stocks by risk-adjusted one-month return, and bet against the winners: a mean-reversion alpha
-- The equivalent pandas is ~50 lines of rolling windows, axis arguments, and NaN handling
-- The style of Kakushadze's *101 Formulaic Alphas* (2016)
-- Open source: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser)
+- `returns(5)`: each stock's return over the last week
+- `-`: the ones that fell score highest
+- `rank`: compared across all stocks on each day, 0 to 1
+- **That is the whole alpha.** The pandas version adds needless complexity.
+:::
+
+::: {.refs}
+qex is open source: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser). The style follows Kakushadze's *101 Formulaic Alphas* (2016).
 :::
 
 ## From a belief to a line {.smaller}
 
-The shortest path from "I think markets behave like this" to code that tests it:
+Refine the belief one clause at a time, and the expression follows:
 
 ```qex
 # Stocks that fell last week bounce back.
@@ -229,10 +233,15 @@ scale(demean(rank(returns(1))))
 - `scale` divides by the sum of absolute values (1.2): **gross of one**
 - 50 cents long, 50 cents short per dollar of gross
 - `group_demean(…, 'sector')` instead: sector-neutral too
-- Returns "on GMV" are per dollar of exactly this book
 :::
 :::
 :::
+
+In general, for scores $s_{i,t}$, the weights and the book's return per dollar of gross are
+
+$$
+w_{i,t} = \frac{s_{i,t} - \bar{s}_t}{\sum_j \lvert s_{j,t} - \bar{s}_t \rvert}, \qquad r^{p}_{t+1} = \sum_i w_{i,t}\, r_{i,t+1}
+$$
 
 ## Lazy trees, no lookahead, shared work {.smaller}
 
@@ -248,6 +257,22 @@ scale(demean(rank(returns(1))))
 ::: {.column width="55%"}
 ![](images/qex-signal-graph.svg){width="100%"}
 :::
+:::
+
+## Why the cross-section? {.smaller}
+
+Grinold's **Fundamental Law of Active Management**:
+
+$$
+\Large \mathrm{IR} \;\approx\; \mathrm{IC} \times \sqrt{\mathrm{BR}}
+$$
+
+::: {.incremental}
+- $\mathrm{IC}$: the skill of each forecast, the correlation between the signal and the next return. For a real alpha, a few hundredths at best.
+- $\mathrm{BR}$: breadth, the number of independent bets
+- For example, $\mathrm{IC} = 0.02$ and $\mathrm{BR} = 500$ bets a year: $\;\mathrm{IR} \approx 0.02 \sqrt{500} \approx 0.45$
+- Small skill becomes a meaningful information ratio only when it is applied to many stocks, every day
+- That is why every qex operator works on a whole cross-section at once
 :::
 
 ## Example: reversal, technician-style {.smaller}
@@ -281,9 +306,15 @@ in scale(decay_linear(book, 10))
 
 S&P 500 members (survivorship-biased!), 2010-2025, gross of costs. Monotonic quintiles; top-minus-bottom 8.3%/yr.
 
+## How it did, through time {.smaller}
+
+![](images/qex-gross-vs-net.svg){width="90%" fig-align="center"}
+
+Cumulative return on gross, 2010-2025, dollar-neutral and rebalanced daily. Gross, both versions end near +78%. Net of 2 bps tcost, the unsmoothed book ends at −8% and the ten-day decay at **+39%**.
+
 ## Smoothing is (almost) a free lunch {.smaller}
 
-| Range, daily | Turnover / day | Gross on GMV | Gross Sharpe | Net at 2 bps | Net Sharpe | Max DD |
+| Range, daily | Turnover / day | Gross on GMV | Gross Sharpe | Net at 2 bps tcost | Net Sharpe | Max DD |
 |---|---:|---:|---:|---:|---:|---:|
 | no smoothing | 84% | +3.8% | 0.98 | −0.5% | −0.13 | −21% |
 | **decay 10** | **32%** | **+3.8%** | **0.90** | **+2.2%** | **0.52** | **−15%** |
@@ -385,7 +416,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 :::
 
 
-# "find alpha. make no mistakes."
+# "find alpha. make no mistakes." {.hang-quote}
 
 ## The experiment {.smaller}
 
@@ -411,7 +442,7 @@ Seed: −1%/yr on validation. Final: 13%/yr at Sharpe 1.08 on validation, **13.5
 
 ::: {.incremental}
 - **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, ADV ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
-- **Book construction**, the same for every expression: demean, scale to $\sum_i \lvert w_i \rvert = 1$, cap $\lvert w_i \rvert \le 5\%$, iterate until all three hold
+- **Book construction**, the same for every expression: demean; scale to a gross of one, $\sum_i \lvert w_i \rvert = 1$; cap each name at $\lvert w_i \rvert \le 5\%$; repeat until all three hold
 - **Delay 1:** signal from data through the close of $t$, traded at the close of $t+1$
 - The agent chooses *which* stocks get weight, never how big the book is
 :::
@@ -463,14 +494,14 @@ Otherwise `git checkout <best> -- alpha.qex`, and log the attempt either way.
 Every trial prints the **deflated Sharpe ratio** of Bailey and López de Prado (2014), the probability the Sharpe is real given $N$ strategies tried:
 
 $$
-\widehat{PSR}(SR_0) = \Phi\!\left(\frac{(\widehat{SR} - SR_0)\sqrt{T-1}}{\sqrt{1 - \hat\gamma_3 \widehat{SR} + \frac{\hat\gamma_4 - 1}{4}\widehat{SR}^2}}\right)
+\widehat{\mathrm{PSR}}(\mathrm{SR}_0) = \Phi\!\left(\frac{(\widehat{\mathrm{SR}} - \mathrm{SR}_0)\sqrt{T-1}}{\sqrt{1 - \hat\gamma_3 \widehat{\mathrm{SR}} + \frac{\hat\gamma_4 - 1}{4}\widehat{\mathrm{SR}}^2}}\right)
 $$
 
 $$
-SR_0 = \sqrt{\mathbb{V}[\widehat{SR}_n]}\left((1-\gamma)\,\Phi^{-1}\!\left(1-\tfrac{1}{N}\right) + \gamma\,\Phi^{-1}\!\left(1-\tfrac{1}{N e}\right)\right)
+\mathrm{SR}_0 = \sqrt{\mathbb{V}[\widehat{\mathrm{SR}}_n]}\left((1-\gamma)\,\Phi^{-1}\!\left(1-\tfrac{1}{N}\right) + \gamma\,\Phi^{-1}\!\left(1-\tfrac{1}{N e}\right)\right)
 $$
 
-$N$ = rows in the notebook so far, $\gamma$ the Euler-Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{SR}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows. It informs the agent; it does not decide keeps.
+$N$ = rows in the notebook so far, $\gamma$ the Euler-Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows. It informs the agent; it does not decide keeps.
 
 ## The augmented loop
 
@@ -571,7 +602,7 @@ Validation 2004-2017, test 2018 to Aug 2026. The return held; volatility rose (1
 
 ![](images/alpha-bayes.svg){width="85%"}
 
-BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **41%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed 0.74. $P(SR_{test} > 0) = 0.97$.
+BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \in \{\text{val}, \text{test}\}$. Posterior predictive: **41%** of 8.6-year histories drawn from the validation posterior have Sharpe ≤ the observed 0.74. $P(\mathrm{SR}_{\text{test}} > 0) = 0.97$.
 
 ## The crash switch, out of sample
 
@@ -586,7 +617,7 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - The switch sat at full momentum: the market was calm and up on the year
 - The loss was on the **long** side: last year's winners unwinding (−20% longs, −5% shorts; one name at the 5% cap cost 5%)
 - Daniel-Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
-- The cube makes it worse: ~1,500 names held, but an effective $N = 1/\sum_i w_i^2 \approx 100$
+- The cube makes it worse: ~1,500 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
 :::
 
 ## What I learned {.smaller}

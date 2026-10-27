@@ -27,3 +27,5 @@ $presentation-h2-font-size: 1.3em;
 // reference slides: small, tight, no scrolling
 .reveal .refs { font-size: 0.52em; line-height: 1.28; }
 .reveal .refs li { margin: 0.12em 0; }
+// hanging punctuation: the opening quote sits in the margin, so the text of both lines aligns
+.reveal .hang-quote h1, .reveal h1.hang-quote { text-indent: -0.476em; }
