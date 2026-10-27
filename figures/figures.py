@@ -235,6 +235,27 @@ def fig_keep():
     ax.legend(frameon=False, fontsize=12, loc="upper left", labelcolor=INK2)
     save(fig, "alpha-keep-applied", pad=0.3)
 
+def fig_noise_runs():
+    """The seed scored eight times before the run (noise.txt): the spread of each number, and the threshold set from it."""
+    import re
+    runs = [tuple(map(float, re.findall(r"-?\d+\.\d+", l))) for l in open("figures/progress/lab/noise.txt") if l.strip()]
+    rows = [("median-fold utility, eight calls on the seed", [r[0] for r in runs], 0.03, "the bar: 0.03", ACC),
+            ("worst-fold utility, the same eight calls", [r[1] for r in runs], 0.13, "the floor's tolerance: 0.13", RED)]
+    fig, axes = plt.subplots(2, 1, figsize=(9.0, 2.3), gridspec_kw=dict(hspace=0.85))
+    for ax, (name, vals, thr, lab, c) in zip(axes, rows):
+        lo, hi = min(vals), max(vals)
+        ax.hlines(0, lo, hi, color=INK2, lw=2.2, zorder=2)
+        ax.scatter(vals, [0] * len(vals), s=90, color=INK, edgecolor=BG, lw=1.2, zorder=3)
+        ax.text(hi + 0.08 * thr, 0, f"{lo:.3f} to {hi:.3f}: spread {hi - lo:.3f}", ha="left", va="center", color=INK2, fontsize=14.5)
+        ax.hlines(-0.5, lo, lo + thr, color=c, lw=5, zorder=2)
+        ax.text(lo + thr + 0.06 * thr, -0.5, lab, ha="left", va="center", color=c, fontsize=14.5)
+        ax.set_xlim(lo - 0.25 * thr, lo + 2.6 * thr); ax.set_ylim(-0.85, 0.5)
+        ax.set_yticks([]); ax.tick_params(length=0, labelsize=13)
+        for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
+        ax.spines["bottom"].set_position(("data", -0.85))
+        ax.set_title(name, loc="left", fontsize=15.5, color=INK, pad=4)
+    save(fig, "eval-noise-runs", pad=0.3)
+
 def fig_worth():
     # utility change when the agent took a part out, in the book of the day (results.tsv)
     parts = [("residual momentum", "T56", 1.473, 0.592), ("crash switch", "T27", 1.101, 0.622),
@@ -261,4 +282,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_keep(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_worth()

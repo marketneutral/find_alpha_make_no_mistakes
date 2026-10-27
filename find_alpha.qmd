@@ -597,18 +597,22 @@ $$
 
 $\overline{u}$: a fold utility averaged over the 50 deals. $\Delta$: against the best kept book. Eligibility binds once the best is eligible; the seed was not, and trial 2 made it so.
 
-**Where the two numbers come from:** the seed, scored eight times before the run.
-
-::: {.keep-table}
-| | eight calls | spread | the rule |
-|---|---|---:|---|
-| median fold | −0.099 to −0.076 | 0.023 | must rise by more than **0.03** |
-| worst fold | −1.025 to −0.899 | 0.126 | may fall by at most **0.13** |
-:::
+The two numbers are the evaluator's own noise on the seed, measured before the run: next slide.
 
 . . .
 
 Otherwise `git checkout <best> -- alpha.qex`. Either way the attempt is logged: claim, outcome, numbers.
+
+## Where 0.03 and 0.13 come from {.smaller}
+
+Before trial 1 I scored the seed eight times with `eval.py`. Same expression, same validation years; only the fifty random deals differed. The spread is the evaluator's noise on the seed.
+
+![](images/eval-noise-runs.svg){.r-stretch fig-align="center"}
+
+::: {.incremental}
+- **The thresholds are those spreads, rounded up.** A change must beat the best by more than one unchanged book's whole range; the worst fold may give back no more than its own.
+- **Fixed in `program.md` before trial 1, for all sixty trials.** The seed's baseline is the median of the eight. The agent applies the rule itself; `eval.py` only prints the numbers. Replayed from the notebook: sixty for sixty.
+:::
 
 ## Climb the median, hold the floor {.smaller}
 
@@ -628,7 +632,13 @@ Otherwise `git checkout <best> -- alpha.qex`. Either way the attempt is logged: 
 
 . . .
 
-[The bar was set on the seed. The noise grows with the score; hold that thought.]{.pq-note}
+[Both numbers were measured on the seed, where the noise is small. The noise grows with the score; hold that thought.]{.pq-note}
+
+## Sixty decisions, one map {.mid}
+
+![](images/alpha-keep-applied.svg){.r-stretch fig-align="center"}
+
+14 kept, 46 reset: 38 did not clear the bar, 7 fell through bar and floor together, none on the floor alone. Three gains inside the noise refused; five safer books refused; the tolerance let two through.
 
 ## The run
 
@@ -854,12 +864,6 @@ T38, earlier: ***"A safer book the keep rule does not reward."***
 - **The seed:** ±0.02 at 50 deals, inside the 0.03 keep bar. That is where the bar came from.
 - **The final book:** its folds disagree far more (0.20 to 3.15), so ±0.06. Near the top the keep rule is partly a coin flip. **T50 saw it: the same book, written two ways, scored 0.058 apart.**
 :::
-
-## Sixty decisions, one map {.mid}
-
-![](images/alpha-keep-applied.svg){.r-stretch fig-align="center"}
-
-14 kept, 46 reset: 38 did not clear the bar, 7 fell through bar and floor together, none on the floor alone. Three gains inside the noise refused; five safer books refused; the tolerance let two through.
 
 ## Act 4: what each part is worth
 
