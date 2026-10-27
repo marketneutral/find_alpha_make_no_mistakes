@@ -622,7 +622,9 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 Validation 2004-2017, test 2018 to Aug 2026. The return held; volatility rose (12% → 18%), so Sharpe fell by a third. The seed earned nothing over the same years.
 
-## Decay, or noise? {.smaller}
+## Is it real? Bayes has entered the chat {.smaller}
+
+![](images/bayes-shades.png){.absolute top="222" left="327" width="219" style="border-radius: 4px;"}
 
 ![](images/alpha-bayes.svg){width="85%"}
 
