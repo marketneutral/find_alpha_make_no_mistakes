@@ -77,7 +77,7 @@ Every alpha starts as a stated belief about markets:
 
 ::: {.incremental}
 - Testing it the usual way is a hodgepodge of pandas: rolling windows, index alignment, `axis=` arguments, warmup, missing data, and the care not to peek at tomorrow
-- None of that is the idea, and all of it is where the bugs live
+- Nothing about the idea; all potential bugs
 - **qex: the shortest path from "I think markets behave like this" to code that tests it**
 :::
 
@@ -418,6 +418,30 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 
 # "find alpha. make no mistakes." {.hang-quote}
 
+## Data and book {.mid}
+
+::: {.incremental}
+- **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, ADV ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
+- **Book construction**, the same for every expression: demean; scale to a gross of one, $\sum_i \lvert w_i \rvert = 1$; cap each name at $\lvert w_i \rvert \le 5\%$; repeat until all three hold
+- **Delay 1:** signal from data through the close of $t$, traded at the close of $t+1$
+- The agent chooses *which* stocks get weight, never how big the book is
+:::
+
+## The seed
+
+```qex
+let mom   = delay(returns(231), 21),
+    vol   = volatility(60),
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(score / vol, 10)
+```
+
+::: {.incremental}
+- 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
+- Validation Sharpe −0.25; **−1.96 in the crash state**
+- Loses 8 bps per dollar traded, before costs
+:::
+
 ## The experiment {.mid}
 
 ::: {.incremental}
@@ -465,35 +489,11 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - **Not a sandbox.** `python -c` could have opened `data/`. The rule against it is in `program.md`; the transcript is the check.
 :::
 
-## The result first
+## The augmented loop
 
-![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
+![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-Seed: −1%/yr on validation. Final: 15%/yr at Sharpe 1.26 on validation, **13.6%/yr at Sharpe 0.77 on the sealed test**.
-
-## Data and book {.mid}
-
-::: {.incremental}
-- **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, ADV ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
-- **Book construction**, the same for every expression: demean; scale to a gross of one, $\sum_i \lvert w_i \rvert = 1$; cap each name at $\lvert w_i \rvert \le 5\%$; repeat until all three hold
-- **Delay 1:** signal from data through the close of $t$, traded at the close of $t+1$
-- The agent chooses *which* stocks get weight, never how big the book is
-:::
-
-## The seed
-
-```qex
-let mom   = delay(returns(231), 21),
-    vol   = volatility(60),
-    score = group_demean(mom / vol, 'sector')
-in decay_linear(score / vol, 10)
-```
-
-::: {.incremental}
-- 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
-- Validation Sharpe −0.25; **−1.96 in the crash state**
-- Loses 8 bps per dollar traded, before costs
-:::
+What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never a price.**
 
 ## The score {.smaller}
 
@@ -591,7 +591,6 @@ $$
 - **Fifty deals is a 0.5% sample** of the 10,395.
 :::
 
-
 ## One deal is a noisy grade
 
 ![](images/eval-alldeals.svg){.r-stretch fig-align="center"}
@@ -603,121 +602,6 @@ One deal can grade the final book anywhere from 1.00 to 2.03. All 10,395 average
 ![](images/eval-noise.svg){.r-stretch fig-align="center"}
 
 Each bar: where 95% of calls land, around the score all 10,395 deals would give.
-
-## What the noise does to the keep rule
-
-::: {.incremental}
-- Every call reshuffles, so the same book scores a little differently each time. Averaging $N$ deals shrinks that by $1/\sqrt{N}$.
-- **The seed:** ±0.02 at 50 deals, inside the 0.03 keep bar. That is where the bar came from.
-- **The final book:** its folds disagree far more (0.20 to 3.15), so ±0.06. Near the top the keep rule is partly a coin flip. **T50 saw it: the same book, written two ways, scored 0.058 apart.**
-:::
-
-## The fix: grade every deal {.mid}
-
-::: {.incremental}
-- **A deal is cheap.** The P&L is computed once; a deal only re-slices it into six folds. Milliseconds.
-- **So grade all 10,395, every call.** The exact average: no noise, the same score every time.
-- The keep bar can then mean *any real improvement*, not *beat the noise*.
-- It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
-- The randomness was only ever a cheap way to estimate this average.
-:::
-
-## Why it is built this way {.mid}
-
-::: {.incremental}
-- **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
-- **Embargo:** 21 days purged at every block edge, so no rolling window or forward return straddles two folds
-- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
-- **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
-- **Many splits, not one:** no single split for sixty trials to learn. All of them are still 2004–2017.
-:::
-
-## What the deals do, and don't {.mid}
-
-::: {.incremental}
-- **They stop the agent learning one exam.** With a fixed split, sixty trials can climb that split's luck. Here a change only scores if it helps on most pairings of years (median) and hurts on none (worst). A change that only helps in 2008 barely moves the median.
-- **They cannot stop it learning one textbook.** Every deal re-slices the same fourteen years. Graded on all 10,395, the score is just a fixed summary of 2004–2017.
-- **Reshuffling the deck does not give you a new deck.** Only new data does: the sealed 2018–2026 period, used once, and a count of how many hands were played.
-:::
-
-## Two kinds of noise {.mid}
-
-| noise | where it comes from | size, final book | fixed by |
-|---|---|---|---|
-| **evaluator** | which 50 deals were drawn | ±0.06 utility | more deals; none at 10,395 |
-| **history** | 2004–2017 is one draw of history | ±0.27 Sharpe, 1/√14 | only new data |
-
-. . .
-
-Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
-
-## The winner's curse {.mid}
-
-Take the best of $k$ noisy estimates, each with noise $\sigma$. The winner is inflated by about
-
-$$
-\mathbb{E}\Big[\max_{i \le k} \varepsilon_i\Big] \;\approx\; \sigma \sqrt{2 \ln k}
-$$
-
-::: {.incremental}
-- History noise $\sigma \approx 0.27$ Sharpe, $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
-- That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective $k$ is far smaller.
-- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The deflated Sharpe (Bailey and López de Prado) is this calculation done properly.
-:::
-
-## Information theory: what the choice knows {.smaller}
-
-The overfitting gap is bounded by the **mutual information** between the sample and what you chose from it (Russo and Zou 2016; Xu and Raginsky 2017):
-
-$$
-\Big|\, \mathbb{E}\big[\,\text{in-sample} - \text{out-of-sample}\,\big] \Big| \;\le\; \sqrt{\frac{2\sigma^2\; I(S;\, W)}{n}}
-$$
-
-$S$: the data. $W$: the strategy chosen. $n$: the sample size. A choice that carries few bits about this particular history cannot have fit it much.
-
-::: {.incremental}
-- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never a price**.
-- **Few, small steps.** Sixty one-line edits in a closed grammar.
-- **A threshold.** A keep must clear the noise, so small, lucky wins are not kept.
-:::
-
-## Information theory: the reusable holdout {.mid}
-
-Every look at a hold-out, acted on, leaks information about it. After enough adaptive looks, the hold-out is part of the training set (Dwork, Feldman, Hardt, Pitassi, Reingold and Roth 2015).
-
-::: {.incremental}
-- Their fix, **Thresholdout**: answer from the hold-out only when it disagrees with the training data by more than a threshold, and add noise to the answer
-- The evaluator is a crude version: random deals add noise, and the keep bar is a threshold
-- Each keep/reset is about one bit. Sixty trials leak at most tens of bits through the keep decisions; the printed numbers leak more.
-- Why the test period is run **once**: a second look would make it one more hold-out the loop has seen
-:::
-
-## Information theory: Occam's razor, in bits {.mid}
-
-If a strategy takes $L(h)$ bits to write down, then with probability $1 - \delta$ (the Occam bound):
-
-$$
-\text{in-sample} - \text{out-of-sample} \;\le\; \sqrt{\frac{L(h)\,\ln 2 \;+\; \ln(1/\delta)}{2n}}
-$$
-
-::: {.incremental}
-- Shorter descriptions overfit less. A qex expression **is** a short description.
-- The complexity charge, 0.003 per node, is a price per symbol: minimum description length, AIC in spirit
-- The final book is 32 nodes, a few hundred bits. A pandas notebook of the same idea is thousands of lines: no bound to speak of.
-- The closed grammar is not just convenient for the agent. It caps how much the strategy can encode about 2004–2017.
-:::
-
-## Overfitting defences, in one table {.mid}
-
-| defence | what it limits |
-|---|---|
-| claim before the test | fishing: the prediction is fixed before the score |
-| median and worst over many splits | fitting one stretch of history |
-| keep bar at the noise | lucky wins; bits leaked per trial |
-| complexity charge, closed grammar | description length, $L(h)$ |
-| deflated Sharpe | the winner's curse over $N$ trials |
-| sealed test, run once | fitting the whole fourteen years |
-
 
 ## The keep rule
 
@@ -744,12 +628,6 @@ $$
 $$
 
 $N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows. It informs the agent; it does not decide keeps.
-
-## The augmented loop
-
-![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
-
-What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never a price.**
 
 ## The run
 
@@ -962,6 +840,14 @@ The vol rule switches off when 1-month vol falls back under the inflated 1-year 
 
 T38, earlier: ***"A safer book the keep rule does not reward."***
 
+## What the noise does to the keep rule
+
+::: {.incremental}
+- Every call reshuffles, so the same book scores a little differently each time. Averaging $N$ deals shrinks that by $1/\sqrt{N}$.
+- **The seed:** ±0.02 at 50 deals, inside the 0.03 keep bar. That is where the bar came from.
+- **The final book:** its folds disagree far more (0.20 to 3.15), so ±0.06. Near the top the keep rule is partly a coin flip. **T50 saw it: the same book, written two ways, scored 0.058 apart.**
+:::
+
 ## Act 4: what each part is worth
 
 ![](images/alpha-worth.svg){.r-stretch fig-align="center"}
@@ -1048,6 +934,22 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. The return held; volatility ro
 
 [Run as recorded. The universe screen later turned out to leak future share splits into market cap; re-scored on corrected data, the test Sharpe is 0.76 instead of 0.77.]{.pq-note}
 
+## The crash switch, out of sample
+
+![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
+
+2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. No test-period bear market cost more than 5%.
+
+## The drawdown it did not see {.mid}
+
+::: {.incremental}
+- Mid-June to late July 2026: **−26% in six weeks**, unrecovered at the end of the data
+- The switch sat at full momentum: the market was calm and up on the year
+- The loss was on the **long** side: last year's winners unwinding (−20% longs, −5% shorts; one name alone cost 4.5%)
+- Daniel–Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
+- The cube makes it worse: ~2,100 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
+:::
+
 ## Is it real? Bayes has entered the chat {.smaller}
 
 ![](images/bayes-shades.png){.absolute top="222" left="327" width="219" style="border-radius: 4px;"}
@@ -1083,21 +985,101 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 
 [8.6 years cannot tell a little decay from bad luck. Both fit, and both leave a real, positive edge.]{.pq-note}
 
-## The crash switch, out of sample
-
-![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
-
-2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. No test-period bear market cost more than 5%.
-
-## The drawdown it did not see {.mid}
+## Why it is built this way {.mid}
 
 ::: {.incremental}
-- Mid-June to late July 2026: **−26% in six weeks**, unrecovered at the end of the data
-- The switch sat at full momentum: the market was calm and up on the year
-- The loss was on the **long** side: last year's winners unwinding (−20% longs, −5% shorts; one name alone cost 4.5%)
-- Daniel–Moskowitz crashes are losers rebounding after a fall; a winners' unwind in a calm market is a different event
-- The cube makes it worse: ~2,100 names held, but the effective number of names, $1/\sum_i w_i^2$, is about 100
+- **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
+- **Embargo:** 21 days purged at every block edge, so no rolling window or forward return straddles two folds
+- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
+- **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
+- **Many splits, not one:** no single split for sixty trials to learn. All of them are still 2004–2017.
 :::
+
+## What the deals do, and don't {.mid}
+
+::: {.incremental}
+- **They stop the agent learning one exam.** With a fixed split, sixty trials can climb that split's luck. Here a change only scores if it helps on most pairings of years (median) and hurts on none (worst). A change that only helps in 2008 barely moves the median.
+- **They cannot stop it learning one textbook.** Every deal re-slices the same fourteen years. Graded on all 10,395, the score is just a fixed summary of 2004–2017.
+- **Reshuffling the deck does not give you a new deck.** Only new data does: the sealed 2018–2026 period, used once, and a count of how many hands were played.
+:::
+
+## Two kinds of noise {.mid}
+
+| noise | where it comes from | size, final book | fixed by |
+|---|---|---|---|
+| **evaluator** | which 50 deals were drawn | ±0.06 utility | more deals; none at 10,395 |
+| **history** | 2004–2017 is one draw of history | ±0.27 Sharpe, 1/√14 | only new data |
+
+. . .
+
+Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
+
+## The winner's curse {.mid}
+
+Take the best of $k$ noisy estimates, each with noise $\sigma$. The winner is inflated by about
+
+$$
+\mathbb{E}\Big[\max_{i \le k} \varepsilon_i\Big] \;\approx\; \sigma \sqrt{2 \ln k}
+$$
+
+::: {.incremental}
+- History noise $\sigma \approx 0.27$ Sharpe, $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
+- That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective $k$ is far smaller.
+- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The deflated Sharpe (Bailey and López de Prado) is this calculation done properly.
+:::
+
+## Information theory: what the choice knows {.smaller}
+
+The overfitting gap is bounded by the **mutual information** between the sample and what you chose from it (Russo and Zou 2016; Xu and Raginsky 2017):
+
+$$
+\Big|\, \mathbb{E}\big[\,\text{in-sample} - \text{out-of-sample}\,\big] \Big| \;\le\; \sqrt{\frac{2\sigma^2\; I(S;\, W)}{n}}
+$$
+
+$S$: the data. $W$: the strategy chosen. $n$: the sample size. A choice that carries few bits about this particular history cannot have fit it much.
+
+::: {.incremental}
+- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never a price**.
+- **Few, small steps.** Sixty one-line edits in a closed grammar.
+- **A threshold.** A keep must clear the noise, so small, lucky wins are not kept.
+:::
+
+## Information theory: the reusable holdout {.mid}
+
+Every look at a hold-out, acted on, leaks information about it. After enough adaptive looks, the hold-out is part of the training set (Dwork, Feldman, Hardt, Pitassi, Reingold and Roth 2015).
+
+::: {.incremental}
+- Their fix, **Thresholdout**: answer from the hold-out only when it disagrees with the training data by more than a threshold, and add noise to the answer
+- The evaluator is a crude version: random deals add noise, and the keep bar is a threshold
+- Each keep/reset is about one bit. Sixty trials leak at most tens of bits through the keep decisions; the printed numbers leak more.
+- Why the test period is run **once**: a second look would make it one more hold-out the loop has seen
+:::
+
+## Information theory: Occam's razor, in bits {.mid}
+
+If a strategy takes $L(h)$ bits to write down, then with probability $1 - \delta$ (the Occam bound):
+
+$$
+\text{in-sample} - \text{out-of-sample} \;\le\; \sqrt{\frac{L(h)\,\ln 2 \;+\; \ln(1/\delta)}{2n}}
+$$
+
+::: {.incremental}
+- Shorter descriptions overfit less. A qex expression **is** a short description.
+- The complexity charge, 0.003 per node, is a price per symbol: minimum description length, AIC in spirit
+- The final book is 32 nodes, a few hundred bits. A pandas notebook of the same idea is thousands of lines: no bound to speak of.
+- The closed grammar is not just convenient for the agent. It caps how much the strategy can encode about 2004–2017.
+:::
+
+## Overfitting defences, in one table {.mid}
+
+| defence | what it limits |
+|---|---|
+| claim before the test | fishing: the prediction is fixed before the score |
+| median and worst over many splits | fitting one stretch of history |
+| keep bar at the noise | lucky wins; bits leaked per trial |
+| complexity charge, closed grammar | description length, $L(h)$ |
+| deflated Sharpe | the winner's curse over $N$ trials |
+| sealed test, run once | fitting the whole fourteen years |
 
 ## What I learned {.mid}
 
@@ -1107,6 +1089,16 @@ BEST (Kruschke 2013) on weekly P&L: $y_{p,t} \sim t_\nu(\mu_p, \sigma_p)$, $p \i
 - **The keep rule cannot accept a pure worst-case improvement**, a strange blind spot for a crash problem
 - **The loop finds a local optimum, and which one depends on its path.** The hedge paid at T24 and paid again when removed at T54. Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
 - **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999–⁠2003, nearly halved the score on 2004–⁠2017.
+:::
+
+## Next time: grade every deal {.mid}
+
+::: {.incremental}
+- **A deal is cheap.** The P&L is computed once; a deal only re-slices it into six folds. Milliseconds.
+- **So grade all 10,395, every call.** The exact average: no noise, the same score every time.
+- The keep bar can then mean *any real improvement*, not *beat the noise*.
+- It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
+- The randomness was only ever a cheap way to estimate this average.
 :::
 
 ## Conclusions {.mid}
