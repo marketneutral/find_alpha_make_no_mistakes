@@ -56,5 +56,6 @@ $presentation-h2-font-size: 1.3em;
 // between full size and .smaller
 .reveal .slides section.mid { font-size: 0.8em; }
 .reveal .slides section.mid h2 { font-size: 1.625em; }
-// signal to book: the weight column, the expression's output, on the code panel's background
-.reveal .book-weights th:nth-child(4), .reveal .book-weights td:nth-child(4) { background: #131927; }
+// signal to book: the weight column, the expression's output, in a wash of the accent green
+.reveal .book-weights th:nth-child(4), .reveal .book-weights td:nth-child(4) { background: rgba(62, 232, 122, 0.13); }
+.reveal .book-weights th:nth-child(4) { color: #3ee87a; }
