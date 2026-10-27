@@ -70,3 +70,8 @@ $presentation-h2-font-size: 1.3em;
 // phones in portrait get reveal's scroll view, where .r-stretch computes a height of 0: give images their natural size
 .reveal-viewport.reveal-scroll .reveal .r-stretch { height: auto !important; width: 100%; max-height: none; object-fit: contain; }
 .reveal .belief-left { padding-right: 1.4em; box-sizing: border-box; }
+.reveal .lab-table table { font-size: 0.6em; }
+.reveal .lab-table td, .reveal .lab-table th { padding: 0.28em 0.7em; }
+.reveal .lab-table col { width: auto !important; }
+.reveal .lab-table table { table-layout: auto; width: 100%; }
+.reveal .lab-table td:not(:nth-child(2)), .reveal .lab-table th:not(:nth-child(2)) { white-space: nowrap; }

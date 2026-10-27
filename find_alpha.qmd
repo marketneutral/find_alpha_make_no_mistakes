@@ -467,11 +467,30 @@ in decay_linear(score / vol, 10)
 - **The problem:** earn a momentum premium, and avoid the crashes (Daniel and Moskowitz 2016)
 - **The artifact:** one qex expression, `alpha.qex`
 - **The seed:** textbook momentum that *loses money* on the scored period
-- **The beliefs:** twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period
+- **The beliefs:** twelve, most grounded in a paper with a mechanism and a falsifiable prediction; every paper predates the test period
 - **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
+- **Enforced, not trusted:** a tool allowlist means the agent cannot run the test, read the data, or see earlier runs. An allowlist, not a sandbox: the transcript is the check (appendix).
 :::
 
-## Twelve beliefs: the firm's view, written down {.smaller}
+## The lab: same shape as Karpathy's
+
+::: {.lab-table}
+| file | what it is | the agent | Karpathy's |
+|---|---|---|---|
+| `program.md` | the problem: goal, beliefs, book, rules | reads | `program.md` |
+| `alpha.qex` | one qex expression, the only thing that changes | **edits** | `train.py` |
+| `eval.py`, `data/` | the frozen evaluator, 2004–⁠2017 only | runs, 120 s a trial | `prepare.py` |
+| `explore.py` | prices and helpers, 1999–⁠2003 | runs freely | |
+| `results.tsv` | the notebook: claim, outcome, scores | **writes** | `results.tsv` |
+| `notes.md`, `summary.md` | working notes; the report to the human | **writes** | |
+| `test.py` | 2018–⁠2026, sealed | never; I ran it once | |
+:::
+
+. . .
+
+[Two additions Karpathy did not need: a period the agent may look at, and one it can never reach.]{.pq-note}
+
+## Twelve beliefs codified in `program.md` {.smaller}
 
 The agent starts from these and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
 
@@ -508,39 +527,6 @@ The agent starts from these and may test, combine, or abandon any of them, or go
 . . .
 
 [Hold on to that prediction. Trial 1 tests the hard switch; trial 22 tests the soft one.]{.pq-note}
-
-## Keeping it honest: permissions {.mid}
-
-`claude -p --permission-mode dontAsk`: any tool call off the allowlist is denied, and no one is there to say yes.
-
-::: columns
-::: {.column width="50%" .perm-allow}
-**Allowed**
-
-- edit `alpha.qex`, `results.tsv`, `notes.md`, `summary.md`
-- run `./trial.sh`: the evaluator, 120 s budget
-- run `explore.py`: 1999–2003 only
-- `git add`, `commit`, `log`, `diff`
-- `git checkout <best> -- alpha.qex`, the reset
-:::
-::: {.column width="50%" .perm-deny}
-**Denied**
-
-- `test.py`, the sealed period
-- editing `eval.py`, `data/`, anything else
-- `git push`, `switch`, `reflog`
-- other branches, tags, `master`
-- `archive/` and `logs/`: earlier runs
-:::
-:::
-
-## Keeping it honest: the audit
-
-::: {.incremental}
-- **A clean slate.** The run starts on a fresh orphan branch: no history, no earlier runs, no run log in the README.
-- **The transcript.** 490 tool calls, 11 denied: scratch files, and one path the allowlist did not match. Every `python -c` loaded 1998–2003 only.
-- **Not a sandbox.** `python -c` could have opened `data/`. The rule against it is in `program.md`; the transcript is the check.
-:::
 
 ## The augmented loop
 
@@ -1251,4 +1237,37 @@ $$
 - **The evaluator does exactly the second count:** a random line-up of 12 (`rng.permutation(12)`), paired in order. Each deal comes from 46,080 line-ups, so every deal is equally likely.
 - **Any two blocks share a fold on 1 deal in 11:** block 1's partner is one of 11, equally likely.
 - **Fifty deals is a 0.5% sample** of the 10,395.
+:::
+
+## Keeping it honest: permissions {.mid}
+
+`claude -p --permission-mode dontAsk`: any tool call off the allowlist is denied, and no one is there to say yes.
+
+::: columns
+::: {.column width="50%" .perm-allow}
+**Allowed**
+
+- edit `alpha.qex`, `results.tsv`, `notes.md`, `summary.md`
+- run `./trial.sh`: the evaluator, 120 s budget
+- run `explore.py`: 1999–2003 only
+- `git add`, `commit`, `log`, `diff`
+- `git checkout <best> -- alpha.qex`, the reset
+:::
+::: {.column width="50%" .perm-deny}
+**Denied**
+
+- `test.py`, the sealed period
+- editing `eval.py`, `data/`, anything else
+- `git push`, `switch`, `reflog`
+- other branches, tags, `master`
+- `archive/` and `logs/`: earlier runs
+:::
+:::
+
+## Keeping it honest: the audit
+
+::: {.incremental}
+- **A clean slate.** The run starts on a fresh orphan branch: no history, no earlier runs, no run log in the README.
+- **The transcript.** 490 tool calls, 11 denied: scratch files, and one path the allowlist did not match. Every `python -c` loaded 1998–2003 only.
+- **Not a sandbox.** `python -c` could have opened `data/`. The rule against it is in `program.md`; the transcript is the check.
 :::
