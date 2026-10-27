@@ -67,3 +67,5 @@ $presentation-h2-font-size: 1.3em;
 // inline code never breaks inside itself
 .reveal p code, .reveal li code { white-space: nowrap; }
 .reveal .slides section.smaller h2 { font-size: 1.625em; }
+// phones in portrait get reveal's scroll view, where .r-stretch computes a height of 0: give images their natural size
+.reveal-viewport.reveal-scroll .reveal .r-stretch { height: auto !important; width: 100%; max-height: none; object-fit: contain; }
