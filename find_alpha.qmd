@@ -427,6 +427,16 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - The agent chooses *which* stocks get weight, never how big the book is
 :::
 
+## Three periods, never mixed
+
+![](images/alpha-periods.svg){width="100%"}
+
+::: {.incremental}
+- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything, through `explore.py`.
+- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary numbers, never a price.
+- **Test, 2018 to Aug 2026.** Sealed: the evaluator never loads it. I ran it once, after trial 60.
+:::
+
 ## The seed
 
 ```qex
@@ -449,10 +459,6 @@ in decay_linear(score / vol, 10)
 - **The artifact:** one qex expression, `alpha.qex`
 - **The seed:** textbook momentum that *loses money* on the scored period
 - **The beliefs:** twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period
-- **The periods:**
-  - inspection 1999–⁠2003: the agent may look
-  - validation 2004–⁠2017: **the agent only sees summary numbers**
-  - test 2018 to Aug 2026: sealed; I ran it once, after trial 60
 - **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
 :::
 

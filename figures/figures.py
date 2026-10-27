@@ -42,6 +42,24 @@ def deal(rng):
     order = rng.permutation(12)
     return {int(b): k + 1 for k in range(6) for b in order[k::6]}
 
+def fig_periods():
+    # the three cuts of the data, and what the agent may do with each
+    P = [("inspection", 1999.0, 2004.0, PANEL, ACC, "the agent may look:\nprices, explore.py"),
+         ("validation", 2004.0, 2018.0, ACC, BG, "scored by eval.py only:\nthe agent sees summary numbers"),
+         ("test", 2018.0, 2026.61, PANEL, INK2, "sealed: not loaded by eval.py;\nrun once, by me, after trial 60")]
+    fig, ax = plt.subplots(figsize=(11.0, 2.0))
+    for name, a, b, face, ink, note in P:
+        ax.add_patch(FancyBboxPatch((a + 0.04, 0), b - a - 0.08, 1, boxstyle="round,pad=0,rounding_size=0.12",
+                                    fc=face, ec=ACC if name != "test" else MUTED, lw=1.2,
+                                    hatch="////" if name == "test" else None))
+        ax.text((a + b) / 2, 0.5, name, ha="center", va="center", color=ink, fontsize=13 if name == "inspection" else 17, fontweight="bold",
+                bbox=dict(fc=PANEL, ec="none", pad=3) if name == "test" else None)
+    for yr, lab in ((1999, "1999"), (2004, "2004"), (2018, "2018"), (2026.61, "Aug 2026")):
+        ax.text(yr, 1.18, lab, ha="center", va="bottom", color=MUTED, fontsize=13)
+        ax.plot([yr, yr], [1.04, 1.14], color=RULE, lw=1.2)
+    ax.set_xlim(1998.3, 2027.3); ax.set_ylim(-0.1, 1.6); ax.axis("off")
+    save(fig, "alpha-periods")
+
 def fig_deals():
     rng = np.random.default_rng(7)
     rows = [("12 blocks", None), ("deal 1", DEAL1), ("deal 2", deal(rng)), ("deal 3", deal(rng))]
@@ -176,4 +194,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_deals(); fig_folds(); fig_noise(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_worth()
