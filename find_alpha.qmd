@@ -138,7 +138,7 @@ Tickers across the columns, dates down the rows. Real closes, March 2025:
 | Mar 7 | 239.07 | 393.31 | 109.02 | 156.34 | 242.28 |
 | Mar 10 | 227.48 | 380.16 | 111.80 | 157.57 | 232.22 |
 
-Every operator works down the columns (**time series**), across the rows (**cross-sectional**), or across the rows within a bucket (**group**).
+*Bold: the three CVX closes averaged on the next slide.* Every operator works down the columns (**time series**), across the rows (**cross-sectional**), or across the rows within a bucket (**group**).
 
 ## Time series: down each column {.smaller}
 
@@ -155,7 +155,7 @@ ts_mean(close(), 3)
 | Mar 7 | 236.71 | 397.07 | 107.36 | 153.37 | 246.78 |
 | Mar 10 | 233.96 | 390.12 | 109.48 | 155.62 | 240.35 |
 
-CVX on March 5: $(153.09 + 152.00 + 150.81)/3 = 151.97$. No other stock enters. The first two rows are warmup, and warmup is the engine's job.
+CVX on March 5, the three bold closes from the last slide: $(153.09 + 152.00 + 150.81)/3 = 151.97$. No other stock enters. The first two rows are warmup, and warmup is the engine's job.
 
 ## Cross-sectional: across each row {.smaller}
 
@@ -167,6 +167,7 @@ rank(returns(1))
 ::: {.column width="50%"}
 | ret % | AAPL | MSFT | XOM | CVX | JPM |
 |---|---:|---:|---:|---:|---:|
+| 3/3 | – | – | – | – | – |
 | 3/4 | −0.88 | +0.03 | −0.20 | −0.71 | −3.98 |
 | 3/5 | −0.08 | +3.19 | −1.95 | −0.78 | +0.51 |
 | 3/6 | −0.17 | −1.03 | +2.07 | +1.42 | −1.98 |
@@ -176,6 +177,7 @@ rank(returns(1))
 ::: {.column width="50%"}
 | rank | AAPL | MSFT | XOM | CVX | JPM |
 |---|---:|---:|---:|---:|---:|
+| 3/3 | – | – | – | – | – |
 | 3/4 | 0.4 | 1.0 | 0.8 | 0.6 | 0.2 |
 | 3/5 | 0.6 | 1.0 | 0.2 | 0.4 | 0.8 |
 | 3/6 | 0.6 | 0.4 | 1.0 | 0.8 | 0.2 |
@@ -184,7 +186,7 @@ rank(returns(1))
 :::
 :::
 
-`rank` returns each stock's percentile within the day, 0 to 1: with five stocks, 0.2 to 1.0. March 10 was a tech sell-off: AAPL worst (0.2), XOM best (1.0). A rank keeps the order and throws away the size, so one outlier cannot dominate.
+March 3 is empty: a return needs the previous close. `rank` returns each stock's percentile within the day, 0 to 1: with five stocks, 0.2 to 1.0. March 10 was a tech sell-off: AAPL worst (0.2), XOM best (1.0). A rank keeps the order and throws away the size, so one outlier cannot dominate.
 
 ## Group: across the row, within a bucket {.smaller}
 
@@ -194,6 +196,7 @@ group_demean(returns(1), 'sector')
 
 | group_demean(…), % | AAPL | MSFT | XOM | CVX | JPM |
 |---|---:|---:|---:|---:|---:|
+| Mar 3 | – | – | – | – | – |
 | Mar 4 | −0.46 | +0.46 | +0.25 | −0.25 | 0.00 |
 | Mar 5 | −1.64 | +1.64 | −0.58 | +0.58 | 0.00 |
 | Mar 6 | +0.43 | −0.43 | +0.32 | −0.32 | 0.00 |
