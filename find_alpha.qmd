@@ -569,7 +569,7 @@ $$
 ::: {.incremental}
 - **Run once.** The expression runs day by day over 2004–2017: one continuous series of daily P&L. Nothing is fit. The evaluator only chooses *which days count*.
 - **Cut.** The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.
-- **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each.
+- **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each: 10,395 possible deals (the count is in the appendix).
 - **Grade.** Score each fold on its own days: six utilities. Keep the **median** and the **worst**.
 - **Repeat.** 50 deals, fixed in `eval.py`. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.
 :::
@@ -593,64 +593,6 @@ The final book, deal 1, as the agent saw it: median **1.54**, worst **0.20**. Ov
 - **Embargo:** 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.
 - **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not count.
 - **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
-:::
-
-## How many ways are there to deal? {.mid}
-
-Start small. Four blocks, A B C D, into two pairs:
-
-$$
-\{AB,\ CD\} \qquad \{AC,\ BD\} \qquad \{AD,\ BC\} \qquad \Rightarrow\ 3 \text{ ways}
-$$
-
-::: {.incremental}
-- A must go with someone: 3 choices. Then the other two are forced. $3 \times 1 = 3$.
-- Twelve blocks, the same way: block 1 picks a partner from the other 11. The lowest block still alone picks from the 9 left, then 7, 5, 3, 1.
-:::
-
-. . .
-
-$$
-\underbrace{11}_{\text{block 1}} \times \underbrace{9}_{\text{next}} \times \underbrace{7}_{\text{next}} \times \underbrace{5}_{\text{next}} \times \underbrace{3}_{\text{next}} \times \underbrace{1}_{\text{last}} \;=\; 11!! \;=\; 10{,}395
-$$
-
-[$n!!$, the *double factorial*: multiply down by twos. $11!! = 11 \cdot 9 \cdot 7 \cdot 5 \cdot 3 \cdot 1$. Not $(11!)!$.]{.pq-note}
-
-## Counting it a second way {.mid}
-
-Line up all 12 blocks, then pair them off in order: positions 1–2, 3–4, …, 11–12.
-
-$$
-12! = 479{,}001{,}600 \text{ line-ups}
-$$
-
-::: {.incremental}
-- That counts every deal too many times. Swapping the two blocks in a pair gives the same deal: $\times 2$ for each of 6 pairs, $2^6 = 64$.
-- Shuffling the order of the six pairs gives the same deal: $6! = 720$.
-:::
-
-. . .
-
-$$
-\frac{12!}{2^6 \cdot 6!} \;=\; \frac{479{,}001{,}600}{46{,}080} \;=\; 10{,}395
-$$
-
-## The same answer, and what it buys {.mid}
-
-Both counts agree for any even number of things $2n$ paired off:
-
-$$
-\frac{(2n)!}{2^n\, n!} \;=\; (2n-1)(2n-3)\cdots 3 \cdot 1 \;=\; (2n-1)!!
-$$
-
-$$
-\begin{array}{c|cccccc} \text{blocks} & 2 & 4 & 6 & 8 & 10 & 12 \\ \hline \text{deals} & 1 & 3 & 15 & 105 & 945 & 10{,}395 \end{array}
-$$
-
-::: {.incremental}
-- **The evaluator does exactly the second count:** a random line-up of 12 (`rng.permutation(12)`), paired in order. Each deal comes from 46,080 line-ups, so every deal is equally likely.
-- **Any two blocks share a fold on 1 deal in 11:** block 1's partner is one of 11, equally likely.
-- **Fifty deals is a 0.5% sample** of the 10,395.
 :::
 
 ## One deal is a noisy grade
@@ -1250,3 +1192,63 @@ $$
 ## Thank You!
 
 - Questions? Comments?
+
+# Appendix
+
+## How many ways are there to deal? {.mid}
+
+Start small. Four blocks, A B C D, into two pairs:
+
+$$
+\{AB,\ CD\} \qquad \{AC,\ BD\} \qquad \{AD,\ BC\} \qquad \Rightarrow\ 3 \text{ ways}
+$$
+
+::: {.incremental}
+- A must go with someone: 3 choices. Then the other two are forced. $3 \times 1 = 3$.
+- Twelve blocks, the same way: block 1 picks a partner from the other 11. The lowest block still alone picks from the 9 left, then 7, 5, 3, 1.
+:::
+
+. . .
+
+$$
+\underbrace{11}_{\text{block 1}} \times \underbrace{9}_{\text{next}} \times \underbrace{7}_{\text{next}} \times \underbrace{5}_{\text{next}} \times \underbrace{3}_{\text{next}} \times \underbrace{1}_{\text{last}} \;=\; 11!! \;=\; 10{,}395
+$$
+
+[$n!!$, the *double factorial*: multiply down by twos. $11!! = 11 \cdot 9 \cdot 7 \cdot 5 \cdot 3 \cdot 1$. Not $(11!)!$.]{.pq-note}
+
+## Counting it a second way {.mid}
+
+Line up all 12 blocks, then pair them off in order: positions 1–2, 3–4, …, 11–12.
+
+$$
+12! = 479{,}001{,}600 \text{ line-ups}
+$$
+
+::: {.incremental}
+- That counts every deal too many times. Swapping the two blocks in a pair gives the same deal: $\times 2$ for each of 6 pairs, $2^6 = 64$.
+- Shuffling the order of the six pairs gives the same deal: $6! = 720$.
+:::
+
+. . .
+
+$$
+\frac{12!}{2^6 \cdot 6!} \;=\; \frac{479{,}001{,}600}{46{,}080} \;=\; 10{,}395
+$$
+
+## The same answer, and what it buys {.mid}
+
+Both counts agree for any even number of things $2n$ paired off:
+
+$$
+\frac{(2n)!}{2^n\, n!} \;=\; (2n-1)(2n-3)\cdots 3 \cdot 1 \;=\; (2n-1)!!
+$$
+
+$$
+\begin{array}{c|cccccc} \text{blocks} & 2 & 4 & 6 & 8 & 10 & 12 \\ \hline \text{deals} & 1 & 3 & 15 & 105 & 945 & 10{,}395 \end{array}
+$$
+
+::: {.incremental}
+- **The evaluator does exactly the second count:** a random line-up of 12 (`rng.permutation(12)`), paired in order. Each deal comes from 46,080 line-ups, so every deal is equally likely.
+- **Any two blocks share a fold on 1 deal in 11:** block 1's partner is one of 11, equally likely.
+- **Fifty deals is a 0.5% sample** of the 10,395.
+:::

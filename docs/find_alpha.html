@@ -1939,7 +1939,7 @@ in decay_linear(score / vol, 10)</code></pre>
 <ul>
 <li class="fragment"><strong>Run once.</strong> The expression runs day by day over 2004–2017: one continuous series of daily P&amp;L. Nothing is fit. The evaluator only chooses <em>which days count</em>.</li>
 <li class="fragment"><strong>Cut.</strong> The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.</li>
-<li class="fragment"><strong>Deal.</strong> Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each.</li>
+<li class="fragment"><strong>Deal.</strong> Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each: 10,395 possible deals (the count is in the appendix).</li>
 <li class="fragment"><strong>Grade.</strong> Score each fold on its own days: six utilities. Keep the <strong>median</strong> and the <strong>worst</strong>.</li>
 <li class="fragment"><strong>Repeat.</strong> 50 deals, fixed in <code>eval.py</code>. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.</li>
 </ul>
@@ -1961,54 +1961,6 @@ in decay_linear(score / vol, 10)</code></pre>
 <li class="fragment"><strong>Embargo:</strong> 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.</li>
 <li class="fragment"><strong>Median fold:</strong> no single stretch can carry the score. The final book’s 3.15, the fold with 2008, does not count.</li>
 <li class="fragment"><strong>Worst fold:</strong> the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.</li>
-</ul>
-</section>
-<section id="how-many-ways-are-there-to-deal" class="slide level2 mid">
-<h2>How many ways are there to deal?</h2>
-<p>Start small. Four blocks, A B C D, into two pairs:</p>
-<p><span class="math display">
-\{AB,\ CD\} \qquad \{AC,\ BD\} \qquad \{AD,\ BC\} \qquad \Rightarrow\ 3 \text{ ways}
-</span></p>
-<ul>
-<li class="fragment">A must go with someone: 3 choices. Then the other two are forced. <span class="math inline">3 \times 1 = 3</span>.</li>
-<li class="fragment">Twelve blocks, the same way: block 1 picks a partner from the other 11. The lowest block still alone picks from the 9 left, then 7, 5, 3, 1.</li>
-</ul>
-<div class="fragment">
-<p><span class="math display">
-\underbrace{11}_{\text{block 1}} \times \underbrace{9}_{\text{next}} \times \underbrace{7}_{\text{next}} \times \underbrace{5}_{\text{next}} \times \underbrace{3}_{\text{next}} \times \underbrace{1}_{\text{last}} \;=\; 11!! \;=\; 10{,}395
-</span></p>
-<p><span class="pq-note"><span class="math inline">n!!</span>, the <em>double factorial</em>: multiply down by twos. <span class="math inline">11!! = 11 \cdot 9 \cdot 7 \cdot 5 \cdot 3 \cdot 1</span>. Not <span class="math inline">(11!)!</span>.</span></p>
-</div>
-</section>
-<section id="counting-it-a-second-way" class="slide level2 mid">
-<h2>Counting it a second way</h2>
-<p>Line up all 12 blocks, then pair them off in order: positions 1–2, 3–4, …, 11–12.</p>
-<p><span class="math display">
-12! = 479{,}001{,}600 \text{ line-ups}
-</span></p>
-<ul>
-<li class="fragment">That counts every deal too many times. Swapping the two blocks in a pair gives the same deal: <span class="math inline">\times 2</span> for each of 6 pairs, <span class="math inline">2^6 = 64</span>.</li>
-<li class="fragment">Shuffling the order of the six pairs gives the same deal: <span class="math inline">6! = 720</span>.</li>
-</ul>
-<div class="fragment">
-<p><span class="math display">
-\frac{12!}{2^6 \cdot 6!} \;=\; \frac{479{,}001{,}600}{46{,}080} \;=\; 10{,}395
-</span></p>
-</div>
-</section>
-<section id="the-same-answer-and-what-it-buys" class="slide level2 mid">
-<h2>The same answer, and what it buys</h2>
-<p>Both counts agree for any even number of things <span class="math inline">2n</span> paired off:</p>
-<p><span class="math display">
-\frac{(2n)!}{2^n\, n!} \;=\; (2n-1)(2n-3)\cdots 3 \cdot 1 \;=\; (2n-1)!!
-</span></p>
-<p><span class="math display">
-\begin{array}{c|cccccc} \text{blocks} &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 \\ \hline \text{deals} &amp; 1 &amp; 3 &amp; 15 &amp; 105 &amp; 945 &amp; 10{,}395 \end{array}
-</span></p>
-<ul>
-<li class="fragment"><strong>The evaluator does exactly the second count:</strong> a random line-up of 12 (<code>rng.permutation(12)</code>), paired in order. Each deal comes from 46,080 line-ups, so every deal is equally likely.</li>
-<li class="fragment"><strong>Any two blocks share a fold on 1 deal in 11:</strong> block 1’s partner is one of 11, equally likely.</li>
-<li class="fragment"><strong>Fifty deals is a 0.5% sample</strong> of the 10,395.</li>
 </ul>
 </section>
 <section id="one-deal-is-a-noisy-grade" class="slide level2">
@@ -2731,6 +2683,59 @@ in decay_linear(power(a, 3), 3)</code></pre>
 <h2>Thank You!</h2>
 <ul>
 <li>Questions? Comments?</li>
+</ul>
+</section></section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
+
+</section>
+<section id="how-many-ways-are-there-to-deal" class="slide level2 mid">
+<h2>How many ways are there to deal?</h2>
+<p>Start small. Four blocks, A B C D, into two pairs:</p>
+<p><span class="math display">
+\{AB,\ CD\} \qquad \{AC,\ BD\} \qquad \{AD,\ BC\} \qquad \Rightarrow\ 3 \text{ ways}
+</span></p>
+<ul>
+<li class="fragment">A must go with someone: 3 choices. Then the other two are forced. <span class="math inline">3 \times 1 = 3</span>.</li>
+<li class="fragment">Twelve blocks, the same way: block 1 picks a partner from the other 11. The lowest block still alone picks from the 9 left, then 7, 5, 3, 1.</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">
+\underbrace{11}_{\text{block 1}} \times \underbrace{9}_{\text{next}} \times \underbrace{7}_{\text{next}} \times \underbrace{5}_{\text{next}} \times \underbrace{3}_{\text{next}} \times \underbrace{1}_{\text{last}} \;=\; 11!! \;=\; 10{,}395
+</span></p>
+<p><span class="pq-note"><span class="math inline">n!!</span>, the <em>double factorial</em>: multiply down by twos. <span class="math inline">11!! = 11 \cdot 9 \cdot 7 \cdot 5 \cdot 3 \cdot 1</span>. Not <span class="math inline">(11!)!</span>.</span></p>
+</div>
+</section>
+<section id="counting-it-a-second-way" class="slide level2 mid">
+<h2>Counting it a second way</h2>
+<p>Line up all 12 blocks, then pair them off in order: positions 1–2, 3–4, …, 11–12.</p>
+<p><span class="math display">
+12! = 479{,}001{,}600 \text{ line-ups}
+</span></p>
+<ul>
+<li class="fragment">That counts every deal too many times. Swapping the two blocks in a pair gives the same deal: <span class="math inline">\times 2</span> for each of 6 pairs, <span class="math inline">2^6 = 64</span>.</li>
+<li class="fragment">Shuffling the order of the six pairs gives the same deal: <span class="math inline">6! = 720</span>.</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">
+\frac{12!}{2^6 \cdot 6!} \;=\; \frac{479{,}001{,}600}{46{,}080} \;=\; 10{,}395
+</span></p>
+</div>
+</section>
+<section id="the-same-answer-and-what-it-buys" class="slide level2 mid">
+<h2>The same answer, and what it buys</h2>
+<p>Both counts agree for any even number of things <span class="math inline">2n</span> paired off:</p>
+<p><span class="math display">
+\frac{(2n)!}{2^n\, n!} \;=\; (2n-1)(2n-3)\cdots 3 \cdot 1 \;=\; (2n-1)!!
+</span></p>
+<p><span class="math display">
+\begin{array}{c|cccccc} \text{blocks} &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 \\ \hline \text{deals} &amp; 1 &amp; 3 &amp; 15 &amp; 105 &amp; 945 &amp; 10{,}395 \end{array}
+</span></p>
+<ul>
+<li class="fragment"><strong>The evaluator does exactly the second count:</strong> a random line-up of 12 (<code>rng.permutation(12)</code>), paired in order. Each deal comes from 46,080 line-ups, so every deal is equally likely.</li>
+<li class="fragment"><strong>Any two blocks share a fold on 1 deal in 11:</strong> block 1’s partner is one of 11, equally likely.</li>
+<li class="fragment"><strong>Fifty deals is a 0.5% sample</strong> of the 10,395.</li>
 </ul>
 
 </section></section>
