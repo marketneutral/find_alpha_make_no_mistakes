@@ -1705,7 +1705,7 @@ in scale(decay_linear(book, 10))</code></pre>
 </section>
 <section id="karpathys-autoresearch-march-2026" class="slide level2 mid">
 <h2>Karpathy’s autoresearch (March 2026)</h2>
-<p><strong>The question:</strong> can a language model run the scientific method on its own, and find a better way to train a neural network overnight?</p>
+<p><strong>The question:</strong> can we use an LLM as the hypothesis generator in the scientific method loop, and find a better way to train a neural network overnight?</p>
 <ul>
 <li class="fragment"><strong>The task:</strong> train a small language model on one GPU, for exactly five minutes. Score: <code>val_bpb</code>, how well it predicts held-out text. Lower is better.</li>
 <li class="fragment"><strong>What the agent may change:</strong> anything in the training script. The recipe (learning rates, batch size, warmup) <em>and</em> the architecture (depth, attention windows, positional encoding).</li>

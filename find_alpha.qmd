@@ -356,7 +356,7 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 
 ## Karpathy's autoresearch (March 2026) {.mid}
 
-**The question:** can a language model run the scientific method on its own, and find a better way to train a neural network overnight?
+**The question:** can we use an LLM as the hypothesis generator in the scientific method loop, and find a better way to train a neural network overnight?
 
 ::: {.incremental}
 - **The task:** train a small language model on one GPU, for exactly five minutes. Score: `val_bpb`, how well it predicts held-out text. Lower is better.
