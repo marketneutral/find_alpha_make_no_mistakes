@@ -58,12 +58,12 @@ This presentation is available at [github.com/marketneutral/find_alpha_make_no_m
 
 ## The Plan
 
-Can an AI agent do quantitative research without fooling itself?
+Can an AI agent do real quant research? Can an agent find alpha that persists out-of-sample?
 
 ::: {.incremental}
-1. **qex**: a small language for alphas, so a hypothesis is one line
-2. **autoresearch**: an agent that proposes, tests, keeps or discards
-3. **"find alpha. make no mistakes."**: the loop rebuilt for finance
+1. **qex**: a small language for alphas
+2. **autoresearch**: Karpathy's loop for the scientific method
+3. **"find alpha. make no mistakes."**: the loop adjusted for finance
 :::
 
 
@@ -71,19 +71,19 @@ Can an AI agent do quantitative research without fooling itself?
 
 ## The idea
 
-Every alpha starts as a sentence about markets:
+Every alpha starts as a stated belief about markets:
 
-> *"Stocks that fell last week bounce back."*
+> *"Stocks that fell last week tend to bounce back."*
 
 ::: {.incremental}
-- Testing it the usual way is an afternoon of pandas: rolling windows, index alignment, `axis=` arguments, warmup, missing data, and the care not to peek at tomorrow
+- Testing it the usual way is a hodgepodge of pandas: rolling windows, index alignment, `axis=` arguments, warmup, missing data, and the care not to peek at tomorrow
 - None of that is the idea, and all of it is where the bugs live
 - **qex: the shortest path from "I think markets behave like this" to code that tests it**
 :::
 
 ## A one-line alpha
 
-> *"Stocks that fell last week bounce back."*
+> *"Stocks that fell last week tend to bounce back."*
 
 ```qex
 rank(-returns(5))
@@ -93,7 +93,7 @@ rank(-returns(5))
 - `returns(5)`: each stock's return over the last week
 - `-`: the ones that fell score highest
 - `rank`: compared across all stocks on each day, 0 to 1
-- **That is the whole alpha.** The pandas version adds needless complexity.
+- **That is the whole alpha.** A pandas version adds needless complexity.
 :::
 
 ::: {.refs}
@@ -105,7 +105,7 @@ qex is open source: [github.com/marketneutral/alpha-parser](https://github.com/m
 Refine the belief one clause at a time, and the expression follows:
 
 ```qex
-# Stocks that fell last week bounce back.
+# Stocks that fell last week tend to bounce back.
 rank(-returns(5))
 
 # ...relative to their sector,
@@ -119,17 +119,18 @@ decay_linear(group_demean(rank(-returns(5) / volatility(60)),
                           'sector'), 10)
 ```
 
-Each clause is one operator. No loops, no index alignment, no `axis=`, no warmup, no NaN handling, no peeking at tomorrow: none of it is the belief, and all of it is where the bugs live.
+Each clause is one operator. No loops, no index alignment, no `axis=`, no warmup, no NaN handling, no peeking at tomorrow: none of it is the belief, and all of it is where the bugs live. Every operator: [the qex operations reference](https://marketneutral.github.io/alpha-parser/reference/operations/).
 
-## Why a language? {.mid}
+## Why a language? {.smaller}
 
 ::: {.incremental}
-- **The expression is the hypothesis, not the implementation.** Everything else is engine, written once.
+- **The expression is the hypothesis, not the implementation.** Everything else is in the engine, written once, highly performant. qex is a DSL specification, and a concrete implementation.
 - **A closed vocabulary makes generated work checkable.** Every well-formed expression is aligned, warmup-aware, and lookahead-free. The only thing it can be wrong about is the idea.
 - **Terse is cheap for models.** Tens of tokens instead of thousands.
 - **Alphas become data.** Stored, diffed, deduplicated, searched, evolved.
 - **The grammar is a search space.** Finite and well-shaped; neighbors are one operator or window away.
 - **Review is constant time.** The only kind of review that scales to machine-generated research.
+- **A small grammar helps mitigate overfitting.** Information theory supports this (more later!)
 :::
 
 ## Three axes: the data {.smaller}
@@ -146,6 +147,8 @@ Tickers across the columns, dates down the rows. Real closes, March 2025:
 | Mar 10 | 227.48 | 380.16 | 111.80 | 157.57 | 232.22 |
 
 *Bold: the three CVX closes averaged on the next slide.* Every operator works down the columns (**time series**), across the rows (**cross-sectional**), or across the rows within a bucket (**group**).
+
+[In this example we use tickers for legibility, but a real system would use permanent identifiers.]{.pq-note}
 
 ## Time series: down each column {.smaller}
 
@@ -249,10 +252,10 @@ $$
 ## Lazy trees, no lookahead, shared work {.smaller}
 
 ::: {.incremental}
-- Parsing builds a tree; nothing is computed until `evaluate(data)`
+- Parsing builds a directed acyclic graph (DAG); nothing is computed until `evaluate(data)`
 - **Every operation looks backward.** `delay(x, -1)` is an error, not a too-good backtest.
 - Event-aware operators for sparse data (earnings): roll over the last *N observations*, not *N days*
-- A set of signals is one graph; each unique sub-expression is computed once
+- A DAG can include multiple alphas; each unique node is computed once and can be reused
 :::
 
 ![](images/qex-signal-graph.svg){.r-stretch fig-align="center"}
@@ -270,7 +273,6 @@ $$
 - $\mathrm{BR}$: breadth, the number of independent bets
 - For example, $\mathrm{IC} = 0.02$ and $\mathrm{BR} = 500$ bets a year: $\;\mathrm{IR} \approx 0.02 \sqrt{500} \approx 0.45$
 - Small skill becomes a meaningful information ratio only when it is applied to many stocks, every day
-- That is why every qex operator works on a whole cross-section at once
 :::
 
 ## Example: reversal, technician-style {.smaller}
@@ -291,17 +293,17 @@ in scale(decay_linear(book, 10))
 - Technicians call it *Williams %R*; it works once you think cross-sectionally
 :::
 
-## The tree qex builds
+## The DAG qex builds
 
 ![](images/qex-range-graph.svg){.r-stretch fig-align="center"}
 
-## Does it sort returns?
+## Does this alpha "work"?
 
 ![](images/qex-quintiles.svg){.r-stretch fig-align="center"}
 
-S&P 500 members (today, survivorship-biased!), 2010–⁠2025, gross of costs. Monotonic quintiles; top-minus-bottom 8.3%/yr.
+It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 500 members today (survivorship-biased!), 2010–⁠2025, gross of costs.
 
-## How it did, through time {.smaller}
+## How it did, through time, with tcosts {.smaller}
 
 ![](images/qex-gross-vs-net.svg){.r-stretch fig-align="center"}
 
@@ -348,11 +350,21 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 ::: {.incremental}
 - Most hypotheses are programs, protocols, features, molecules: discrete, and each test is expensive
 - The old options: random or grid search, evolutionary search, Bayesian optimization. All need the hypothesis to be a vector, and none knows anything about the problem.
-- A language model is a third option: it has read the field's code and papers, so its guesses are *informed*, and it makes one every few minutes
+- **A language model is a third option:** it has read the field's code and papers, so its guesses are *informed*, and it makes one every few minutes
 - FunSearch (2024), AlphaEvolve (2025): LLM proposals against an automatic evaluator found new mathematics
 :::
 
-## Karpathy's autoresearch (March 2026) {.smaller}
+## Karpathy's autoresearch (March 2026) {.mid}
+
+**The question:** can a language model run the scientific method on its own, and find a better way to train a neural network overnight?
+
+::: {.incremental}
+- **The task:** train a small language model on one GPU, for exactly five minutes. Score: `val_bpb`, how well it predicts held-out text. Lower is better.
+- **What the agent may change:** anything in the training script. The recipe (learning rates, batch size, warmup) *and* the architecture (depth, attention windows, positional encoding).
+- **What it may not:** the data, the test, or the five-minute budget. A fixed budget makes every trial a fair comparison.
+:::
+
+## How autoresearch works {.smaller}
 
 ::: {.incremental}
 - `program.md`: the problem, written by a person. `train.py`: the only file the agent may edit. `prepare.py`: data and test, out of reach.
@@ -365,7 +377,7 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 
 ![](images/autoresearch-progress.svg){.r-stretch fig-align="center"}
 
-14 of 82 changes kept. Note the last kept change, in red: **a new random seed**.
+14 of 82 changes kept. **It worked, and the AI community went nuts.** Note the last kept change, in red: **a new random seed**.
 
 ## It works on anything with a score {.smaller}
 
@@ -380,18 +392,18 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 
 Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocations −61%, all 974 tests passing.
 
-## What it means for finance {.mid}
+## What about finance? {.mid}
 
 ::: {.incremental}
 - The obvious mapping: the artifact is signal code, the score is a backtest Sharpe on a hold-out, keep if it goes up
 - That is the one thing quant finance spent decades learning not to do
 - Wiecki et al. (2016), *All that Glitters Is Not Gold*: 888 Quantopian strategies with 6+ months live. Backtest Sharpe explained almost none of live performance, $R^2 < 0.025$
 - **Hill-climbing on a hold-out leaks it into the strategy, one keep at a time**
-- A hold-out is one draw of history; a win may only be a bet on that regime
-- The red dot again: a new random seed is not a better model, and the loop kept it
+- A hold-out is one draw of history; a win may only be a bet that succeeds on *that* draw
+- It's Karpathy's "red dot" error magnified
 :::
 
-## What would have to change {.mid}
+## Ideas for an amended loop {.mid}
 
 ::: {.incremental}
 1. **Require the claim before the test**: mechanism, counterparty, persistence, and a prediction of *where* it helps
@@ -409,15 +421,15 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 ## The experiment {.mid}
 
 ::: {.incremental}
-- **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
+- **The problem:** keep the momentum premium, avoid the crashes (Daniel and Moskowitz 2016)
 - **The artifact:** one qex expression, `alpha.qex`
 - **The seed:** textbook momentum that *loses money* on the scored period
-- **The problem:** keep the momentum premium, avoid the crashes (Daniel and Moskowitz 2016)
 - **The beliefs:** twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period
 - **The periods:**
   - inspection 1999–⁠2003: the agent may look
-  - validation 2004–⁠2017: the agent sees only summary numbers
+  - validation 2004–⁠2017: **the agent only sees summary numbers**
   - test 2018 to Aug 2026: sealed; I ran it once, after trial 60
+- **The agent:** Claude Code with Opus 5.5, headless, one session, 60 trials, 55 minutes, ~$20
 :::
 
 ## Keeping it honest: permissions {.mid}
