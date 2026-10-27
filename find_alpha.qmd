@@ -464,7 +464,7 @@ in decay_linear(score / vol, 10)
 ## The experiment {.mid}
 
 ::: {.incremental}
-- **The problem:** keep the momentum premium, avoid the crashes (Daniel and Moskowitz 2016)
+- **The problem:** earn a momentum premium, and avoid the crashes (Daniel and Moskowitz 2016)
 - **The artifact:** one qex expression, `alpha.qex`
 - **The seed:** textbook momentum that *loses money* on the scored period
 - **The beliefs:** twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period
@@ -473,7 +473,7 @@ in decay_linear(score / vol, 10)
 
 ## Twelve beliefs: the firm's view, written down {.smaller}
 
-The agent starts from these, tests them, and may disagree with any of them. Every change must say which belief it tests.
+The agent starts from these and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
 
 ::: columns
 ::: {.column width="50%" .belief-left}

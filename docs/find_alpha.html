@@ -1837,7 +1837,7 @@ in decay_linear(score / vol, 10)</code></pre>
 <section id="the-experiment" class="slide level2 mid">
 <h2>The experiment</h2>
 <ul>
-<li class="fragment"><strong>The problem:</strong> keep the momentum premium, avoid the crashes (Daniel and Moskowitz 2016)</li>
+<li class="fragment"><strong>The problem:</strong> earn a momentum premium, and avoid the crashes (Daniel and Moskowitz 2016)</li>
 <li class="fragment"><strong>The artifact:</strong> one qex expression, <code>alpha.qex</code></li>
 <li class="fragment"><strong>The seed:</strong> textbook momentum that <em>loses money</em> on the scored period</li>
 <li class="fragment"><strong>The beliefs:</strong> twelve, each with mechanism, counterparty, paper, and a falsifiable prediction; every paper predates the test period</li>
@@ -1846,7 +1846,7 @@ in decay_linear(score / vol, 10)</code></pre>
 </section>
 <section id="twelve-beliefs-the-firms-view-written-down" class="slide level2 smaller">
 <h2>Twelve beliefs: the firm’s view, written down</h2>
-<p>The agent starts from these, tests them, and may disagree with any of them. Every change must say which belief it tests.</p>
+<p>The agent starts from these and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.</p>
 <div class="columns">
 <div class="column belief-left" style="width:50%;">
 <ol type="1">
@@ -2505,30 +2505,25 @@ in decay_linear(power(a, 3), 3)</code></pre>
 <p>Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.</p>
 </div>
 </section>
-<section id="a-hold-out-nobody-planned" class="slide level2 mid">
+<section id="a-hold-out-nobody-planned" class="slide level2 smaller">
 <h2>A hold-out nobody planned</h2>
 <p>The embargo trims the <strong>same 504 days</strong> on every deal. They are never scored, so the agent climbed sixty trials without them: a hold-out inside 2004–⁠2017.</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 27%">
-<col style="width: 36%">
-<col style="width: 36%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th style="text-align: right;">scored days (3,020)</th>
-<th style="text-align: right;">never-scored days (504)</th>
+<th style="text-align: right;">scored: 3,020 days</th>
+<th style="text-align: right;">never scored: 504 days</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>seed, nobody selected it</td>
+<td>seed (not selected)</td>
 <td style="text-align: right;">Sharpe −0.27</td>
 <td style="text-align: right;">Sharpe −0.05</td>
 </tr>
 <tr class="even">
-<td><strong>final book, selected on the scored days</strong></td>
+<td><strong>final book (selected)</strong></td>
 <td style="text-align: right;"><strong>Sharpe 1.41</strong></td>
 <td style="text-align: right;"><strong>Sharpe 0.54</strong></td>
 </tr>
