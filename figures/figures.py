@@ -290,17 +290,20 @@ def fig_nutshell():
     """Alpha research in a nutshell: a belief, an expression, its scores, the portfolio weights. The running example on
     March 10, 2025, from the closes on the data slide: rank(-returns(5)), then demeaned and scaled to gross one."""
     fig, ax = plt.subplots(figsize=(14.0, 3.8))
-    ws, gaps, h = [3.0, 3.0, 2.8, 3.6], [0.85, 0.85, 1.25], 2.25
+    ws, gaps, h = [3.0, 3.3, 2.8, 3.6], [0.85, 0.85, 1.25], 2.25
     xs = [0.0]
     for w, g in zip(ws[:-1], gaps): xs.append(xs[-1] + w + g)
     heads = ["a belief", "code", "scores", "portfolio weights"]
     for x, w, head in zip(xs, ws, heads):
         ax.add_patch(FancyBboxPatch((x, 0), w, h, boxstyle="round,pad=0,rounding_size=0.12", fc=PANEL,
-                                    ec=ACC if head == "code" else RULE, lw=1.6))
+                                    ec=RED if head == "code" else RULE, lw=1.6))
         ax.text(x + w / 2, h - 0.34, head, ha="center", va="center", color=ACC, fontsize=14.5, fontweight="bold")
     ax.text(xs[0] + ws[0] / 2, 0.85, "\u201cStocks that fell\nlast week tend to\nbounce back.\u201d", ha="center", va="center",
             color=INK2, fontsize=13, style="italic", linespacing=1.45)
-    ax.text(xs[1] + ws[1] / 2, 0.85, "rank(-returns(5))", ha="center", va="center", color="#e8c97a", fontsize=13.5)
+    mess = ["px = raw.pivot(...)", "px = px.reindex(cal)", "px = px.ffill(limit=3)", "r5 = px.pct_change(5)",
+            "r5 = r5.shift(1)", "r5 = r5.where(univ)", "s = (-r5).rank(axis=1)", "s = s.dropna(how='all')"]
+    for k, line in enumerate(mess):
+        ax.text(xs[1] + 0.2, 1.52 - k * 0.19, line, ha="left", va="center", color=MUTED, fontsize=9.5)
     rows = [("JPM", "1.00", "+0.33"), ("AAPL", "0.80", "+0.17"), ("MSFT", "0.60", "0.00"), ("CVX", "0.40", "\u22120.17"), ("XOM", "0.20", "\u22120.33")]
     for col, x, w in ((1, xs[2], ws[2]), (2, xs[3], ws[3])):
         for k, r in enumerate(rows):
@@ -311,9 +314,8 @@ def fig_nutshell():
         a, b = xs[k] + ws[k] + 0.08, xs[k + 1] - 0.08
         ax.annotate("", xy=(b, h / 2), xytext=(a, h / 2), arrowprops=dict(arrowstyle="-|>", color=INK2, lw=2.2, mutation_scale=22))
     mid = xs[2] + ws[2] + gaps[2] / 2
-    ax.text(mid, h / 2 + 0.2, "demean,\nscale", ha="center", va="bottom", color="#e8c97a", fontsize=12, linespacing=1.3)
     ax.text(xs[2] + ws[2] / 2, -0.3, "March 10, 2025", ha="center", va="center", color=MUTED, fontsize=11.5)
-    ax.text(xs[3] + ws[3] / 2, -0.3, "scale(demean(scores)): sum 0, gross 1", ha="center", va="center", color=MUTED, fontsize=11.5)
+    ax.text(xs[3] + ws[3] / 2, -0.3, "sum 0, gross 1", ha="center", va="center", color=MUTED, fontsize=11.5)
     ax.set_xlim(-0.1, xs[3] + ws[3] + 0.1); ax.set_ylim(-0.5, h + 0.1); ax.axis("off")
     save(fig, "nutshell", pad=0.15)
 
