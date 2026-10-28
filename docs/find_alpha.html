@@ -1961,7 +1961,7 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+</code></pre>
 <p><span class="t-head">T2 · kept · belief 11, removed · delete a line</span></p>
 <p><span class="t-lab">claim</span> Drop the final 1/vol: the score is already mom/vol, so the seed sizes by mom/vol² and the book piles into low-vol names whose momentum carries little return. Predict higher return and margin.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Now eligible: margin 14.3 bps. <strong>Belief 11 as written was costing return without buying safety.</strong> <span class="t-num">score 0.01 → 0.32</span></p>
+<p><span class="t-lab">outcome</span> Now eligible: margin 14.3 bps. <strong>Belief 11 as written was costing return without buying safety.</strong> <span class="t-num">score 0.01 → 0.32 · worst −0.37 → −0.19</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -1986,7 +1986,7 @@ in decay_linear(where(crash, -score, score), 10) #+</code></pre>
 <p><span class="t-head">T4 · kept · belief 4 · the right volatility</span></p>
 <p><span class="t-lab">claim</span> Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. <em>60-day vol is noisy and spikes right after big moves, so it mis-ranks names.</em> Predict a small median gain.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Sharpe outside the crash state 0.32 to 0.45, in it unchanged. <strong>Larger than predicted.</strong> <span class="t-num">score 0.32 → 0.43</span></p>
+<p><span class="t-lab">outcome</span> Sharpe outside the crash state 0.32 to 0.45, in it unchanged. <strong>Larger than predicted.</strong> <span class="t-num">score 0.32 → 0.43 · worst −0.19 → −0.07</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2011,7 +2011,7 @@ in decay_linear(where(crash, -score, score), 10)</code></pre>
 <p><span class="t-head">T6 · kept · belief 2, as a sleeve · a second, faster bet</span></p>
 <p><span class="t-lab">claim</span> Add a sector-relative 1-month reversal <em>sleeve</em>, a second bet alongside the first. The last month reverses (Jegadeesh 1990; <em>known 35 years, probably mostly priced</em>), and <strong>fitness does not charge turnover below 0.125, so a fast sleeve rides free.</strong></p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Reversal is alive in 2004–⁠2017 at the sector-relative level. <span class="t-num">score 0.43 → 0.56</span></p>
+<p><span class="t-lab">outcome</span> Reversal is alive in 2004–⁠2017 at the sector-relative level. <span class="t-num">score 0.43 → 0.56 · worst −0.07 → −0.01</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2036,7 +2036,7 @@ in decay_linear(where(crash, -score, score), 10)
 <p><span class="t-head">T8 · kept · belief 5 · residual momentum</span></p>
 <p><span class="t-lab">claim</span> Rank on the <em>residual</em>: each stock’s return net of beta times the market. <em>Removes time-varying market beta from the ranking</em> (Blitz, Huij, Martens). Predict median up, <strong>worst up more than median.</strong></p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Worst −0.07 to +0.06, <strong>worst up more than median, as predicted.</strong> Sharpe 1.08. <span class="t-num">score 0.64 → 0.74</span></p>
+<p><span class="t-lab">outcome</span> Worst −0.07 to +0.06, <strong>worst up more than median, as predicted.</strong> Sharpe 1.08. <span class="t-num">score 0.64 → 0.74 · worst −0.07 → 0.06</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2063,7 +2063,7 @@ in decay_linear(where(crash, -score, score), 10)
 <p><span class="t-head">T11 · reset · the crash flip on raw momentum</span></p>
 <p><span class="t-lab">claim</span> In the crash state, flip raw (beta-loaded) momentum instead of residual. <em>The rebound payoff is the high-beta past losers.</em> Predict crash-state Sharpe up.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Crash-state Sharpe fell 2.45 to 1.80, <strong>the opposite of the prediction.</strong> The residual flip pays more: the beta bet is noisier than the stock-specific reversal.</p>
+<p><span class="t-lab">outcome</span> Crash-state Sharpe fell 2.45 to 1.80, <strong>the opposite of the prediction.</strong> The residual flip pays more: the beta bet is noisier than the stock-specific reversal. <span class="t-num">score 0.74 → 0.71 · worst 0.06 → −0.02</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2131,7 +2131,7 @@ in decay_linear(where(crash, -raw, score), 10) #+
 <p><span class="t-head">T22 · kept · belief 7 · soft beats hard</span></p>
 <p><span class="t-lab">claim</span> When 1-month market vol is above 1-year vol, the momentum weight is clip(10 × 1-year market return, −1, 1) instead of a hard −1. Predict, <em>per belief 7</em>, worst slightly lower.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> <strong>Better than belief 7 predicted: the soft switch beats the hard one on median and worst.</strong> <span class="t-num">score 0.89 → 1.00</span></p>
+<p><span class="t-lab">outcome</span> <strong>Better than belief 7 predicted: the soft switch beats the hard one on median and worst.</strong> <span class="t-num">score 0.89 → 1.00 · worst −0.02 → 0.01</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2162,7 +2162,7 @@ in decay_linear(power(a, 3), 3)</code></pre>
 <p><span class="t-head">T24 · kept · Grundy and Martin (2001) · a beta hedge</span></p>
 <p><span class="t-lab">claim</span> Make the book beta-neutral too. <em>Hedging factor exposure keeps the return, drops the risk.</em> Predict worst up, median flat.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> <strong>Better than predicted: the beta tilt cost money outside the crash too.</strong> <span class="t-num">score 1.00 → 1.10</span></p>
+<p><span class="t-lab">outcome</span> <strong>Better than predicted: the beta tilt cost money outside the crash too.</strong> <span class="t-num">score 1.00 → 1.10 · worst 0.01 → 0.02</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2240,7 +2240,7 @@ in decay_linear(s
 <p><span class="t-head">T30 · reset · belief 7 · the deep-bear rule</span></p>
 <p><span class="t-lab">claim</span> Full momentum when the market is up on the year, zero at −10%, full reversal below −20%, with no vol condition.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Utility 1.10 to 1.02, reset by the rule, <strong>but worst 0.02 to 0.35, the best worst fold so far.</strong> The deep-bear rule catches the rebound, while the vol condition earns the median. <strong><em>Next: combine them.</em></strong></p>
+<p><span class="t-lab">outcome</span> Utility 1.10 to 1.02, reset by the rule, <strong>but worst 0.02 to 0.35, the best worst fold so far.</strong> The deep-bear rule catches the rebound, while the vol condition earns the median. <strong><em>Next: combine them.</em></strong> <span class="t-num">score 1.10 → 1.02 · worst 0.02 → 0.35</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2318,7 +2318,7 @@ in decay_linear(s
 <p><span class="t-head">T50 · reset · the same book, written shorter</span></p>
 <p><span class="t-lab">claim</span> Write the switch in its equivalent short form. Same book, fewer nodes. Predict utility up by the charge saved, ~+0.025.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> 1.376 to 1.318. The same book, so the −0.058 is partition noise. <strong>A direct read on the noise at this level, about ±0.05; T47’s 1.376 was probably a favorable draw.</strong></p>
+<p><span class="t-lab">outcome</span> 1.376 to 1.318. The same book, so the −0.058 is partition noise. <strong>A direct read on the noise at this level, about ±0.05; T47’s 1.376 was probably a favorable draw.</strong> <span class="t-num">score 1.38 → 1.32 · worst 0.38 → 0.35</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2360,7 +2360,7 @@ in decay_linear(s
 <p><span class="t-head">T54 · kept · removal · drop the agent’s own hedge</span></p>
 <p><span class="t-lab">claim</span> Measure what the T24 hedge is worth now. Predict median down 0.05–0.15.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> +0.10: <strong>the prediction was wrong.</strong> With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. <strong><em>A component that paid in T24 stopped paying after later changes.</em></strong></p>
+<p><span class="t-lab">outcome</span> +0.10: <strong>the prediction was wrong.</strong> With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. <strong><em>A component that paid in T24 stopped paying after later changes.</em></strong> <span class="t-num">score 1.38 → 1.47 · worst 0.38 → 0.40</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -2398,7 +2398,7 @@ in decay_linear(power(a, 3), 3) #+</code></pre>
 <p><span class="t-head">T55 · reset · a 0.2% winsorize before the cube</span></p>
 <p><span class="t-lab">claim</span> Winsorize the combined signal at 0.2% / 99.8% before the cube. <em>Without the hedge, the few most extreme names, takeover jumps, data spikes, stale bankrupt names, carry more cube weight.</em> Predict Sharpe up, worst up, return down slightly, median flat to up.</p>
 <div class="fragment">
-<p><span class="t-lab">outcome</span> Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. <strong>Second time this change wins every whole-period measure but not the median fold. Flagged for the human.</strong></p>
+<p><span class="t-lab">outcome</span> Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. <strong>Second time this change wins every whole-period measure but not the median fold. Flagged for the human.</strong> <span class="t-num">score 1.47 → 1.45 · worst 0.40 → 0.48</span></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
