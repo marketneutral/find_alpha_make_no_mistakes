@@ -259,7 +259,7 @@ Cumulative return on gross, S&P 500 members today (survivorship-biased!), 2010â€
 
 - **Sidebar: smoothing is (almost) a free lunch!** A ten-day decay cuts turnover from 84% to 32% a day and keeps nearly all the gross return (Appendix A).
 
-## Is qex necessary with coding agents? {.mid}
+## Agents write the code now.<br>Do we still need qex? {.mid}
 
 **Yes.**
 
