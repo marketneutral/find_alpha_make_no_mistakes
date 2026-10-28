@@ -485,7 +485,6 @@ return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11
 - **Score any expression:** the same book as `eval.py` (delay 1, members only, dollar-neutral, gross one, 5% cap), on 1999–2003, no folds. Plus rank IC at 1 to 20 days and return by year.
 - **The raw data:** `explore.data()` returns 1998–2003 prices, volume, membership, market cap and sector, for the agent's own Python
 - **Nothing after 2003** is loaded. The agent ran it over a hundred times, and used `explore.data()` from `python -c` about a dozen more.
-- **A guide, not a judge:** it never decides a keep. For changes that reshape risk it often pointed the wrong way. Trial 40 looked better on 1999–2003 (Sharpe 1.58 → 1.89) and nearly halved the score on 2004–2017.
 :::
 
 ## What `eval.py` prints {.smaller}
