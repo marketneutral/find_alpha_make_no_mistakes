@@ -75,7 +75,7 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 
 ::: {.incremental}
 - The usual middle is a hodgepodge of pandas: windows, alignment, warmup, lookahead. Nothing about the idea; all potential bugs.
-- **qex: the bare minimum of code between a belief and its weights**
+- **The code should be the bare minimum necessary to express the belief.**
 :::
 
 ## A one-line alpha {.mid}
