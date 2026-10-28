@@ -490,8 +490,7 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 
 ::: {.incremental}
 - **Decides the keep:** the first three lines. `utility` is the score on the median fold, `worst` on the worst fold, each averaged over the 50 deals; then eligibility, yes or no.
-- **Informs the agent, never counts:** everything below. Whole-period Sharpe, one deal's folds with their years, the regime splits, the deflated Sharpe.
-- The agent reads these to check its predictions: trial 27 predicted a collapse in the crash state, and the crash-state line is where it looked.
+- **Informs the agent, never counts:** everything below. Whole-period Sharpe, one deal's folds with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
 :::
 
 ## The score {.smaller}

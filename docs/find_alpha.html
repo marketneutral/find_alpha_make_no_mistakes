@@ -1881,8 +1881,7 @@ by regime: dispersion high  Sharpe  0.25;  low  Sharpe  1.10
 trials: 28  deflated Sharpe probability of this expression: 0.372</code></pre>
 <ul>
 <li class="fragment"><strong>Decides the keep:</strong> the first three lines. <code>utility</code> is the score on the median fold, <code>worst</code> on the worst fold, each averaged over the 50 deals; then eligibility, yes or no.</li>
-<li class="fragment"><strong>Informs the agent, never counts:</strong> everything below. Whole-period Sharpe, one deal’s folds with their years, the regime splits, the deflated Sharpe.</li>
-<li class="fragment">The agent reads these to check its predictions: trial 27 predicted a collapse in the crash state, and the crash-state line is where it looked.</li>
+<li class="fragment"><strong>Informs the agent, never counts:</strong> everything below. Whole-period Sharpe, one deal’s folds with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.</li>
 </ul>
 </section>
 <section id="the-score" class="slide level2 smaller">
