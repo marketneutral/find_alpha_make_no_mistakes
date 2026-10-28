@@ -1122,8 +1122,9 @@ max-height: 560px;
 <pre class="qex"><code>rank(-returns(5))</code></pre>
 <ul>
 <li class="fragment"><code>returns(5)</code>: each stock’s return over the last week</li>
-<li class="fragment"><code>-</code>: the ones that fell score highest</li>
-<li class="fragment"><code>rank</code>: each day, line the stocks up from 0 (rose most) to 1 (fell most). These become the weights: own the top, short the bottom.</li>
+<li class="fragment"><code>-</code>: negate the return, so the stocks that fell score highest</li>
+<li class="fragment"><code>rank</code>: turns each day’s numbers (−4.85%, +2.55%, …) into percentiles: 0.00 for the lowest, 0.50 for the middle, 1.00 for the highest, every stock evenly spaced in between. Only the order survives, so one outlier cannot dominate.</li>
+<li class="fragment">Subtract the day’s average and the top half is bought, the bottom half shorted. That step comes later: <em>From a signal to a book</em>.</li>
 <li class="fragment"><strong>That is the whole alpha.</strong> A pandas version adds needless complexity.</li>
 </ul>
 <div class="refs">
@@ -1977,7 +1978,7 @@ in decay_linear(score / vol, 10)</code></pre>
 </section>
 <section id="trial-1-the-crash-switch" class="slide level2 smaller">
 <h2>Trial 1: the crash switch</h2>
-<p>The seed loses most of its money in the crash state, so the agent starts there. Before each test it writes a <strong>claim</strong>: which belief, the mechanism, where the score should move. It is committed to git before the evaluator runs. After it, an <strong>outcome</strong>, in its own words. On the right, the change to <code>alpha.qex</code>.</p>
+<p>Adds a crash-state flag built from the equal-weight market, and flips the momentum score’s sign when it is on. Left: the claim, committed before the test, and the outcome. Right: the change to <code>alpha.qex</code>.</p>
 <div class="columns diff wide">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2002,7 +2003,7 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+</code></pre>
 </section>
 <section id="trial-2-delete-a-line" class="slide level2 smaller">
 <h2>Trial 2: delete a line</h2>
-<p>The switch works, but at 4.2 bps per dollar traded the book is not yet eligible.</p>
+<p>Deletes the final <code>/ vol</code>. The score was already divided by volatility, so the seed divided twice.</p>
 <div class="columns diff wide">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2027,7 +2028,7 @@ in decay_linear(where(crash, -score, score), 10) #+</code></pre>
 </section>
 <section id="trial-4-the-right-volatility" class="slide level2 smaller">
 <h2>Trial 4: the right volatility</h2>
-<p>Eligible at last. Next, the volatility each stock’s momentum is divided by.</p>
+<p>Measures each stock’s volatility over 252 days instead of 60.</p>
 <div class="columns diff wide">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2052,7 +2053,7 @@ in decay_linear(where(crash, -score, score), 10)</code></pre>
 </section>
 <section id="trial-6-a-second-faster-bet" class="slide level2 smaller">
 <h2>Trial 6: a second, faster bet</h2>
-<p>One slow bet so far: momentum trades about 5% of the book a day.</p>
+<p>Adds a second bet: minus last month’s return, sector-relative. A 1-month reversal sleeve.</p>
 <div class="columns diff wide">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2077,7 +2078,7 @@ in decay_linear(where(crash, -score, score), 10)
 </section>
 <section id="trial-8-residual-momentum" class="slide level2 smaller">
 <h2>Trial 8: residual momentum</h2>
-<p>Trial 7, not shown, shortened the crash state’s look-back from two years to one. Now, the momentum itself.</p>
+<p>Ranks on the residual: each stock’s return minus its beta times the market. (Trial 7, kept, had shortened the crash look-back to one year.)</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2104,7 +2105,7 @@ in decay_linear(where(crash, -score, score), 10)
 </section>
 <section id="trial-11-wrong-and-it-says-why" class="slide level2 smaller">
 <h2>Trial 11: wrong, and it says why</h2>
-<p>With residual momentum in, the agent asks which momentum the crash flip should reverse.</p>
+<p>In the crash state, reverses raw momentum instead of residual: a new <code>raw</code> term in the flipped branch.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial reset">
@@ -2169,7 +2170,7 @@ in decay_linear(where(crash, -raw, score), 10) #+
 </section>
 <section id="trial-22-soft-beats-hard" class="slide level2 smaller">
 <h2>Trial 22: soft beats hard</h2>
-<p>Back to the switch. It is still all-or-nothing: full momentum or full reversal.</p>
+<p>Replaces the on/off crash flag with a weight <code>w</code>: when vol is high, it slides from −1 to +1 with the market’s one-year return.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2200,7 +2201,7 @@ in decay_linear(power(a, 3), 3)</code></pre>
 </section>
 <section id="trial-24-a-beta-hedge" class="slide level2 smaller">
 <h2>Trial 24: a beta hedge</h2>
-<p>The cube can tilt the book toward high- or low-beta stocks, a bet nobody chose.</p>
+<p>Projects the cubed signal off each stock’s beta every day, so the book is beta-neutral as well as dollar-neutral.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2239,7 +2240,7 @@ in decay_linear(s #+
 </section>
 <section id="trial-27-is-the-switch-still-needed" class="slide level2 smaller">
 <h2>Trial 27: is the switch still needed?</h2>
-<p>The book is now beta-hedged, so the agent questions its own premise.</p>
+<p>Deletes the switch: <code>w</code> is gone and momentum runs in every state. Now that the book is hedged, is it still needed?</p>
 <div class="columns diff wide long">
 <div class="column" style="width:46%;">
 <div class="trial reset">
@@ -2283,7 +2284,7 @@ in decay_linear(s
 </section>
 <section id="trial-30-a-reset-that-pointed-the-way" class="slide level2 smaller">
 <h2>Trial 30: a reset that pointed the way</h2>
-<p>The vol rule switches off when 1-month vol falls back under the inflated 1-year vol, <strong>while the market is still deep in its hole and the losers are still rallying.</strong> That is 2009.</p>
+<p>Drops the vol condition: <code>w</code> now depends only on how far the market has fallen. Why: after a vol spike the vol rule switches off <strong>while the market is still deep in its hole and the losers are still rallying.</strong> That is 2009.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial reset">
@@ -2321,6 +2322,7 @@ in decay_linear(s
 </section>
 <section id="trial-31-both-rules" class="slide level2 smaller">
 <h2>Trial 31: both rules</h2>
+<p>Keeps both: the vol rule when vol is high, the depth rule when it is calm.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2360,7 +2362,7 @@ in decay_linear(s
 </section>
 <section id="trial-50-the-same-book-written-shorter" class="slide level2 smaller">
 <h2>Trial 50: the same book, written shorter</h2>
-<p>Two more keeps since trial 31: no vol scaling (trial 33) and a two-year beta (trial 47).</p>
+<p>Rewrites <code>w</code> in one line: the same switch, fewer nodes. (Trials 33 and 47, kept, had dropped vol scaling and moved to a two-year beta.)</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial reset">
@@ -2402,7 +2404,7 @@ in decay_linear(s
 </section>
 <section id="trial-54-wrong-again-and-it-says-why" class="slide level2 smaller">
 <h2>Trial 54: wrong again, and it says why</h2>
-<p>Late in the run, the agent takes parts out one at a time, to see what each is worth.</p>
+<p>Deletes the beta hedge: the projection goes and <code>power(a, 3)</code> comes back.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial keep">
@@ -2440,7 +2442,7 @@ in decay_linear(power(a, 3), 3) #+</code></pre>
 </section>
 <section id="trial-55-a-safer-book" class="slide level2 smaller">
 <h2>Trial 55: a safer book</h2>
-<p>Trial 54’s book is the one the run ends with. The agent tries to make it safer.</p>
+<p>Wraps the combined signal in <code>winsorize(…, 0.002)</code> before the cube, clipping the most extreme 0.2% each side.</p>
 <div class="columns diff wide long">
 <div class="column" style="width:40%;">
 <div class="trial reset">

@@ -91,8 +91,9 @@ rank(-returns(5))
 
 ::: {.incremental}
 - `returns(5)`: each stock's return over the last week
-- `-`: the ones that fell score highest
-- `rank`: each day, line the stocks up from 0 (rose most) to 1 (fell most). These become the weights: own the top, short the bottom.
+- `-`: negate the return, so the stocks that fell score highest
+- `rank`: turns each day's numbers (−4.85%, +2.55%, …) into percentiles: 0.00 for the lowest, 0.50 for the middle, 1.00 for the highest, every stock evenly spaced in between. Only the order survives, so one outlier cannot dominate.
+- Subtract the day's average and the top half is bought, the bottom half shorted. That step comes later: *From a signal to a book*.
 - **That is the whole alpha.** A pandas version adds needless complexity.
 :::
 
@@ -603,7 +604,7 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 ## Trial 1: the crash switch {.smaller}
 
-The seed loses most of its money in the crash state, so the agent starts there. Before each test it writes a **claim**: which belief, the mechanism, where the score should move. It is committed to git before the evaluator runs. After it, an **outcome**, in its own words. On the right, the change to `alpha.qex`.
+Adds a crash-state flag built from the equal-weight market, and flips the momentum score's sign when it is on. Left: the claim, committed before the test, and the outcome. Right: the change to `alpha.qex`.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -635,7 +636,7 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 
 ## Trial 2: delete a line {.smaller}
 
-The switch works, but at 4.2 bps per dollar traded the book is not yet eligible.
+Deletes the final `/ vol`. The score was already divided by volatility, so the seed divided twice.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -667,7 +668,7 @@ in decay_linear(where(crash, -score, score), 10) #+
 
 ## Trial 4: the right volatility {.smaller}
 
-Eligible at last. Next, the volatility each stock's momentum is divided by.
+Measures each stock's volatility over 252 days instead of 60.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -699,7 +700,7 @@ in decay_linear(where(crash, -score, score), 10)
 
 ## Trial 6: a second, faster bet {.smaller}
 
-One slow bet so far: momentum trades about 5% of the book a day.
+Adds a second bet: minus last month's return, sector-relative. A 1-month reversal sleeve.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -731,7 +732,7 @@ in decay_linear(where(crash, -score, score), 10)
 
 ## Trial 8: residual momentum {.smaller}
 
-Trial 7, not shown, shortened the crash state's look-back from two years to one. Now, the momentum itself.
+Ranks on the residual: each stock's return minus its beta times the market. (Trial 7, kept, had shortened the crash look-back to one year.)
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -765,7 +766,7 @@ in decay_linear(where(crash, -score, score), 10)
 
 ## Trial 11: wrong, and it says why {.smaller}
 
-With residual momentum in, the agent asks which momentum the crash flip should reverse.
+In the crash state, reverses raw momentum instead of residual: a new `raw` term in the flipped branch.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -847,7 +848,7 @@ Nothing in the beliefs pointed here. The agent read it off the shape of the scor
 
 ## Trial 22: soft beats hard {.smaller}
 
-Back to the switch. It is still all-or-nothing: full momentum or full reversal.
+Replaces the on/off crash flag with a weight `w`: when vol is high, it slides from −1 to +1 with the market's one-year return.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -885,7 +886,7 @@ in decay_linear(power(a, 3), 3)
 
 ## Trial 24: a beta hedge {.smaller}
 
-The cube can tilt the book toward high- or low-beta stocks, a bet nobody chose.
+Projects the cubed signal off each stock's beta every day, so the book is beta-neutral as well as dollar-neutral.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -931,7 +932,7 @@ in decay_linear(s #+
 
 ## Trial 27: is the switch still needed? {.smaller}
 
-The book is now beta-hedged, so the agent questions its own premise.
+Deletes the switch: `w` is gone and momentum runs in every state. Now that the book is hedged, is it still needed?
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="46%"}
@@ -986,7 +987,7 @@ in decay_linear(s
 
 ## Trial 30: a reset that pointed the way {.smaller}
 
-The vol rule switches off when 1-month vol falls back under the inflated 1-year vol, **while the market is still deep in its hole and the losers are still rallying.** That is 2009.
+Drops the vol condition: `w` now depends only on how far the market has fallen. Why: after a vol spike the vol rule switches off **while the market is still deep in its hole and the losers are still rallying.** That is 2009.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1030,6 +1031,8 @@ in decay_linear(s
 :::
 
 ## Trial 31: both rules {.smaller}
+
+Keeps both: the vol rule when vol is high, the depth rule when it is calm.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1076,7 +1079,7 @@ in decay_linear(s
 
 ## Trial 50: the same book, written shorter {.smaller}
 
-Two more keeps since trial 31: no vol scaling (trial 33) and a two-year beta (trial 47).
+Rewrites `w` in one line: the same switch, fewer nodes. (Trials 33 and 47, kept, had dropped vol scaling and moved to a two-year beta.)
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1125,7 +1128,7 @@ in decay_linear(s
 
 ## Trial 54: wrong again, and it says why {.smaller}
 
-Late in the run, the agent takes parts out one at a time, to see what each is worth.
+Deletes the beta hedge: the projection goes and `power(a, 3)` comes back.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1170,7 +1173,7 @@ in decay_linear(power(a, 3), 3) #+
 
 ## Trial 55: a safer book {.smaller}
 
-Trial 54's book is the one the run ends with. The agent tries to make it safer.
+Wraps the combined signal in `winsorize(…, 0.002)` before the cube, clipping the most extreme 0.2% each side.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
