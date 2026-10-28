@@ -281,7 +281,7 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 **The question:** can we use an LLM as the hypothesis generator in the scientific method loop, and find a better way to train a neural network overnight?
 
 ::: {.incremental}
-- **The task:** train a small language model on one GPU, for exactly five minutes. Score: `val_bpb`, how well it predicts held-out text. Lower is better.
+- **The task:** train a small language model on one GPU, for exactly five minutes. Score: `val_bpb`, how well it predicts held-out text.
 - **What the agent may change:** anything in the training script. The recipe (learning rates, batch size, warmup) *and* the architecture (depth, attention windows, positional encoding).
 - **What it may not:** the data, the test, or the five-minute budget. A fixed budget makes every trial a fair comparison.
 :::

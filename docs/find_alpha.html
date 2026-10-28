@@ -1551,7 +1551,7 @@ in scale(decay_linear(book, 10))</code></pre>
 <div class="column" style="width:56%;">
 <p><strong>The question:</strong> can we use an LLM as the hypothesis generator in the scientific method loop, and find a better way to train a neural network overnight?</p>
 <ul>
-<li class="fragment"><strong>The task:</strong> train a small language model on one GPU, for exactly five minutes. Score: <code>val_bpb</code>, how well it predicts held-out text. Lower is better.</li>
+<li class="fragment"><strong>The task:</strong> train a small language model on one GPU, for exactly five minutes. Score: <code>val_bpb</code>, how well it predicts held-out text.</li>
 <li class="fragment"><strong>What the agent may change:</strong> anything in the training script. The recipe (learning rates, batch size, warmup) <em>and</em> the architecture (depth, attention windows, positional encoding).</li>
 <li class="fragment"><strong>What it may not:</strong> the data, the test, or the five-minute budget. A fixed budget makes every trial a fair comparison.</li>
 </ul>
