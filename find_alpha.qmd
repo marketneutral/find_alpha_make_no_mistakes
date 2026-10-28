@@ -257,7 +257,7 @@ in scale(decay_linear(book, 10))
 
 Cumulative return on gross, S&P 500 members today (survivorship-biased!), 2010–⁠2025, dollar-neutral and rebalanced daily. Gross, both versions end near +78%. Net of 2 bps tcost, the unsmoothed book ends at −8% and the ten-day decay at **+39%**.
 
-- **Sidebar: smoothing is (almost) a free lunch!** A ten-day decay cuts turnover from 84% to 32% a day and keeps nearly all the gross return (appendix).
+- **Sidebar: smoothing is (almost) a free lunch!** A ten-day decay cuts turnover from 84% to 32% a day and keeps nearly all the gross return (Appendix A).
 
 ## Why a language?
 
@@ -419,7 +419,7 @@ in decay_linear(score / vol, 10)
 - **The seed:** textbook momentum that *loses money* on validation, 2004–⁠2017
 - **The beliefs:** twelve, most grounded in a paper with a mechanism and a falsifiable prediction; every paper predates the test period
 - **The agent:** Claude Code with Opus 5.5, headless (no human in the loop), one session, 60 trials, 55 minutes, ~$20
-- **Enforced, not trusted:** a tool allowlist: no test, no data, no earlier runs. Not a sandbox; the transcript is the check (appendix).
+- **Enforced, not trusted:** a tool allowlist: no test, no data, no earlier runs. Not a sandbox; the transcript is the check (Appendix D).
 - **The leak no wall closes:** the model has read about 2020 and 2022. Audited: no year after 2017 in any claim. Watched, not closed.
 :::
 
@@ -532,7 +532,7 @@ $$
 ::: {.incremental}
 - **Run once.** The expression runs day by day over 2004–2017: one continuous series of daily P&L. Nothing is fit. The evaluator only chooses *which days count*.
 - **Cut.** The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.
-- **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each: 10,395 possible deals (the count is in the appendix).
+- **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each: 10,395 possible deals (the count is in Appendix B).
 - **Grade.** Score each fold on its own days: six scores. Return the **median** and **worst**.
 - **Repeat.** 50 deals, fixed in `eval.py`. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.
 :::
@@ -1416,12 +1416,12 @@ $$
 ::: {.incremental}
 - History noise $\sigma \approx 0.27$ Sharpe, $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
 - That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective $k$ is far smaller.
-- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The **deflated Sharpe ratio** (Bailey and López de Prado 2014) is this calculation done properly: `eval.py` prints it after every trial. It informs the agent and constrains nothing. Appendix.
+- Observed: validation 1.26 → test 0.77, a drop of **0.49**. The **deflated Sharpe ratio** (Bailey and López de Prado 2014) is this calculation done properly: `eval.py` prints it after every trial. It informs the agent and constrains nothing. Appendix C.
 :::
 
 . . .
 
-[Information theory says the same thing three ways: the gap is bounded by the bits the choice carries about the sample, every look at a hold-out leaks some, and a short description cannot carry many. Appendix.]{.pq-note}
+[Information theory says the same thing three ways: the gap is bounded by the bits the choice carries about the sample, every look at a hold-out leaks some, and a short description cannot carry many. Appendix C.]{.pq-note}
 
 ## Overfitting defences, in one table {.mid}
 
@@ -1534,7 +1534,7 @@ $$
 
 - Questions? Comments?
 
-# Appendix
+# Appendix A: qex
 
 ## Lazy trees, no lookahead, shared work {.smaller}
 
@@ -1584,6 +1584,8 @@ It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 50
 ![](images/qex-ic-by-horizon.svg){.r-stretch fig-align="center"}
 
 The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
+
+# Appendix B: counting the deals
 
 ## How many ways are there to deal? {.mid}
 
@@ -1643,6 +1645,8 @@ $$
 - **Fifty deals is a 0.5% sample** of the 10,395.
 :::
 
+# Appendix C: overfitting, in theory
+
 ## Information theory: what the choice knows {.smaller}
 
 The overfitting gap is bounded by the **mutual information** between the sample and what you chose from it (Russo and Zou 2016; Xu and Raginsky 2017):
@@ -1701,6 +1705,8 @@ $$
 $$
 
 $N$ = rows in the notebook so far, $\gamma$ the Euler–Mascheroni constant, $\hat\gamma_3, \hat\gamma_4$ the skew and kurtosis of daily P&L, $\mathbb{V}[\widehat{\mathrm{SR}}_n]$ the variance of the trials' Sharpe ratios. The final book: **0.974** after 61 rows, the seed and sixty trials. It informs the agent; it does not decide keeps.
+
+# Appendix D: keeping it honest
 
 ## Keeping it honest: permissions {.mid}
 
