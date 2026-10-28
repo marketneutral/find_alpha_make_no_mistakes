@@ -1,10 +1,8 @@
-// The deck's version of the blog post's augmented-loop.dot, with every lab file (except data/) on the box
-// that uses it, as Karpathy's loop names program.md, train.py and results.tsv. Re-render with:
+// The deck's version of the blog post's augmented-loop.dot: Karpathy's loop (the deck's autoresearch-loop.svg) with
+// every lab file (except data/) on the box that uses it. Colours follow Karpathy's diagram exactly (green: propose,
+// decide, keep; grey: everything else; dashed: done by you), and orange marks only what is new: a whole orange box is
+// a new step; orange words in a grey box are an existing step, changed. Re-render with:
 //   dot -Tsvg figures/loop/augmented-loop-files.dot -o images/alpha-augmented-loop-files.svg
-// The autoresearch loop from the ai-scientist post with the finance changes that
-// post asked for, built: the claim before the edit, the moving evaluator, the
-// two-sided keep rule with eligibility, the counted log, the seeded program, and the untouched test.
-// Green marks the step handed to the model; orange marks what the essay added.
 digraph augmented {
   rankdir=TB;
   bgcolor="transparent";
@@ -14,26 +12,30 @@ digraph augmented {
   fontname="IBM Plex Mono, Menlo, DejaVu Sans Mono, monospace";
   node [shape=box, style="rounded,filled", fillcolor="#131927", color="#2a3344",
         fontcolor="#e8eaf0", fontname="IBM Plex Mono, Menlo, DejaVu Sans Mono, monospace",
-        fontsize=15, margin="0.10,0.14", penwidth=1.2, width=2.2, height=0.95, fixedsize=true];
+        fontsize=14, margin="0.10,0.14", penwidth=1.2, width=2.3, height=0.95, fixedsize=true];
   edge [color="#6b7280", arrowsize=0.7, penwidth=1.1,
         fontname="IBM Plex Mono, Menlo, DejaVu Sans Mono, monospace",
         fontsize=13, fontcolor="#9aa1ad"];
 
-  PM   [label="you write the beliefs:\nmechanism, counterparty,\npaper, prediction\n(program.md)", style="rounded,dashed", color="#ffb347", fontcolor="#ffb347", width=3.0, height=1.15, fontsize=13];
-  READ [label="read alpha.qex;\nexplore 1999-2003\n(explore.py)", width=2.5, height=0.95, fontsize=14];
+  // existing steps (Karpathy's), with any change in orange
+  PM   [label=<you write the program<br/><font color="#ffb347">beliefs: mechanism,<br/>counterparty, paper,<br/>prediction</font><br/>(program.md)>,
+        style="rounded,dashed", color="#9aa1ad", width=2.9, height=1.25, fontsize=13];
+  READ [label=<read alpha.qex<br/><font color="#ffb347">explore 1999-2003<br/>(explore.py)</font>>, width=2.5];
   H    [label="propose\na change", fillcolor="#3ee87a", color="#3ee87a", fontcolor="#0a0e1a"];
-  C    [label="write the claim:\nwhich belief,\nwhat should move\n(notes.md)", color="#ffb347", fontcolor="#ffb347", fontsize=13, height=1.05];
   P    [label="edit alpha.qex\nand git commit"];
-  X    [label="trial.sh runs eval.py:\ndeal 50 random\npurged partitions\nof 2004-2017", color="#ffb347", fontcolor="#ffb347", fontsize=12, width=2.5, height=1.05];
-  R    [label="score: fitness\n- charge per node,\nmedian and worst fold", color="#ffb347", fontcolor="#ffb347", fontsize=12, width=2.8];
-  D    [shape=diamond, style="filled", fillcolor="#0f1726", color="#3ee87a",
-        fontcolor="#3ee87a", label="median up by\n> noise, worst\ndown <= noise,\nstill eligible?", margin="0.04,0.02", fontsize=11, width=2.8, height=1.4, fixedsize=true];
+  X    [label=<trial.sh runs eval.py<br/><font color="#ffb347">50 random purged<br/>partitions of<br/>2004-2017</font>>, width=2.5, height=1.1, fontsize=13];
+  R    [label=<score<br/><font color="#ffb347">fitness - charge per node,<br/>median and worst fold</font>>, width=2.9, fontsize=12];
+  D    [shape=diamond, style="filled", fillcolor="#0f1726", color="#3ee87a", fontcolor="#3ee87a",
+        label=<<font color="#ffb347">median up by<br/>&gt; noise, worst<br/>down &lt;= noise,<br/>still eligible?</font>>, margin="0.04,0.02", fontsize=11, width=2.8, height=1.4, fixedsize=true];
   T    [label="keep it", shape=hexagon, style="filled", fillcolor="#0a0e1a",
         color="#3ee87a", fontcolor="#3ee87a", margin="0.04,0.02", width=2.2, height=0.85, fixedsize=true];
-  LOG  [label="log claim, outcome,\nregime split;\ncount the trials\n(results.tsv)", color="#ffb347", fontcolor="#ffb347", fontsize=12, width=2.4, height=1.05];
-  YOU  [label="you read the\nnotebook", style="rounded,dashed", color="#9aa1ad", fontcolor="#c0c4cf", fontsize=14];
-  SUM  [label="agent writes\nits report\n(summary.md)", color="#9aa1ad", fontcolor="#c0c4cf", fontsize=13];
-  OOS  [label="2018-2026:\nrun once, at the end\n(test.py)", style="rounded,dashed", color="#ffb347", fontcolor="#ffb347", width=2.6, fontsize=14];
+  LOG  [label=<log the attempt<br/><font color="#ffb347">claim, outcome,<br/>regime split;<br/>count the trials</font><br/>(results.tsv)>, width=2.4, height=1.25, fontsize=12];
+  YOU  [label="you read the\nnotebook", style="rounded,dashed", color="#9aa1ad"];
+
+  // new steps
+  C    [label="write the claim:\nwhich belief,\nwhat should move\n(notes.md)", color="#ffb347", fontcolor="#ffb347", fontsize=13, height=1.05];
+  SUM  [label="write the\nreport\n(summary.md)", color="#ffb347", fontcolor="#ffb347", fontsize=13];
+  OOS  [label="you run 2018-2026,\nonce, at the end\n(test.py)", style="rounded,dashed", color="#ffb347", fontcolor="#ffb347", width=2.6, fontsize=13];
 
   { rank=same; PM; READ; H; C; P; }
   { rank=same; T; D; R; X; }

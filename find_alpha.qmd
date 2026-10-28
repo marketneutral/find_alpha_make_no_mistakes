@@ -445,7 +445,7 @@ in decay_linear(score / vol, 10)
 
 ![](images/alpha-augmented-loop-files.svg){.r-stretch fig-align="center"}
 
-The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that inform the agent but don't count in the keep decision: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe.
+Karpathy's loop, same colours. **Orange is what's new:** a whole orange box is a new step; orange words in a grey box, a changed one.
 
 ## Twelve beliefs codified in `program.md` {.smaller}
 
