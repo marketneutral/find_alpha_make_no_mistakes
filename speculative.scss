@@ -57,8 +57,8 @@ $presentation-h2-font-size: 1.3em;
 .reveal .slides section.mid { font-size: 0.8em; }
 .reveal .slides section.mid h2 { font-size: 1.625em; }
 // signal to book: the weight column, the expression's output, in a wash of the accent green
-.reveal .book-weights th:nth-child(4), .reveal .book-weights td:nth-child(4) { background: rgba(62, 232, 122, 0.13); }
-.reveal .book-weights th:nth-child(4) { color: #3ee87a; }
+.reveal .book-weights th:nth-child(5), .reveal .book-weights td:nth-child(5) { background: rgba(62, 232, 122, 0.13); }
+.reveal .book-weights th:nth-child(5) { color: #3ee87a; }
 // permissions slide: allowed in the accent green, denied muted
 .reveal .perm-allow > p strong { color: #3ee87a; }
 .reveal .perm-deny > p strong { color: #9aa1ad; }
