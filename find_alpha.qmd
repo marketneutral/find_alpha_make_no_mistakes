@@ -597,6 +597,8 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 <figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: score and worst slice over sixty trials"></figure>
 
+[Hover on any dot. Top: the agent's claim and its change to `alpha.qex`. Bottom: what the evaluator said back. Sixty trials, inside the mind of the agent.]{.run-note}
+
 ## Trial 1: the crash switch {.smaller}
 
 The seed loses most of its money in the crash state, so the agent starts there. Before each test it writes a **claim**: which belief, the mechanism, where the score should move. It is committed to git before the evaluator runs. After it, an **outcome**, in its own words. On the right, the change to `alpha.qex`.
