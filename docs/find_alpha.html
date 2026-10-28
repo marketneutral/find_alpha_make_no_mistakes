@@ -1499,9 +1499,9 @@ decay_linear(group_demean(rank(-returns(5) / volatility(60)),
     book = group_demean(rank(-pos), &#39;sector&#39;)
 in scale(decay_linear(book, 10))</code></pre>
 <ul>
-<li class="fragment"><code>pos</code>: where the close sits in its five-day range, 0 at the low, 1 at the high; rank <code>-pos</code> buys closes near the low</li>
 <li class="fragment">Reversal: Jegadeesh and Lehmann (1990); pay for providing liquidity, Nagel (2012); <em>the</em> stat-arb trade of August 2007, Khandani and Lo (2007)</li>
 <li class="fragment">Technicians call it <em>Williams %R</em>; it works once you think cross-sectionally</li>
+<li class="fragment"><code>pos</code>: where the close sits in its five-day range, 0 at the low, 1 at the high; rank <code>-pos</code> buys closes near the low</li>
 </ul>
 </section>
 <section id="how-it-did-through-time-with-tcosts" class="slide level2 smaller">

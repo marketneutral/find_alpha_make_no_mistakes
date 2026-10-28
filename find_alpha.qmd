@@ -229,9 +229,9 @@ in scale(decay_linear(book, 10))
 ```
 
 ::: {.incremental}
-- `pos`: where the close sits in its five-day range, 0 at the low, 1 at the high; rank `-pos` buys closes near the low
 - Reversal: Jegadeesh and Lehmann (1990); pay for providing liquidity, Nagel (2012); *the* stat-arb trade of August 2007, Khandani and Lo (2007)
 - Technicians call it *Williams %R*; it works once you think cross-sectionally
+- `pos`: where the close sits in its five-day range, 0 at the low, 1 at the high; rank `-pos` buys closes near the low
 :::
 
 ## How it did, through time, with tcosts {.smaller}
