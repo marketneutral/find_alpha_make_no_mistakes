@@ -1865,6 +1865,20 @@ in decay_linear(score / vol, 10)</code></pre>
 </ol>
 </div></div>
 </section>
+<section id="what-explore.py-gives-the-agent" class="slide level2 smaller">
+<h2>What <code>explore.py</code> gives the agent</h2>
+<p>The inspection period, 1999–⁠2003, with 1998 as warmup. The agent’s first look at the seed, before trial 1:</p>
+<pre class="evaluator evalprint"><code>$ uv run python explore.py
+1999-2003  Sharpe 0.65  fitness 0.38  return/yr +4.3%  turnover 0.05  margin 30.8 bps  breadth 1309
+rank IC by horizon: {1: 0.007, 2: 0.0101, 5: 0.0124, 10: 0.0121, 20: 0.0114}  lag-1 autocorr 1.00
+return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11, 2003: -0.014}</code></pre>
+<ul>
+<li class="fragment"><strong>Score any expression:</strong> the same book as <code>eval.py</code> (delay 1, members only, dollar-neutral, gross one, 5% cap), on 1999–2003, no folds. Plus rank IC at 1 to 20 days and return by year.</li>
+<li class="fragment"><strong>The raw data:</strong> <code>explore.data()</code> returns 1998–2003 prices, volume, membership, market cap and sector, for the agent’s own Python</li>
+<li class="fragment"><strong>Nothing after 2003</strong> is loaded. The agent ran it over a hundred times, and used <code>explore.data()</code> from <code>python -c</code> about a dozen more.</li>
+<li class="fragment">It is a guide, not a judge: the run shows inspection pointing the wrong way on risk (trials 31, 36, 40)</li>
+</ul>
+</section>
 <section id="what-eval.py-prints" class="slide level2 smaller">
 <h2>What <code>eval.py</code> prints</h2>
 <p>After every trial (trial 27’s output, trimmed):</p>

@@ -470,6 +470,24 @@ I wrote these twelve: nine grounded in published research, three from practition
 :::
 :::
 
+## What `explore.py` gives the agent {.smaller}
+
+The inspection period, 1999–⁠2003, with 1998 as warmup. The agent's first look at the seed, before trial 1:
+
+```{.evaluator .evalprint}
+$ uv run python explore.py
+1999-2003  Sharpe 0.65  fitness 0.38  return/yr +4.3%  turnover 0.05  margin 30.8 bps  breadth 1309
+rank IC by horizon: {1: 0.007, 2: 0.0101, 5: 0.0124, 10: 0.0121, 20: 0.0114}  lag-1 autocorr 1.00
+return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11, 2003: -0.014}
+```
+
+::: {.incremental}
+- **Score any expression:** the same book as `eval.py` (delay 1, members only, dollar-neutral, gross one, 5% cap), on 1999–2003, no folds. Plus rank IC at 1 to 20 days and return by year.
+- **The raw data:** `explore.data()` returns 1998–2003 prices, volume, membership, market cap and sector, for the agent's own Python
+- **Nothing after 2003** is loaded. The agent ran it over a hundred times, and used `explore.data()` from `python -c` about a dozen more.
+- It is a guide, not a judge: the run shows inspection pointing the wrong way on risk (trials 31, 36, 40)
+:::
+
 ## What `eval.py` prints {.smaller}
 
 After every trial (trial 27's output, trimmed):
