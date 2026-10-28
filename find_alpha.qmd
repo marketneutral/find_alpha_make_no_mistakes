@@ -451,21 +451,21 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 ![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-The loop with the finance changes; the next slides define each box. What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never granular data or results.**
+The loop with the finance changes; the next slides define each box. What the agent sees after each trial: median-fold and worst-fold score, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never granular data or results.**
 
 ## The score {.smaller}
 
-A *fold*, one stretch of history (next slide), is scored on its cost-free P&L:
+A *fold*, one stretch of history (next slide), gets a score from its cost-free P&L. `eval.py` prints it as `utility`, and the agent's notes use that word too:
 
 $$
-\text{utility} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
+\text{score} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
 $$
 
 ::: {.incremental}
 - **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
 - Turnover, the share of the book traded each day, is not charged below 12.5%, and the agent will notice
 - **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.
-- **Eligible, or −∞:** a fold scores −∞ if the book holds fewer than 50 names or runs outside 1–70% turnover a day. The whole validation book must also earn a margin of ≥ 5 bps per dollar traded.
+- **Eligible, or −∞:** a fold scores −∞ if, over its days, the book's median holding is under 50 names or its average daily turnover is outside 1–70%. The whole validation book must also earn a margin of ≥ 5 bps per dollar traded.
 :::
 
 ## The keep rule {.smaller}
@@ -473,14 +473,14 @@ $$
 Karpathy's rule is one line: keep if the score improves. Here a change is compared with the **best book kept so far**, the one it edits, and kept only if all three hold:
 
 $$
-\underbrace{\Delta\,\overline{u}_{\text{median}} \;>\; 0.03}_{\text{climb}}
+\underbrace{\Delta\,\text{score}_{\text{median}} \;>\; 0.03}_{\text{climb}}
 \qquad\wedge\qquad
-\underbrace{\Delta\,\overline{u}_{\text{worst}} \;\ge\; -0.13}_{\text{hold the floor}}
+\underbrace{\Delta\,\text{score}_{\text{worst}} \;\ge\; -0.13}_{\text{hold the floor}}
 \qquad\wedge\qquad
 \underbrace{\text{eligible}}_{\text{stay tradeable}}
 $$
 
-$\overline{u}$: the score on the median fold and on the worst fold, defined over the next slides. $\Delta$: against the best kept book. Eligibility binds once the best is eligible; the seed was not, and trial 2 made it so.
+$\text{score}_{\text{median}}$, $\text{score}_{\text{worst}}$: the score on the median fold and on the worst fold, averaged over the evaluator's deals (next slides). $\Delta$: against the best kept book. Eligibility binds once the best is eligible; the seed was not, and trial 2 made it so.
 
 The two numbers are the evaluator's own noise on the seed, measured before the run; where they come from follows the evaluator.
 
@@ -494,7 +494,7 @@ Otherwise `git checkout <best> -- alpha.qex`. Either way the attempt is logged: 
 - **Run once.** The expression runs day by day over 2004–2017: one continuous series of daily P&L. Nothing is fit. The evaluator only chooses *which days count*.
 - **Cut.** The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.
 - **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each: 10,395 possible deals (the count is in the appendix).
-- **Grade.** Score each fold on its own days: six utilities. Keep the **median** and the **worst**.
+- **Grade.** Score each fold on its own days: six scores. Keep the **median** and the **worst**.
 - **Repeat.** 50 deals, fixed in `eval.py`. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.
 :::
 
@@ -515,7 +515,7 @@ An example: the book the run ends with, on one deal, as the agent saw it: median
 ::: {.incremental}
 - **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
 - **Embargo:** 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.
-- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not set the score.
+- **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not set it.
 - **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
 :::
 
@@ -572,7 +572,7 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 [Into the mind of the agent.]{.run-sub}
 
-<figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: score and worst slice over sixty trials"></figure>
+<figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: median-fold and worst-fold score over sixty trials"></figure>
 
 [Hover on any dot. Top: the agent's claim, its diff to `alpha.qex`, and the keep/discard decision. Bottom: the evaluator's internals.]{.run-note}
 
@@ -588,7 +588,7 @@ Adds a crash-state flag built from the equal-weight market, and flips the moment
 [claim]{.t-lab} Where the crash state holds, the momentum score flips sign to reversal. *Mechanism: the crash is the past losers rebounding hardest.* Predict crash-state Sharpe turns positive, **worst fold improves a lot, median a little.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [utility −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
+[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [score −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
 :::
 :::
 :::
@@ -610,7 +610,7 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 
 ## Trial 2: delete a line {.smaller}
 
-Deletes the final `/ vol`. The score was already divided by volatility, so the seed divided twice.
+Deletes the final `/ vol`. The `score` was already divided by volatility, so the seed divided twice.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -620,7 +620,7 @@ Deletes the final `/ vol`. The score was already divided by volatility, so the s
 [claim]{.t-lab} Drop the final 1/vol: the score is already mom/vol, so the seed sizes by mom/vol² and the book piles into low-vol names whose momentum carries little return. Predict higher return and margin.
 
 ::: {.fragment}
-[outcome]{.t-lab} Now eligible: margin 14.3 bps. **Belief 11 as written was costing return without buying safety.** [utility 0.01 → 0.32]{.t-num}
+[outcome]{.t-lab} Now eligible: margin 14.3 bps. **Belief 11 as written was costing return without buying safety.** [score 0.01 → 0.32]{.t-num}
 :::
 :::
 :::
@@ -652,7 +652,7 @@ Measures each stock's volatility over 252 days instead of 60.
 [claim]{.t-lab} Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. *60-day vol is noisy and spikes right after big moves, so it mis-ranks names.* Predict a small median gain.
 
 ::: {.fragment}
-[outcome]{.t-lab} Sharpe outside the crash state 0.32 to 0.45, in it unchanged. **Larger than predicted.** [utility 0.32 → 0.43]{.t-num}
+[outcome]{.t-lab} Sharpe outside the crash state 0.32 to 0.45, in it unchanged. **Larger than predicted.** [score 0.32 → 0.43]{.t-num}
 :::
 :::
 :::
@@ -684,7 +684,7 @@ Adds a second bet: minus last month's return, sector-relative. A 1-month reversa
 [claim]{.t-lab} Add a sector-relative 1-month reversal *sleeve*, a second bet alongside the first. The last month reverses (Jegadeesh 1990; *known 35 years, probably mostly priced*), and **fitness does not charge turnover below 0.125, so a fast sleeve rides free.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [utility 0.43 → 0.56]{.t-num}
+[outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [score 0.43 → 0.56]{.t-num}
 :::
 :::
 :::
@@ -716,7 +716,7 @@ Ranks on the residual: each stock's return minus its beta times the market. (Tri
 [claim]{.t-lab} Rank on the *residual*: each stock's return net of beta times the market. *Removes time-varying market beta from the ranking* (Blitz, Huij, Martens). Predict median up, **worst up more than median.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [utility 0.64 → 0.74]{.t-num}
+[outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [score 0.64 → 0.74]{.t-num}
 :::
 :::
 :::
@@ -835,7 +835,7 @@ Replaces the on/off crash flag with a weight `w`: when vol is high, it slides fr
 [claim]{.t-lab} When 1-month market vol is above 1-year vol, the momentum weight is clip(10 × 1-year market return, −1, 1) instead of a hard −1. Predict, *per belief 7*, worst slightly lower.
 
 ::: {.fragment}
-[outcome]{.t-lab} **Better than belief 7 predicted: the soft switch beats the hard one on median and worst.** [utility 0.89 → 1.00]{.t-num}
+[outcome]{.t-lab} **Better than belief 7 predicted: the soft switch beats the hard one on median and worst.** [score 0.89 → 1.00]{.t-num}
 :::
 :::
 :::
@@ -873,7 +873,7 @@ Projects the cubed signal off each stock's beta every day, so the book is beta-n
 [claim]{.t-lab} Make the book beta-neutral too. *Hedging factor exposure keeps the return, drops the risk.* Predict worst up, median flat.
 
 ::: {.fragment}
-[outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [utility 1.00 → 1.10]{.t-num}
+[outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [score 1.00 → 1.10]{.t-num}
 :::
 :::
 :::
@@ -1019,7 +1019,7 @@ Keeps both: the vol rule when vol is high, the depth rule when it is calm.
 [claim]{.t-lab} Combine the two. When 1-month vol is above 1-year vol, w = clip(10 × 1-year return), as now; otherwise w = clip(10 × 1-year return + 1), so a deep bear still shrinks or flips momentum after vol subsides. *T30 showed the depth rule saves the rebound fold while the vol rule earns the median.* Predict worst up strongly, median flat to up.
 
 ::: {.fragment}
-[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
+[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [score 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
 :::
 :::
 :::
@@ -1205,7 +1205,7 @@ The agent's own removal tests, each measured against the best book at the time. 
 ## The beliefs, scored
 
 ::: {.belief-table}
-| | belief | verdict | evidence: trial, Δ utility |
+| | belief | verdict | evidence: trial, Δ score |
 |--:|---|---|---|
 | 1 | Winners keep winning, against their sector | the premise | every book |
 | 2 | Skip the last month | **held** | T10 −0.15; sleeve T52 −0.45 |
@@ -1351,7 +1351,7 @@ The sharper question: sixty trials climbed a score on 2004–⁠2017. How much o
 
 | noise | where it comes from | size, final book | fixed by |
 |---|---|---|---|
-| **evaluator** | which 50 deals were drawn | ±0.06 utility | more deals; none at 10,395 |
+| **evaluator** | which 50 deals were drawn | ±0.06 score | more deals; none at 10,395 |
 | **history** | 2004–2017 is one draw of history | ±0.27 Sharpe, 1/√14 | only new data |
 
 . . .
@@ -1397,7 +1397,7 @@ $$
 
 | defence | what it limits |
 |---|---|
-| claim before the test | fishing: the prediction is fixed before the score |
+| claim before the test | fishing: the prediction is fixed before the evaluator runs |
 | median and worst over many splits | fitting one stretch of history |
 | keep bar at the noise | lucky wins; bits leaked per trial |
 | complexity charge, closed grammar | description length, $L(h)$ |
@@ -1408,7 +1408,7 @@ $$
 
 ::: {.incremental}
 - **The written claims were the most valuable output.** Most resets were predicted; the wrong predictions came with explanations.
-- **Measure the noise at the top, not just at the start.** Seed noise ±0.02; the same book written two ways scored 0.058 apart at utility ~1.4.
+- **Measure the noise at the top, not just at the start.** Seed noise ±0.02; the same book written two ways scored 0.058 apart at a score of ~1.4.
 - **The keep rule cannot accept a pure worst-case improvement**, a strange blind spot for a crash problem
 - **The loop finds a local optimum, and which one depends on its path.** The hedge paid at T24 and paid again when removed at T54. Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
 - **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999–⁠2003, nearly halved the score on 2004–⁠2017.

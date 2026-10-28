@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-28T13:11:39.927895</dc:date>
+    <dc:date>2026-10-28T14:16:35.832795</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -91,12 +91,12 @@ z
    <g id="LineCollection_1">
     <path d="M 75.052655 54.030682 
 L 210.147392 54.030682 
-" clip-path="url(#p14b8edfb7f)" style="fill: none; stroke: #c0c4cf; stroke-width: 2.2"/>
+" clip-path="url(#pb201b25cee)" style="fill: none; stroke: #c0c4cf; stroke-width: 2.2"/>
    </g>
    <g id="LineCollection_2">
     <path d="M 75.052655 70.601442 
 L 251.263182 70.601442 
-" clip-path="url(#p14b8edfb7f)" style="fill: none; stroke: #3ee87a; stroke-width: 5"/>
+" clip-path="url(#pb201b25cee)" style="fill: none; stroke: #3ee87a; stroke-width: 5"/>
    </g>
    <g id="patch_3">
     <path d="M 31.000024 82.200975 
@@ -105,7 +105,7 @@ L 533.200024 82.200975
    </g>
    <g id="PathCollection_1">
     <defs>
-     <path id="maa7330201e" d="M 0 4.743416 
+     <path id="m1dfe1ce618" d="M 0 4.743416 
 C 1.257969 4.743416 2.464584 4.24362 3.354102 3.354102 
 C 4.24362 2.464584 4.743416 1.257969 4.743416 0 
 C 4.743416 -1.257969 4.24362 -2.464584 3.354102 -3.354102 
@@ -117,15 +117,15 @@ C -2.464584 4.24362 -1.257969 4.743416 0 4.743416
 z
 " style="stroke: #0a0e1a; stroke-width: 1.2"/>
     </defs>
-    <g clip-path="url(#p14b8edfb7f)">
-     <use xlink:href="#maa7330201e" x="210.147392" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="92.673708" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="75.052655" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="210.147392" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="75.052655" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="151.41055" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="210.147392" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="75.052655" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+    <g clip-path="url(#pb201b25cee)">
+     <use xlink:href="#m1dfe1ce618" x="210.147392" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="92.673708" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="75.052655" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="210.147392" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="75.052655" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="151.41055" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="210.147392" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="75.052655" y="54.030682" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="text_9">
@@ -135,7 +135,7 @@ z
     <text style="font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="261.835813" y="74.36861" transform="rotate(-0 261.835813 74.36861)">the bar: 0.03</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 15.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8eaf0" x="31.000024" y="33.459922" transform="rotate(-0 31.000024 33.459922)">median-fold utility, eight calls on the seed</text>
+    <text style="font-size: 15.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8eaf0" x="31.000024" y="33.459922" transform="rotate(-0 31.000024 33.459922)">median-fold score, eight calls on the seed</text>
    </g>
   </g>
   <g id="axes_2">
@@ -201,12 +201,12 @@ z
    <g id="LineCollection_3">
     <path d="M 75.052655 136.801629 
 L 245.841319 136.801629 
-" clip-path="url(#pf13e144395)" style="fill: none; stroke: #c0c4cf; stroke-width: 2.2"/>
+" clip-path="url(#p41a7fb5902)" style="fill: none; stroke: #c0c4cf; stroke-width: 2.2"/>
    </g>
    <g id="LineCollection_4">
     <path d="M 75.052655 153.37239 
 L 251.263182 153.37239 
-" clip-path="url(#pf13e144395)" style="fill: none; stroke: #ff6b4a; stroke-width: 5"/>
+" clip-path="url(#p41a7fb5902)" style="fill: none; stroke: #ff6b4a; stroke-width: 5"/>
    </g>
    <g id="patch_5">
     <path d="M 31.000024 164.971922 
@@ -214,15 +214,15 @@ L 533.200024 164.971922
 " style="fill: none; stroke: #2a3344; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="PathCollection_2">
-    <g clip-path="url(#pf13e144395)">
-     <use xlink:href="#maa7330201e" x="75.052655" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="245.841319" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="239.063991" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="100.806501" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="171.290712" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="241.774923" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="127.915813" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
-     <use xlink:href="#maa7330201e" x="152.314194" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+    <g clip-path="url(#p41a7fb5902)">
+     <use xlink:href="#m1dfe1ce618" x="75.052655" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="245.841319" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="239.063991" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="100.806501" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="171.290712" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="241.774923" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="127.915813" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
+     <use xlink:href="#m1dfe1ce618" x="152.314194" y="136.801629" style="fill: #e8eaf0; stroke: #0a0e1a; stroke-width: 1.2"/>
     </g>
    </g>
    <g id="text_20">
@@ -232,15 +232,15 @@ L 533.200024 164.971922
     <text style="font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #ff6b4a" x="261.835813" y="157.178073" transform="rotate(-0 261.835813 157.178073)">the floor's tolerance: 0.13</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 15.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8eaf0" x="31.000024" y="116.230869" transform="rotate(-0 31.000024 116.230869)">worst-fold utility, the same eight calls</text>
+    <text style="font-size: 15.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8eaf0" x="31.000024" y="116.230869" transform="rotate(-0 31.000024 116.230869)">worst-fold score, the same eight calls</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p14b8edfb7f">
+  <clipPath id="pb201b25cee">
    <rect x="31.000024" y="37.459922" width="502.2" height="44.741053"/>
   </clipPath>
-  <clipPath id="pf13e144395">
+  <clipPath id="p41a7fb5902">
    <rect x="31.000024" y="120.230869" width="502.2" height="44.741053"/>
   </clipPath>
  </defs>

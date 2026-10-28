@@ -111,7 +111,7 @@ def fig_folds():
     ax.text(med, y[0] + 0.62, f"median {med:.2f}", ha="center", va="bottom", color=INK, fontsize=14.5)
     ax.set_xlim(0, 3.75); ax.set_ylim(-0.6, len(folds) - 0.1)
     ax.set_yticks([]); ax.tick_params(length=0)
-    ax.set_xlabel("utility of the fold, scored on its own", fontsize=14)
+    ax.set_xlabel("score of the fold, on its own days", fontsize=14)
     for s in ("top", "right", "left"): ax.spines[s].set_visible(False)
     ax.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
     save(fig, "eval-folds")
@@ -136,7 +136,7 @@ def fig_noise():
             color=ACC, fontsize=15, va="top")
     ax.text(med.min(), top * 0.97, f"one deal can say\nanything from {med.min():.2f}", color=INK2, fontsize=14, va="top")
     ax.text(med.max(), top * 0.6, f"…to {med.max():.2f}", color=INK2, fontsize=14, ha="right", va="top")
-    ax.set_xlabel(f"median-fold utility of the final book, on each of the {len(med):,} possible deals", fontsize=14)
+    ax.set_xlabel(f"median-fold score of the final book, on each of the {len(med):,} possible deals", fontsize=14)
     ax.set_yticks([])
     for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
     ax.tick_params(length=0); ax.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
@@ -194,8 +194,8 @@ def keep_map(ax, xlim, ylim, fs, long=True):
         ax.text(BAR + 0.008, ylim[0] + 0.03, "the bar: +0.03", color=ACC, fontsize=fs, va="bottom")
         ax.text(xlim[1] - 0.01, FLOOR - 0.025, "the floor: \u22120.13", color=RED, fontsize=fs, va="top", ha="right")
     ax.set_xlim(*xlim); ax.set_ylim(*ylim)
-    ax.set_xlabel("\u0394 median-fold utility vs the best book so far", fontsize=fs + 1)
-    ax.set_ylabel("\u0394 worst-fold utility vs the best", fontsize=fs + 1)
+    ax.set_xlabel("\u0394 median-fold score vs the best book so far", fontsize=fs + 1)
+    ax.set_ylabel("\u0394 worst-fold score vs the best", fontsize=fs + 1)
     for sp in ("top", "right"): ax.spines[sp].set_visible(False)
     ax.tick_params(length=0, labelsize=fs); ax.grid(False)
 
@@ -239,8 +239,8 @@ def fig_noise_runs():
     """The seed scored eight times before the run (noise.txt): the spread of each number, and the threshold set from it."""
     import re
     runs = [tuple(map(float, re.findall(r"-?\d+\.\d+", l))) for l in open("figures/progress/lab/noise.txt") if l.strip()]
-    rows = [("median-fold utility, eight calls on the seed", [r[0] for r in runs], 0.03, "the bar: 0.03", ACC),
-            ("worst-fold utility, the same eight calls", [r[1] for r in runs], 0.13, "the floor's tolerance: 0.13", RED)]
+    rows = [("median-fold score, eight calls on the seed", [r[0] for r in runs], 0.03, "the bar: 0.03", ACC),
+            ("worst-fold score, the same eight calls", [r[1] for r in runs], 0.13, "the floor's tolerance: 0.13", RED)]
     fig, axes = plt.subplots(2, 1, figsize=(9.0, 2.3), gridspec_kw=dict(hspace=0.85))
     for ax, (name, vals, thr, lab, c) in zip(axes, rows):
         lo, hi = min(vals), max(vals)

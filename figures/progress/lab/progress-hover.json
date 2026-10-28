@@ -1882,7 +1882,7 @@
 }
 ]
 },
-"qex": "let mr    = returns(1),\n    mk    = mr - demean(mr),\n    w     = where(ts_std(mk, 21) > ts_std(mk, 252),\n                  max(min(10 * ts_sum(mk, 252), 1), -1),\n                  1),\n    vol   = volatility(252),\n    b     = ts_beta(returns(1), mk, 252),\n    rr    = returns(1) - b * mk,\n    mom   = delay(ts_sum(rr, 231), 21),\n    fp    = delay(ts_mean(rr > 0, 231), 21),\n    score = group_demean(mom / vol * (1 + 5 * sign(mom) * (2 * fp - 1)),\n                         'sector'),\n    a     = decay_linear(w * score, 10)\n            - group_demean(returns(21) / vol, 'sector'),\n    s     = power(a, 3),\n    bd    = demean(b),\n    sb    = s * bd,\n    bb    = bd * bd\nin decay_linear(s - bd * (sb - demean(sb)) / (bb - demean(bb)),\n                3)",
+"qex": "let mr    = returns(1),\n    mk    = mr - demean(mr),\n    w     = where(ts_std(mk, 21) > ts_std(mk, 252),\n                  max(min(10 * ts_sum(mk, 252), 1), -1),\n                  1),\n    vol   = volatility(252),\n    b     = ts_beta(returns(1), mk, 252),\n    rr    = returns(1) - b * mk,\n    mom   = delay(ts_sum(rr, 231), 21),\n    fp    = delay(ts_mean(rr > 0, 231), 21),\n    score = group_demean(mom\n                         / vol\n                         * (1 + 5 * sign(mom) * (2 * fp - 1)),\n                         'sector'),\n    a     = decay_linear(w * score, 10)\n            - group_demean(returns(21) / vol, 'sector'),\n    s     = power(a, 3),\n    bd    = demean(b),\n    sb    = s * bd,\n    bb    = bd * bd\nin decay_linear(s - bd * (sb - demean(sb)) / (bb - demean(bb)),\n                3)",
 "top": [
 0.45931,
 0.37128
@@ -2602,7 +2602,7 @@
 }
 ]
 },
-"qex": "let mr    = returns(1),\n    mk    = mr - demean(mr),\n    m1    = ts_sum(mk, 252),\n    w     = where(ts_std(mk, 21) > ts_std(mk, 252),\n                  max(min(10 * m1, 1), -1),\n                  max(min(10 * m1 + 1, 1), -1)),\n    b     = ts_beta(returns(1), mk, 252),\n    rr    = returns(1) - b * mk,\n    mom   = delay(ts_sum(rr, 231), 21),\n    score = group_demean(mom, 'sector'),\n    a     = decay_linear(w * score, 10)\n            - group_demean(returns(21), 'sector'),\n    s     = power(a, 3),\n    bd    = demean(b),\n    sb    = s * bd,\n    bb    = bd * bd\nin decay_linear(group_demean(s\n                             - bd * (sb - demean(sb)) / (bb - demean(bb)),\n                             'sector'),\n                3)",
+"qex": "let mr    = returns(1),\n    mk    = mr - demean(mr),\n    m1    = ts_sum(mk, 252),\n    w     = where(ts_std(mk, 21) > ts_std(mk, 252),\n                  max(min(10 * m1, 1), -1),\n                  max(min(10 * m1 + 1, 1), -1)),\n    b     = ts_beta(returns(1), mk, 252),\n    rr    = returns(1) - b * mk,\n    mom   = delay(ts_sum(rr, 231), 21),\n    score = group_demean(mom, 'sector'),\n    a     = decay_linear(w * score, 10)\n            - group_demean(returns(21), 'sector'),\n    s     = power(a, 3),\n    bd    = demean(b),\n    sb    = s * bd,\n    bb    = bd * bd\nin decay_linear(group_demean(s\n                             - bd\n                             * (sb - demean(sb))\n                             / (bb - demean(bb)),\n                             'sector'),\n                3)",
 "top": [
 0.5998,
 0.32437
