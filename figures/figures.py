@@ -290,7 +290,7 @@ def fig_nutshell():
     """Alpha research in a nutshell: a belief, an expression, its scores, the portfolio weights. The running example on
     March 10, 2025, from the closes on the data slide: rank(-returns(5)), then demeaned and scaled to gross one."""
     fig, ax = plt.subplots(figsize=(14.0, 3.8))
-    ws, gaps, h = [3.0, 3.3, 2.8, 3.6], [0.85, 0.85, 1.25], 2.25
+    ws, gaps, h = [3.0, 3.7, 2.8, 3.6], [0.85, 0.85, 1.25], 2.25
     xs = [0.0]
     for w, g in zip(ws[:-1], gaps): xs.append(xs[-1] + w + g)
     heads = ["a belief", "code", "scores", "portfolio weights"]
@@ -300,10 +300,11 @@ def fig_nutshell():
         ax.text(x + w / 2, h - 0.34, head, ha="center", va="center", color=ACC, fontsize=14.5, fontweight="bold")
     ax.text(xs[0] + ws[0] / 2, 0.85, "\u201cStocks that fell\nlast week tend to\nbounce back.\u201d", ha="center", va="center",
             color=INK2, fontsize=13, style="italic", linespacing=1.45)
-    mess = ["px = raw.pivot(...)", "px = px.reindex(cal)", "px = px.ffill(limit=3)", "r5 = px.pct_change(5)",
-            "r5 = r5.shift(1)", "r5 = r5.where(univ)", "s = (-r5).rank(axis=1)", "s = s.dropna(how='all')"]
+    mess = ["d = raw[['dt','id','px']]", "d['r5'] = d.px.pct_change(5)", "d['r5'] = d['r5'].shift(1)",
+            "d.loc[d.px < 2, 'r5'] = None", "d = d[d.dt.isin(cal)]", "s = d.pivot('dt','id','r5')",
+            "s = (-s).rank(axis=1)", "s = s.loc[s.index > t0]"]
     for k, line in enumerate(mess):
-        ax.text(xs[1] + 0.2, 1.52 - k * 0.19, line, ha="left", va="center", color=MUTED, fontsize=9.5)
+        ax.text(xs[1] + 0.18, 1.52 - k * 0.19, line, ha="left", va="center", color=MUTED, fontsize=9.2)
     rows = [("JPM", "1.00", "+0.33"), ("AAPL", "0.80", "+0.17"), ("MSFT", "0.60", "0.00"), ("CVX", "0.40", "\u22120.17"), ("XOM", "0.20", "\u22120.33")]
     for col, x, w in ((1, xs[2], ws[2]), (2, xs[3], ws[3])):
         for k, r in enumerate(rows):
