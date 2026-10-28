@@ -472,7 +472,9 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 ## What `explore.py` gives the agent {.smaller}
 
-The inspection period, 1999–⁠2003, with 1998 as warmup. The agent's first look at the seed, before trial 1:
+The inspection period, 1999–⁠2003, with 1998 as warmup. Nothing after 2003 is loaded.
+
+[score any expression, on the same book as `eval.py` (the agent's first look at the seed, before trial 1)]{.panel-lab}
 
 ```{.evaluator .evalprint}
 $ uv run python explore.py
@@ -481,11 +483,20 @@ rank IC by horizon: {1: 0.007, 2: 0.0101, 5: 0.0124, 10: 0.0121, 20: 0.0114}  la
 return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11, 2003: -0.014}
 ```
 
-::: {.incremental}
-- **Score any expression:** the same book as `eval.py` (delay 1, members only, dollar-neutral, gross one, 5% cap), on 1999–2003, no folds. Plus rank IC at 1 to 20 days and return by year.
-- **The raw data:** `explore.data()` returns 1998–2003 prices, volume, membership, market cap and sector, for the agent's own Python
-- **Nothing after 2003** is loaded. The agent ran it over a hundred times, and used `explore.data()` from `python -c` about a dozen more.
-:::
+[or work on the raw data with its own Python (sizing the reversal sleeve against momentum)]{.panel-lab}
+
+```{.evaluator .evalprint}
+$ uv run python -c "
+import explore; d = explore.data()          # 1998-2003 prices, volume, membership, mcap, sector
+for n, b in [('mom', ...), ('rev', ...), ('rank', ...)]:
+    x = qex(H + b).evaluate(d).where(d['member'].notna()).loc['1999':]
+    print(n, 'mean|x|', ..., 'p99', ...)"
+mom  mean|x| 0.501  p99 1.787
+rev  mean|x| 0.178  p99 0.738
+rank mean|x| 0.25   p99 0.495
+```
+
+[Over a hundred `explore.py` runs, and seven raw-data scripts.]{.pq-note}
 
 ## What `eval.py` prints {.smaller}
 
