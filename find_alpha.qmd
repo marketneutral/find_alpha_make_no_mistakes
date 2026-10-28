@@ -462,7 +462,7 @@ $$
 $$
 
 ::: {.incremental}
-- **Fitness** is the score of *Finding Alphas* (Tulchinsky et al. 2019): Sharpe, scaled up by return and down by trading
+- **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
 - Turnover, the share of the book traded each day, is not charged below 12.5%, and the agent will notice
 - **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.
 - **Eligible, or −∞:** a fold scores −∞ if the book holds fewer than 50 names or runs outside 1–70% turnover a day. The whole validation book must also earn a margin of ≥ 5 bps per dollar traded.

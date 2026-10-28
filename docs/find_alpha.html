@@ -1805,7 +1805,7 @@ in decay_linear(score / vol, 10)</code></pre>
 \text{utility} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
 </span></p>
 <ul>
-<li class="fragment"><strong>Fitness</strong> is the score of <em>Finding Alphas</em> (Tulchinsky et al. 2019): Sharpe, scaled up by return and down by trading</li>
+<li class="fragment"><strong>Fitness:</strong> Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)</li>
 <li class="fragment">Turnover, the share of the book traded each day, is not charged below 12.5%, and the agent will notice</li>
 <li class="fragment"><strong>Nodes:</strong> the nodes of the expression’s qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.</li>
 <li class="fragment"><strong>Eligible, or −∞:</strong> a fold scores −∞ if the book holds fewer than 50 names or runs outside 1–70% turnover a day. The whole validation book must also earn a margin of ≥ 5 bps per dollar traded.</li>
