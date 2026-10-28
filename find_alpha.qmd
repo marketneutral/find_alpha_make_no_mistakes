@@ -1316,12 +1316,14 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 ## Did it hold up? The numbers {.smaller}
 
+::: {.final-test}
 | | period | Sharpe | return / yr | net of 10 bps | max drawdown |
 |---|---|---:|---:|---:|---:|
 | seed | validation | −0.25 | −1.1% | −2.4% | −28% |
 | seed | **test** | 0.09 | +0.7% | −0.6% | −20% |
 | final | validation | 1.26 | +14.8% | +11.8% | −21% |
 | final | **test** | **0.77** | **+13.6%** | **+10.6%** | −26% |
+:::
 
 . . .
 

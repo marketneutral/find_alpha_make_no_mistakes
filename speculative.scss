@@ -92,3 +92,5 @@ $presentation-h2-font-size: 1.3em;
 .reveal .panel-lab { display: block; font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.5em; color: #6b7280;
                      text-transform: uppercase; letter-spacing: 0.06em; margin: 0.6em 0 0.2em; }
 .reveal .small-math { font-size: 0.75em; margin: -0.3em 0; }
+// the sealed test row of the final book, in the accent wash
+.reveal .final-test tbody tr:last-child td { background: rgba(62, 232, 122, 0.13); }
