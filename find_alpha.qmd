@@ -164,6 +164,23 @@ rank(returns(1))
 
 March 3 is empty: a return needs the previous close. With five stocks the percentiles are 0.2 to 1.0. March 10 was a tech sell-off: AAPL worst (0.2), XOM best (1.0). A rank keeps the order and throws away the size, so one outlier cannot dominate.
 
+## Group: across the row, within a bucket {.smaller}
+
+```qex
+group_demean(returns(1), 'sector')
+```
+
+| group_demean(…), % | AAPL | MSFT | XOM | CVX | JPM |
+|---|---:|---:|---:|---:|---:|
+| Mar 3 | – | – | – | – | – |
+| Mar 4 | −0.46 | +0.46 | +0.25 | −0.25 | 0.00 |
+| Mar 5 | −1.64 | +1.64 | −0.58 | +0.58 | 0.00 |
+| Mar 6 | +0.43 | −0.43 | +0.32 | −0.32 | 0.00 |
+| Mar 7 | +1.25 | −1.25 | −0.46 | +0.46 | 0.00 |
+| Mar 10 | **−0.75** | **+0.75** | **+0.88** | **−0.88** | **0.00** |
+
+AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. What is left is each stock against its peers.
+
 ## From a signal to a book {.smaller}
 
 ```qex
@@ -1569,23 +1586,6 @@ It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 50
 ![](images/qex-ic-by-horizon.svg){.r-stretch fig-align="center"}
 
 The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
-
-## Group: across the row, within a bucket {.smaller}
-
-```qex
-group_demean(returns(1), 'sector')
-```
-
-| group_demean(…), % | AAPL | MSFT | XOM | CVX | JPM |
-|---|---:|---:|---:|---:|---:|
-| Mar 3 | – | – | – | – | – |
-| Mar 4 | −0.46 | +0.46 | +0.25 | −0.25 | 0.00 |
-| Mar 5 | −1.64 | +1.64 | −0.58 | +0.58 | 0.00 |
-| Mar 6 | +0.43 | −0.43 | +0.32 | −0.32 | 0.00 |
-| Mar 7 | +1.25 | −1.25 | −0.46 | +0.46 | 0.00 |
-| Mar 10 | **−0.75** | **+0.75** | **+0.88** | **−0.88** | **0.00** |
-
-AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. What is left is each stock against its peers.
 
 ## How many ways are there to deal? {.mid}
 

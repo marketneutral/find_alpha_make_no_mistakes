@@ -1395,6 +1395,73 @@ max-height: 560px;
 </div></div>
 <p>March 3 is empty: a return needs the previous close. With five stocks the percentiles are 0.2 to 1.0. March 10 was a tech sell-off: AAPL worst (0.2), XOM best (1.0). A rank keeps the order and throws away the size, so one outlier cannot dominate.</p>
 </section>
+<section id="group-across-the-row-within-a-bucket" class="slide level2 smaller">
+<h2>Group: across the row, within a bucket</h2>
+<pre class="qex"><code>group_demean(returns(1), &#39;sector&#39;)</code></pre>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>group_demean(…), %</th>
+<th style="text-align: right;">AAPL</th>
+<th style="text-align: right;">MSFT</th>
+<th style="text-align: right;">XOM</th>
+<th style="text-align: right;">CVX</th>
+<th style="text-align: right;">JPM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mar 3</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr class="even">
+<td>Mar 4</td>
+<td style="text-align: right;">−0.46</td>
+<td style="text-align: right;">+0.46</td>
+<td style="text-align: right;">+0.25</td>
+<td style="text-align: right;">−0.25</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="odd">
+<td>Mar 5</td>
+<td style="text-align: right;">−1.64</td>
+<td style="text-align: right;">+1.64</td>
+<td style="text-align: right;">−0.58</td>
+<td style="text-align: right;">+0.58</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td>Mar 6</td>
+<td style="text-align: right;">+0.43</td>
+<td style="text-align: right;">−0.43</td>
+<td style="text-align: right;">+0.32</td>
+<td style="text-align: right;">−0.32</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="odd">
+<td>Mar 7</td>
+<td style="text-align: right;">+1.25</td>
+<td style="text-align: right;">−1.25</td>
+<td style="text-align: right;">−0.46</td>
+<td style="text-align: right;">+0.46</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td>Mar 10</td>
+<td style="text-align: right;"><strong>−0.75</strong></td>
+<td style="text-align: right;"><strong>+0.75</strong></td>
+<td style="text-align: right;"><strong>+0.88</strong></td>
+<td style="text-align: right;"><strong>−0.88</strong></td>
+<td style="text-align: right;"><strong>0.00</strong></td>
+</tr>
+</tbody>
+</table>
+<p>AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. What is left is each stock against its peers.</p>
+</section>
 <section id="from-a-signal-to-a-book" class="slide level2 smaller">
 <h2>From a signal to a book</h2>
 <pre class="qex"><code>scale(demean(rank(-returns(5))))   # the nutshell&#39;s last arrow, unpacked</code></pre>
@@ -3005,73 +3072,6 @@ in decay_linear(power(a, 3), 3)</code></pre>
 </div>
 <p>The signal’s horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.</p>
 </div>
-</section>
-<section id="group-across-the-row-within-a-bucket" class="slide level2 smaller">
-<h2>Group: across the row, within a bucket</h2>
-<pre class="qex"><code>group_demean(returns(1), &#39;sector&#39;)</code></pre>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>group_demean(…), %</th>
-<th style="text-align: right;">AAPL</th>
-<th style="text-align: right;">MSFT</th>
-<th style="text-align: right;">XOM</th>
-<th style="text-align: right;">CVX</th>
-<th style="text-align: right;">JPM</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Mar 3</td>
-<td style="text-align: right;">–</td>
-<td style="text-align: right;">–</td>
-<td style="text-align: right;">–</td>
-<td style="text-align: right;">–</td>
-<td style="text-align: right;">–</td>
-</tr>
-<tr class="even">
-<td>Mar 4</td>
-<td style="text-align: right;">−0.46</td>
-<td style="text-align: right;">+0.46</td>
-<td style="text-align: right;">+0.25</td>
-<td style="text-align: right;">−0.25</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="odd">
-<td>Mar 5</td>
-<td style="text-align: right;">−1.64</td>
-<td style="text-align: right;">+1.64</td>
-<td style="text-align: right;">−0.58</td>
-<td style="text-align: right;">+0.58</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="even">
-<td>Mar 6</td>
-<td style="text-align: right;">+0.43</td>
-<td style="text-align: right;">−0.43</td>
-<td style="text-align: right;">+0.32</td>
-<td style="text-align: right;">−0.32</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="odd">
-<td>Mar 7</td>
-<td style="text-align: right;">+1.25</td>
-<td style="text-align: right;">−1.25</td>
-<td style="text-align: right;">−0.46</td>
-<td style="text-align: right;">+0.46</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="even">
-<td>Mar 10</td>
-<td style="text-align: right;"><strong>−0.75</strong></td>
-<td style="text-align: right;"><strong>+0.75</strong></td>
-<td style="text-align: right;"><strong>+0.88</strong></td>
-<td style="text-align: right;"><strong>−0.88</strong></td>
-<td style="text-align: right;"><strong>0.00</strong></td>
-</tr>
-</tbody>
-</table>
-<p>AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. What is left is each stock against its peers.</p>
 </section>
 <section id="how-many-ways-are-there-to-deal" class="slide level2 mid">
 <h2>How many ways are there to deal?</h2>
