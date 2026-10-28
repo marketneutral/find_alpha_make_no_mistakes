@@ -80,6 +80,8 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 
 ## A one-line alpha {.mid}
 
+[qex is a grammar for alphas: expressions over every stock, every day.]{.run-sub}
+
 > *"Stocks that fell last week tend to bounce back."*
 
 ```qex
@@ -94,7 +96,7 @@ rank(-returns(5))
 :::
 
 ::: {.refs}
-qex is open source on my GitHub: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser).
+qex is open source on my GitHub: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser). Every operator, with examples: [the qex operations reference](https://marketneutral.github.io/alpha-parser/reference/operations/).
 :::
 
 ## Three axes: the data {.smaller}
