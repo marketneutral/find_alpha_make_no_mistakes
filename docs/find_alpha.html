@@ -1675,16 +1675,17 @@ in scale(decay_linear(book, 10))</code></pre>
 <li class="fragment"><strong>The crash state, as the evaluator measures it:</strong> the market is down over the past two years, <em>and</em> its 1-month volatility is above its 1-year volatility.</li>
 </ul>
 </section>
-<section id="the-seed" class="slide level2">
-<h2>The seed</h2>
+<section id="a-seed-qex" class="slide level2">
+<h2>A seed qex</h2>
 <pre class="qex"><code>let mom   = delay(returns(231), 21),
     vol   = volatility(60),
     score = group_demean(mom / vol, &#39;sector&#39;)
 in decay_linear(score / vol, 10)</code></pre>
 <ul>
-<li class="fragment">12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed</li>
-<li class="fragment">Validation Sharpe −0.25, lost mostly in the crash state: <strong>−1.96 there</strong></li>
+<li class="fragment">Motivated by the literature: “12–1” momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed</li>
+<li class="fragment">Full validation Sharpe <strong>−0.25</strong>, lost mostly in the crash state: <strong>−1.96 there</strong></li>
 <li class="fragment"><strong>Margin</strong> −8 bps: it loses 8 bps per dollar traded, before costs</li>
+<li class="fragment"><strong>This academically motivated idea is a loser.</strong></li>
 </ul>
 </section>
 <section id="the-experiment" class="slide level2 smaller">

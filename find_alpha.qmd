@@ -376,7 +376,7 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 - **The crash state, as the evaluator measures it:** the market is down over the past two years, *and* its 1-month volatility is above its 1-year volatility.
 :::
 
-## The seed
+## A seed qex
 
 ```qex
 let mom   = delay(returns(231), 21),
@@ -386,9 +386,10 @@ in decay_linear(score / vol, 10)
 ```
 
 ::: {.incremental}
-- 12–1 momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
-- Validation Sharpe −0.25, lost mostly in the crash state: **−1.96 there**
+- Motivated by the literature: "12–1" momentum, sector-relative, volatility-scaled, inverse-vol sized, smoothed
+- Full validation Sharpe **−0.25**, lost mostly in the crash state: **−1.96 there**
 - **Margin** −8 bps: it loses 8 bps per dollar traded, before costs
+- **This academically motivated idea is a loser.**
 :::
 
 ## The experiment {.smaller}
