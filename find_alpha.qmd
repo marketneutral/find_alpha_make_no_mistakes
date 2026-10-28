@@ -502,7 +502,12 @@ rank mean|x| 0.25   p99 0.495
 
 ![](images/eval-trial.svg){.r-stretch fig-align="center"}
 
-`eval.py` runs the expression once over 2004–⁠2017: one series of daily P&L, nothing fit. It cuts the days into 12 blocks of about 14 months, deals them at random into 6 folds (one of 10,395 possible deals, Appendix B), and scores each fold on its own days. **Median:** no single stretch carries the score. **Worst:** the crash guard. Blocks keep regimes whole; the embargo trims 21 days at every edge.
+::: {.incremental}
+- **One deal:** run the expression once over 2004–⁠2017 (nothing fit), cut it into 12 blocks, deal them into 6 folds of 2, score each fold, take the **median** and the **worst**
+- **Fifty fresh deals:** `eval.py` reports the **mean of the 50 medians** and the **mean of the 50 worsts**, not the single worst fold
+:::
+
+[A cousin of López de Prado's combinatorial purged cross-validation (CPCV): the same purging and combining of blocks, but nothing is fit, so there is no training side.]{.pq-note}
 
 ## What `eval.py` prints {.smaller}
 

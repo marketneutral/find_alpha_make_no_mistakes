@@ -348,7 +348,7 @@ def fig_trial():
         a2.text(v + 0.05, yi, f"{v:.2f}" + ("  worst" if bad else ""), ha="left", va="center", color=RED if bad else INK2, fontsize=12.5)
     a2.plot([med, med], [-0.6, 5.5], color=INK, lw=1.4, ls=(0, (4, 3)), zorder=3)
     a2.text(med, 5.6, f"median {med:.2f}", ha="center", va="bottom", color=INK, fontsize=12.5)
-    a2.text(4.0, 2.5, "\u00d7 50 fresh deals, averaged:\n\nmedian  1.54 \u2192 1.47\nworst   0.20 \u2192 0.40\n\nthe two scores the\nkeep rule reads",
+    a2.text(4.0, 2.5, "\u00d7 50 fresh deals:\n\nmean of 50 medians  1.47\nmean of 50 worsts   0.40\n\nthe two scores the\nkeep rule reads",
             ha="left", va="center", color=ACC, fontsize=13, linespacing=1.4)
     a2.set_xlim(0, 5.6); a2.set_ylim(-0.6, 6.2); a2.set_yticks([]); a2.tick_params(length=0, labelsize=11)
     a2.set_xlabel("each fold scored on its own days (the final book)", fontsize=12)
