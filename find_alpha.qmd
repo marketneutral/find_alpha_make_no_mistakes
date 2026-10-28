@@ -451,7 +451,7 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 ![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that never do: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe.
+The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that inform the agent but don't count in the keep decision: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe.
 
 ## The score {.smaller}
 
