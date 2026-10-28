@@ -362,8 +362,8 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 ![](images/alpha-periods.svg){width="92%" fig-align="center"}
 
 ::: {.incremental}
-- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything. For debugging expressions and forming hunches; never scored.
-- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary numbers, never granular data or results.
+- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything. For debugging expressions, testing ideas in-sample, or forming hunches; never scored.
+- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees aggregate summary numbers over random folds, never granular data or results.
 - **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
