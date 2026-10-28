@@ -505,7 +505,6 @@ $$
 - **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
 - Trading turnover is not charged below 12.5% a day, and the agent will notice
 - **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.
-- **−∞:** a fold scores −∞ if, over its days, the book's median holding is under 50 names or its average daily turnover is outside 1–70%
 :::
 
 ## The keep rule {.smaller}
