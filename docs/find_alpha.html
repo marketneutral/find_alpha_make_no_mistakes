@@ -1102,9 +1102,9 @@ max-height: 560px;
 <h1>qex</h1>
 
 </section>
-<section id="the-idea" class="slide level2">
+<section id="the-idea" class="slide level2 mid">
 <h2>The idea</h2>
-<p>Every alpha starts as a stated belief about markets:</p>
+<p>An <strong>alpha</strong> is a recipe for portfolio weights: every day, a number for every stock. High numbers are bought, low numbers sold. It starts as a stated belief:</p>
 <blockquote>
 <p><em>“Stocks that fell last week tend to bounce back.”</em></p>
 </blockquote>
@@ -1114,7 +1114,7 @@ max-height: 560px;
 <li class="fragment"><strong>qex: the shortest path from “I think markets behave like this” to code that tests it</strong></li>
 </ul>
 </section>
-<section id="a-one-line-alpha" class="slide level2">
+<section id="a-one-line-alpha" class="slide level2 mid">
 <h2>A one-line alpha</h2>
 <blockquote>
 <p><em>“Stocks that fell last week tend to bounce back.”</em></p>
@@ -1123,7 +1123,7 @@ max-height: 560px;
 <ul>
 <li class="fragment"><code>returns(5)</code>: each stock’s return over the last week</li>
 <li class="fragment"><code>-</code>: the ones that fell score highest</li>
-<li class="fragment"><code>rank</code>: compared across all stocks on each day, 0 to 1</li>
+<li class="fragment"><code>rank</code>: each day, line the stocks up from 0 (rose most) to 1 (fell most). These become the weights: own the top, short the bottom.</li>
 <li class="fragment"><strong>That is the whole alpha.</strong> A pandas version adds needless complexity.</li>
 </ul>
 <div class="refs">

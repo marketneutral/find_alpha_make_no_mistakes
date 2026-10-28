@@ -69,9 +69,9 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 
 # qex
 
-## The idea
+## The idea {.mid}
 
-Every alpha starts as a stated belief about markets:
+An **alpha** is a recipe for portfolio weights: every day, a number for every stock. High numbers are bought, low numbers sold. It starts as a stated belief:
 
 > *"Stocks that fell last week tend to bounce back."*
 
@@ -81,7 +81,7 @@ Every alpha starts as a stated belief about markets:
 - **qex: the shortest path from "I think markets behave like this" to code that tests it**
 :::
 
-## A one-line alpha
+## A one-line alpha {.mid}
 
 > *"Stocks that fell last week tend to bounce back."*
 
@@ -92,7 +92,7 @@ rank(-returns(5))
 ::: {.incremental}
 - `returns(5)`: each stock's return over the last week
 - `-`: the ones that fell score highest
-- `rank`: compared across all stocks on each day, 0 to 1
+- `rank`: each day, line the stocks up from 0 (rose most) to 1 (fell most). These become the weights: own the top, short the bottom.
 - **That is the whole alpha.** A pandas version adds needless complexity.
 :::
 
