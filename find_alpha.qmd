@@ -74,7 +74,7 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 ![](images/nutshell.svg){width="100%" fig-align="center"}
 
 ::: {.incremental}
-- The usual middle is a hodgepodge of pandas: windows, warmup, NA handling, index alignment, the wrong `axis=`, lookahead from one shift too few, and the `SettingWithCopyWarning`. Nothing about the idea; all potential bugs.
+- The usual middle is a hodgepodge of pandas: windows, warmup, NA handling, index alignment, the wrong `axis=`, lookahead from one shift too few, and often the dreaded `SettingWithCopyWarning`. Nothing about the idea; all potential bugs.
 - **The code should be the bare minimum necessary to express the belief.**
 :::
 
