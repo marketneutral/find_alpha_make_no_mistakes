@@ -470,6 +470,20 @@ I wrote these twelve: nine grounded in published research, three from practition
 :::
 :::
 
+## The score {.smaller}
+
+Any stretch of history gets a **score** from its cost-free P&L. The numbers the agent climbs are this score, on folds of history. `eval.py` prints it as `utility`:
+
+$$
+\text{score} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
+$$
+
+::: {.incremental}
+- **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
+- Trading turnover is not charged below 12.5% a day, and the agent will notice
+- **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003, so ten nodes cost 0.03, the keep rule's bar: it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.
+:::
+
 ## What `explore.py` gives the agent {.smaller}
 
 The inspection period, 1999–⁠2003, with 1998 as warmup. Nothing after 2003 is loaded.
@@ -530,20 +544,6 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 ::: {.incremental}
 - **Decides the keep:** the first three lines. `utility` is the mean of the 50 deals' median folds, `worst` the mean of their worst folds; then eligibility, yes or no, over the whole period.
 - **Informs the agent, never counts:** everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
-:::
-
-## The score {.smaller}
-
-A *fold*, one stretch of history, gets a score from its cost-free P&L. `eval.py` prints it as `utility`, and the agent's notes use that word too:
-
-$$
-\text{score} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
-$$
-
-::: {.incremental}
-- **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
-- Trading turnover is not charged below 12.5% a day, and the agent will notice
-- **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.
 :::
 
 ## The keep rule {.smaller}

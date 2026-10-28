@@ -348,11 +348,11 @@ def fig_trial():
         a2.text(-0.06, yi, f"fold {k} \u00b7 {yrs}", ha="right", va="center", color=INK2, fontsize=12.5)
         a2.text(v + 0.05, yi, f"{v:.2f}" + ("  worst" if bad else ""), ha="left", va="center", color=RED if bad else INK2, fontsize=12.5)
     a2.plot([med, med], [-0.6, 5.5], color=INK, lw=1.4, ls=(0, (4, 3)), zorder=3)
-    a2.text(med, 5.6, f"median {med:.2f}", ha="center", va="bottom", color=INK, fontsize=12.5)
-    a2.text(4.0, 2.5, "\u00d7 50 fresh deals:\n\nmean of 50 medians  1.47\nmean of 50 worsts   0.40\n\nthe two scores the\nkeep rule reads",
+    a2.text(med, 5.6, f"median score {med:.2f}", ha="center", va="bottom", color=INK, fontsize=12.5)
+    a2.text(4.0, 2.5, "\u00d7 50 fresh deals:\n\nmean of 50 medians  1.47\nmean of 50 worsts   0.40\n\nthe two scores the\nkeep rule reads\n(eval.py: utility, worst)",
             ha="left", va="center", color=ACC, fontsize=13, linespacing=1.4)
     a2.set_xlim(0, 5.6); a2.set_ylim(-0.6, 6.2); a2.set_yticks([]); a2.tick_params(length=0, labelsize=11)
-    a2.set_xlabel("each fold scored on its own days (the final book)", fontsize=12)
+    a2.set_xlabel("score of each fold, on its own days (the final book)", fontsize=12)
     for sp in ("top", "right", "left"): a2.spines[sp].set_visible(False)
     a2.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
     # centre the strip over the whole chart below, its fold labels included, not just over the bars' plot area
