@@ -834,16 +834,21 @@ Cube it instead, one node fewer. **As predicted, larger than expected.** 0.78 �
 
 Nothing in the beliefs pointed here. The agent read it off the shape of the score, and a hunch that "the edge sits in the tails".
 
-## The cube {.smaller}
+## The cube
 
 ![](images/alpha-cube.svg){.r-stretch fig-align="center"}
 
+The final book with only its last step changed. The tails go from a third of the book to three quarters; the return doubles at about the same Sharpe.
+
+## Why the cube pays {.smaller}
+
 ::: {.incremental}
-- Gross is fixed, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
-- About the same Sharpe, **twice the return** per dollar of gross, in sample and out
-- At the same Sharpe, nothing is created: 2× leverage on the linear book gives the same P&L and risk. Fitness rewards it anyway, because it is return *on gross one*: the dollar is fixed, so the cube is the only way to make it work harder.
-- The real-world case: the same P&L from half the gross is half the financing, borrow and impact
-- A rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
+- **Gross is fixed**, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
+- **About the same Sharpe, twice the return** per dollar of gross, in sample and out
+- **At the same Sharpe, nothing is created:** 2× leverage on the linear book gives the same P&L and risk. Fitness rewards it anyway, because it is return *on gross one*: the dollar is fixed, so the cube is the only way to make it work harder.
+- **The real-world case:** the same P&L from half the gross is half the financing, borrow and impact
+- **A rediscovery** of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
+- **The limit:** the fifth power has a higher validation return but a lower Sharpe, and does worse out of sample (trial 35)
 :::
 
 ## Trial 22: soft beats hard {.smaller}

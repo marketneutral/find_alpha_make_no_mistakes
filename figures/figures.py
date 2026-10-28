@@ -256,6 +256,36 @@ def fig_noise_runs():
         ax.set_title(name, loc="left", fontsize=15.5, color=INK, pad=4)
     save(fig, "eval-noise-runs", pad=0.3)
 
+def fig_cube():
+    """The final book with only its power changed, from figures/run3/lab/stats.txt (run 3 as it ran); type sized for a
+    slide. Tail shares (the 10% most extreme stocks, 5% each side, validation) are the run-3 analysis figure's."""
+    labs = ["a", "a\u00b7|a|", "a\u00b3", "a\u2075"]
+    tails = [0.32, 0.58, 0.74, 0.82]
+    val = [(0.071, 1.37), (0.107, 1.25), (0.148, 1.26), (0.186, 1.24)]          # return/yr, Sharpe
+    tst = [(0.077, 0.81), (0.121, 0.85), (0.136, 0.77), (0.150, 0.73)]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(12.0, 4.6), gridspec_kw=dict(width_ratios=[1, 1.25], wspace=0.28))
+    x = np.arange(4)
+    a1.bar(x, tails, width=0.62, color=[ACC if i == 2 else "#4b5563" for i in x], zorder=3)
+    for xi, t in zip(x, tails):
+        a1.text(xi, t + 0.02, f"{t:.0%}", ha="center", va="bottom", fontsize=15, color=INK2)
+    a1.set_ylim(0, 1.0); a1.set_yticks([0, 0.25, 0.5, 0.75, 1.0]); a1.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
+    a1.set_title("share of the book in the 10%\nmost extreme stocks", loc="left", fontsize=15, color=INK, pad=10)
+    wd = 0.38
+    for k, (series, c, name) in enumerate(((val, ACC, "validation"), (tst, INK2, "test"))):
+        xs = x + (k - 0.5) * wd
+        a2.bar(xs, [r for r, _ in series], width=wd, color=c, zorder=3, label=name)
+        for xi, (r, sh) in zip(xs, series):
+            a2.text(xi, r + 0.004, f"{sh:.2f}", ha="center", va="bottom", fontsize=11, color=INK2)
+    a2.set_ylim(0, 0.22); a2.set_yticks([0, 0.05, 0.10, 0.15, 0.20]); a2.set_yticklabels(["0%", "5%", "10%", "15%", "20%"])
+    a2.set_title("return per year; Sharpe on each bar", loc="left", fontsize=15, color=INK, pad=10)
+    a2.legend(frameon=False, fontsize=13, loc="upper left", labelcolor=INK2)
+    for a in (a1, a2):
+        a.set_xticks(x); a.set_xticklabels(labs, fontsize=16)
+        a.tick_params(length=0, labelsize=13); a.tick_params(axis="x", labelsize=16)
+        for sp in ("top", "right", "left"): a.spines[sp].set_visible(False)
+        a.grid(axis="y", color=RULE, alpha=0.5, lw=0.6, zorder=0)
+    save(fig, "alpha-cube")
+
 def fig_worth():
     # utility change when the agent took a part out, in the book of the day (results.tsv)
     parts = [("residual momentum", "T56", 1.473, 0.592), ("crash switch", "T27", 1.101, 0.622),
@@ -282,4 +312,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_worth()
