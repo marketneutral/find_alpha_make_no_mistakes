@@ -1370,7 +1370,7 @@ The embargo trims the **same 504 days** on every deal. They never enter the scor
 . . .
 
 ::: {.incremental}
-- The selected book shrinks on the days it was never graded on; the unselected seed does not
+- The selected book shrinks on the days the keep rule never graded; the unselected seed does not
 - The winner's curse, measured inside the in-sample period, before the sealed test
 - Two years of data: a Sharpe standard error of about 0.7, so the gap is about 1.1 standard errors. Suggestive alone; convincing next to the test.
 :::
