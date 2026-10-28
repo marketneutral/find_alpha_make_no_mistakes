@@ -441,6 +441,12 @@ in decay_linear(score / vol, 10)
 
 [Two additions Karpathy did not need: a period the agent may look at, and one it can never reach.]{.pq-note}
 
+## The augmented loop {.mid}
+
+![](images/alpha-augmented-loop-files.svg){.r-stretch fig-align="center"}
+
+The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that inform the agent but don't count in the keep decision: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe.
+
 ## Twelve beliefs codified in `program.md` {.smaller}
 
 I wrote these twelve: nine grounded in published research, three from practitioner rules of thumb. The agent starts from them and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
@@ -463,12 +469,6 @@ I wrote these twelve: nine grounded in published research, three from practition
 12. Expect the edge to decay, and expect crowding
 :::
 :::
-
-## The augmented loop {.mid}
-
-![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
-
-The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that inform the agent but don't count in the keep decision: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe.
 
 ## What `eval.py` prints {.smaller}
 
