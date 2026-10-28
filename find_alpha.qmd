@@ -363,7 +363,7 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 
 ::: {.incremental}
 - **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything. For debugging expressions, testing ideas in-sample, or forming hunches.
-- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent keeps or discards a change on summary statistics only: two scores and an eligibility check. It also sees whole-period and regime-split Sharpes, and the score of each fold for one random split, with the years it covers; never prices or daily P&L.
+- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent keeps or discards a change on summary statistics only: two scores and an eligibility check.
 - **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
