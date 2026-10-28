@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="802.8pt" height="243.36pt" viewBox="0 0 802.8 243.36" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="825.12pt" height="243.36pt" viewBox="0 0 825.12 243.36" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-28T17:32:13.089728</dc:date>
+    <dc:date>2026-10-28T17:36:45.335321</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -21,466 +21,466 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 243.36 
-L 802.8 243.36 
-L 802.8 0 
-L 0 0 
+   <path d="M -0 243.36 
+L 825.12 243.36 
+L 825.12 0 
+L -0 0 
 z
 " style="fill: #0a0e1a"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 21.153253 198.96 
-L 146.333494 198.96 
-Q 151.980723 198.96 151.980723 190.896 
-L 151.980723 25.584 
-Q 151.980723 17.52 146.333494 17.52 
-L 21.153253 17.52 
-Q 15.506024 17.52 15.506024 25.584 
-L 15.506024 190.896 
-Q 15.506024 198.96 21.153253 198.96 
+    <path d="M 21.137684 198.96 
+L 169.624421 198.96 
+Q 175.263158 198.96 175.263158 190.896 
+L 175.263158 25.584 
+Q 175.263158 17.52 169.624421 17.52 
+L 21.137684 17.52 
+Q 15.498947 17.52 15.498947 25.584 
+L 15.498947 190.896 
+Q 15.498947 198.96 21.137684 198.96 
 z
-" clip-path="url(#paa1f3f1f16)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p3df240aacf)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
-    <path d="M 192.923133 198.96 
-L 412.223855 198.96 
-Q 417.871084 198.96 417.871084 190.896 
-L 417.871084 25.584 
-Q 417.871084 17.52 412.223855 17.52 
-L 192.923133 17.52 
-Q 187.275904 17.52 187.275904 25.584 
-L 187.275904 190.896 
-Q 187.275904 198.96 192.923133 198.96 
+    <path d="M 216.144 198.96 
+L 435.114947 198.96 
+Q 440.753684 198.96 440.753684 190.896 
+L 440.753684 25.584 
+Q 440.753684 17.52 435.114947 17.52 
+L 216.144 17.52 
+Q 210.505263 17.52 210.505263 25.584 
+L 210.505263 190.896 
+Q 210.505263 198.96 216.144 198.96 
 z
-" clip-path="url(#paa1f3f1f16)" style="fill: #131927; stroke: #ff6b4a; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p3df240aacf)" style="fill: #131927; stroke: #ff6b4a; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
-    <path d="M 458.813494 198.96 
-L 574.581687 198.96 
-Q 580.228916 198.96 580.228916 190.896 
-L 580.228916 25.584 
-Q 580.228916 17.52 574.581687 17.52 
-L 458.813494 17.52 
-Q 453.166265 17.52 453.166265 25.584 
-L 453.166265 190.896 
-Q 453.166265 198.96 458.813494 198.96 
+    <path d="M 481.634526 198.96 
+L 597.228632 198.96 
+Q 602.867368 198.96 602.867368 190.896 
+L 602.867368 25.584 
+Q 602.867368 17.52 597.228632 17.52 
+L 481.634526 17.52 
+Q 475.995789 17.52 475.995789 25.584 
+L 475.995789 190.896 
+Q 475.995789 198.96 481.634526 198.96 
 z
-" clip-path="url(#paa1f3f1f16)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p3df240aacf)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
-    <path d="M 632.936386 198.96 
-L 781.646747 198.96 
-Q 787.293976 198.96 787.293976 190.896 
-L 787.293976 25.584 
-Q 787.293976 17.52 781.646747 17.52 
-L 632.936386 17.52 
-Q 627.289157 17.52 627.289157 25.584 
-L 627.289157 190.896 
-Q 627.289157 198.96 632.936386 198.96 
+    <path d="M 655.495579 198.96 
+L 803.982316 198.96 
+Q 809.621053 198.96 809.621053 190.896 
+L 809.621053 25.584 
+Q 809.621053 17.52 803.982316 17.52 
+L 655.495579 17.52 
+Q 649.856842 17.52 649.856842 25.584 
+L 649.856842 190.896 
+Q 649.856842 198.96 655.495579 198.96 
 z
-" clip-path="url(#paa1f3f1f16)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p3df240aacf)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="83.743373" y="41.832324" transform="rotate(-0 83.743373 41.832324)">a belief</text>
+    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="95.381053" y="41.832324" transform="rotate(-0 95.381053 41.832324)">a belief</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="302.573494" y="41.447168" transform="rotate(-0 302.573494 41.447168)">code</text>
+    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="325.629474" y="41.447168" transform="rotate(-0 325.629474 41.447168)">code</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="516.69759" y="41.446602" transform="rotate(-0 516.69759 41.446602)">scores</text>
+    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="539.431579" y="41.446602" transform="rotate(-0 539.431579 41.446602)">scores</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="707.291566" y="41.832324" transform="rotate(-0 707.291566 41.832324)">portfolio weights</text>
+    <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="729.738947" y="41.832324" transform="rotate(-0 729.738947 41.832324)">portfolio weights</text>
    </g>
    <g id="text_5">
-    <text style="font-style: italic; font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; fill: #c0c4cf" transform="translate(17.21892 100.991094)">“Stocks that fell</text>
-    <text style="font-style: italic; font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; fill: #c0c4cf" transform="translate(17.21892 119.841094)">last week tend to</text>
-    <text style="font-style: italic; font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; fill: #c0c4cf" transform="translate(32.871733 138.656562)">bounce back.”</text>
+    <text style="font-style: italic; font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; fill: #c0c4cf" transform="translate(28.8566 100.991094)">“Stocks that fell</text>
+    <text style="font-style: italic; font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; fill: #c0c4cf" transform="translate(28.8566 119.841094)">last week tend to</text>
+    <text style="font-style: italic; font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; fill: #c0c4cf" transform="translate(44.509412 138.656562)">bounce back.”</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="194.213494" y="68.47432" transform="rotate(-0 194.213494 68.47432)">import</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="217.269474" y="68.47432" transform="rotate(-0 217.269474 68.47432)">import</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="230.333494" y="68.47432" transform="rotate(-0 230.333494 68.47432)">pandas</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="253.389474" y="68.47432" transform="rotate(-0 253.389474 68.47432)">pandas</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="266.453494" y="68.473984" transform="rotate(-0 266.453494 68.473984)">as</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="289.509474" y="68.473984" transform="rotate(-0 289.509474 68.473984)">as</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="281.933494" y="68.47432" transform="rotate(-0 281.933494 68.47432)">pd</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="304.989474" y="68.47432" transform="rotate(-0 304.989474 68.47432)">pd</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="81.913984" transform="rotate(-0 194.213494 81.913984)">raw</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="81.913984" transform="rotate(-0 217.269474 81.913984)">raw</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="214.853494" y="81.913984" transform="rotate(-0 214.853494 81.913984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="237.909474" y="81.913984" transform="rotate(-0 237.909474 81.913984)">=</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="225.173494" y="81.91432" transform="rotate(-0 225.173494 81.91432)">pd</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="248.229474" y="81.91432" transform="rotate(-0 248.229474 81.91432)">pd</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="235.493494" y="81.913984" transform="rotate(-0 235.493494 81.913984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="258.549474" y="81.913984" transform="rotate(-0 258.549474 81.913984)">.</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="240.653494" y="81.91432" transform="rotate(-0 240.653494 81.91432)">read_parquet</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="263.709474" y="81.91432" transform="rotate(-0 263.709474 81.91432)">read_parquet</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="302.573494" y="81.913984" transform="rotate(-0 302.573494 81.913984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="325.629474" y="81.913984" transform="rotate(-0 325.629474 81.913984)">(</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="307.733494" y="81.91432" transform="rotate(-0 307.733494 81.91432)">'prices.parquet'</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="330.789474" y="81.91432" transform="rotate(-0 330.789474 81.91432)">'prices.parquet'</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="390.293494" y="81.913984" transform="rotate(-0 390.293494 81.913984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="413.349474" y="81.913984" transform="rotate(-0 413.349474 81.913984)">)</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="95.35432" transform="rotate(-0 194.213494 95.35432)">univ</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="95.35432" transform="rotate(-0 217.269474 95.35432)">univ</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="95.353984" transform="rotate(-0 220.013494 95.353984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="95.353984" transform="rotate(-0 243.069474 95.353984)">=</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="230.333494" y="95.35432" transform="rotate(-0 230.333494 95.35432)">pd</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="253.389474" y="95.35432" transform="rotate(-0 253.389474 95.35432)">pd</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="240.653494" y="95.353984" transform="rotate(-0 240.653494 95.353984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="263.709474" y="95.353984" transform="rotate(-0 263.709474 95.353984)">.</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="245.813494" y="95.35432" transform="rotate(-0 245.813494 95.35432)">read_parquet</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="268.869474" y="95.35432" transform="rotate(-0 268.869474 95.35432)">read_parquet</text>
    </g>
    <g id="text_23">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="307.733494" y="95.353984" transform="rotate(-0 307.733494 95.353984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="330.789474" y="95.353984" transform="rotate(-0 330.789474 95.353984)">(</text>
    </g>
    <g id="text_24">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="312.893494" y="95.35432" transform="rotate(-0 312.893494 95.35432)">'universe.parquet'</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="335.949474" y="95.35432" transform="rotate(-0 335.949474 95.35432)">'universe.parquet'</text>
    </g>
    <g id="text_25">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="405.773494" y="95.353984" transform="rotate(-0 405.773494 95.353984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="428.829474" y="95.353984" transform="rotate(-0 428.829474 95.353984)">)</text>
    </g>
    <g id="text_26">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="108.793984" transform="rotate(-0 194.213494 108.793984)">px</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="108.793984" transform="rotate(-0 217.269474 108.793984)">px</text>
    </g>
    <g id="text_27">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="209.693494" y="108.793984" transform="rotate(-0 209.693494 108.793984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="232.749474" y="108.793984" transform="rotate(-0 232.749474 108.793984)">=</text>
    </g>
    <g id="text_28">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="108.793984" transform="rotate(-0 220.013494 108.793984)">raw</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="108.793984" transform="rotate(-0 243.069474 108.793984)">raw</text>
    </g>
    <g id="text_29">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="235.493494" y="108.793984" transform="rotate(-0 235.493494 108.793984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="258.549474" y="108.793984" transform="rotate(-0 258.549474 108.793984)">.</text>
    </g>
    <g id="text_30">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="240.653494" y="108.817164" transform="rotate(-0 240.653494 108.817164)">pivot_table</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="263.709474" y="108.817164" transform="rotate(-0 263.709474 108.817164)">pivot_table</text>
    </g>
    <g id="text_31">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="297.413494" y="108.793984" transform="rotate(-0 297.413494 108.793984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="320.469474" y="108.793984" transform="rotate(-0 320.469474 108.793984)">(</text>
    </g>
    <g id="text_32">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="302.573494" y="108.817164" transform="rotate(-0 302.573494 108.817164)">'close'</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="325.629474" y="108.817164" transform="rotate(-0 325.629474 108.817164)">'close'</text>
    </g>
    <g id="text_33">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="338.693494" y="108.793984" transform="rotate(-0 338.693494 108.793984)">,</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="361.749474" y="108.793984" transform="rotate(-0 361.749474 108.793984)">,</text>
    </g>
    <g id="text_34">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="349.013494" y="108.79432" transform="rotate(-0 349.013494 108.79432)">'dt'</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="372.069474" y="108.79432" transform="rotate(-0 372.069474 108.79432)">'dt'</text>
    </g>
    <g id="text_35">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="369.653494" y="108.793984" transform="rotate(-0 369.653494 108.793984)">,</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="392.709474" y="108.793984" transform="rotate(-0 392.709474 108.793984)">,</text>
    </g>
    <g id="text_36">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="379.973494" y="108.79432" transform="rotate(-0 379.973494 108.79432)">'id'</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="403.029474" y="108.79432" transform="rotate(-0 403.029474 108.79432)">'id'</text>
    </g>
    <g id="text_37">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="400.613494" y="108.793984" transform="rotate(-0 400.613494 108.793984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="423.669474" y="108.793984" transform="rotate(-0 423.669474 108.793984)">)</text>
    </g>
    <g id="text_38">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="122.233984" transform="rotate(-0 194.213494 122.233984)">px</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="122.233984" transform="rotate(-0 217.269474 122.233984)">px</text>
    </g>
    <g id="text_39">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="209.693494" y="122.233984" transform="rotate(-0 209.693494 122.233984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="232.749474" y="122.233984" transform="rotate(-0 232.749474 122.233984)">=</text>
    </g>
    <g id="text_40">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="122.233984" transform="rotate(-0 220.013494 122.233984)">px</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="122.233984" transform="rotate(-0 243.069474 122.233984)">px</text>
    </g>
    <g id="text_41">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="230.333494" y="122.233984" transform="rotate(-0 230.333494 122.233984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="253.389474" y="122.233984" transform="rotate(-0 253.389474 122.233984)">.</text>
    </g>
    <g id="text_42">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="235.493494" y="122.257164" transform="rotate(-0 235.493494 122.257164)">ffill</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="258.549474" y="122.257164" transform="rotate(-0 258.549474 122.257164)">ffill</text>
    </g>
    <g id="text_43">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="261.293494" y="122.233984" transform="rotate(-0 261.293494 122.233984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="284.349474" y="122.233984" transform="rotate(-0 284.349474 122.233984)">(</text>
    </g>
    <g id="text_44">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="266.453494" y="122.257164" transform="rotate(-0 266.453494 122.257164)">limit</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="289.509474" y="122.257164" transform="rotate(-0 289.509474 122.257164)">limit</text>
    </g>
    <g id="text_45">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="292.253494" y="122.233984" transform="rotate(-0 292.253494 122.233984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="315.309474" y="122.233984" transform="rotate(-0 315.309474 122.233984)">=</text>
    </g>
    <g id="text_46">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="297.413494" y="122.233984" transform="rotate(-0 297.413494 122.233984)">3</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="320.469474" y="122.233984" transform="rotate(-0 320.469474 122.233984)">3</text>
    </g>
    <g id="text_47">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="302.573494" y="122.233984" transform="rotate(-0 302.573494 122.233984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="325.629474" y="122.233984" transform="rotate(-0 325.629474 122.233984)">)</text>
    </g>
    <g id="text_48">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="135.673984" transform="rotate(-0 194.213494 135.673984)">r5</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="135.673984" transform="rotate(-0 217.269474 135.673984)">r5</text>
    </g>
    <g id="text_49">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="209.693494" y="135.673984" transform="rotate(-0 209.693494 135.673984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="232.749474" y="135.673984" transform="rotate(-0 232.749474 135.673984)">=</text>
    </g>
    <g id="text_50">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="135.673984" transform="rotate(-0 220.013494 135.673984)">px</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="135.673984" transform="rotate(-0 243.069474 135.673984)">px</text>
    </g>
    <g id="text_51">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="230.333494" y="135.673984" transform="rotate(-0 230.333494 135.673984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="253.389474" y="135.673984" transform="rotate(-0 253.389474 135.673984)">.</text>
    </g>
    <g id="text_52">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="235.493494" y="135.67432" transform="rotate(-0 235.493494 135.67432)">pct_change</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="258.549474" y="135.67432" transform="rotate(-0 258.549474 135.67432)">pct_change</text>
    </g>
    <g id="text_53">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="287.093494" y="135.673984" transform="rotate(-0 287.093494 135.673984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="310.149474" y="135.673984" transform="rotate(-0 310.149474 135.673984)">(</text>
    </g>
    <g id="text_54">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="292.253494" y="135.673984" transform="rotate(-0 292.253494 135.673984)">5</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="315.309474" y="135.673984" transform="rotate(-0 315.309474 135.673984)">5</text>
    </g>
    <g id="text_55">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="297.413494" y="135.673984" transform="rotate(-0 297.413494 135.673984)">,</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="320.469474" y="135.673984" transform="rotate(-0 320.469474 135.673984)">,</text>
    </g>
    <g id="text_56">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="307.733494" y="135.697164" transform="rotate(-0 307.733494 135.697164)">fill_method</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="330.789474" y="135.697164" transform="rotate(-0 330.789474 135.697164)">fill_method</text>
    </g>
    <g id="text_57">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="364.493494" y="135.673984" transform="rotate(-0 364.493494 135.673984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="387.549474" y="135.673984" transform="rotate(-0 387.549474 135.673984)">=</text>
    </g>
    <g id="text_58">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="369.653494" y="135.673984" transform="rotate(-0 369.653494 135.673984)">None</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="392.709474" y="135.673984" transform="rotate(-0 392.709474 135.673984)">None</text>
    </g>
    <g id="text_59">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="390.293494" y="135.673984" transform="rotate(-0 390.293494 135.673984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="413.349474" y="135.673984" transform="rotate(-0 413.349474 135.673984)">)</text>
    </g>
    <g id="text_60">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="149.113984" transform="rotate(-0 194.213494 149.113984)">r5</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="149.113984" transform="rotate(-0 217.269474 149.113984)">r5</text>
    </g>
    <g id="text_61">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="209.693494" y="149.113984" transform="rotate(-0 209.693494 149.113984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="232.749474" y="149.113984" transform="rotate(-0 232.749474 149.113984)">=</text>
    </g>
    <g id="text_62">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="149.113984" transform="rotate(-0 220.013494 149.113984)">r5</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="149.113984" transform="rotate(-0 243.069474 149.113984)">r5</text>
    </g>
    <g id="text_63">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="230.333494" y="149.113984" transform="rotate(-0 230.333494 149.113984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="253.389474" y="149.113984" transform="rotate(-0 253.389474 149.113984)">.</text>
    </g>
    <g id="text_64">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="235.493494" y="149.137164" transform="rotate(-0 235.493494 149.137164)">iloc</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="258.549474" y="149.137164" transform="rotate(-0 258.549474 149.137164)">iloc</text>
    </g>
    <g id="text_65">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="256.133494" y="149.11432" transform="rotate(-0 256.133494 149.11432)">[</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="279.189474" y="149.11432" transform="rotate(-0 279.189474 149.11432)">[</text>
    </g>
    <g id="text_66">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="261.293494" y="149.113984" transform="rotate(-0 261.293494 149.113984)">5</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="284.349474" y="149.113984" transform="rotate(-0 284.349474 149.113984)">5</text>
    </g>
    <g id="text_67">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="266.453494" y="149.113984" transform="rotate(-0 266.453494 149.113984)">:</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="289.509474" y="149.113984" transform="rotate(-0 289.509474 149.113984)">:</text>
    </g>
    <g id="text_68">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="271.613494" y="149.11432" transform="rotate(-0 271.613494 149.11432)">]</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="294.669474" y="149.11432" transform="rotate(-0 294.669474 149.11432)">]</text>
    </g>
    <g id="text_69">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="162.553984" transform="rotate(-0 194.213494 162.553984)">s</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="162.553984" transform="rotate(-0 217.269474 162.553984)">s</text>
    </g>
    <g id="text_70">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="204.533494" y="162.553984" transform="rotate(-0 204.533494 162.553984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="227.589474" y="162.553984" transform="rotate(-0 227.589474 162.553984)">=</text>
    </g>
    <g id="text_71">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="214.853494" y="162.553984" transform="rotate(-0 214.853494 162.553984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="237.909474" y="162.553984" transform="rotate(-0 237.909474 162.553984)">(</text>
    </g>
    <g id="text_72">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="162.553984" transform="rotate(-0 220.013494 162.553984)">-</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="162.553984" transform="rotate(-0 243.069474 162.553984)">-</text>
    </g>
    <g id="text_73">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="225.173494" y="162.553984" transform="rotate(-0 225.173494 162.553984)">r5</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="248.229474" y="162.553984" transform="rotate(-0 248.229474 162.553984)">r5</text>
    </g>
    <g id="text_74">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="235.493494" y="162.553984" transform="rotate(-0 235.493494 162.553984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="258.549474" y="162.553984" transform="rotate(-0 258.549474 162.553984)">)</text>
    </g>
    <g id="text_75">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="240.653494" y="162.553984" transform="rotate(-0 240.653494 162.553984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="263.709474" y="162.553984" transform="rotate(-0 263.709474 162.553984)">.</text>
    </g>
    <g id="text_76">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="245.813494" y="162.55432" transform="rotate(-0 245.813494 162.55432)">where</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="268.869474" y="162.55432" transform="rotate(-0 268.869474 162.55432)">where</text>
    </g>
    <g id="text_77">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="271.613494" y="162.553984" transform="rotate(-0 271.613494 162.553984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="294.669474" y="162.553984" transform="rotate(-0 294.669474 162.553984)">(</text>
    </g>
    <g id="text_78">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="276.773494" y="162.55432" transform="rotate(-0 276.773494 162.55432)">univ</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="299.829474" y="162.55432" transform="rotate(-0 299.829474 162.55432)">univ</text>
    </g>
    <g id="text_79">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="297.413494" y="162.553984" transform="rotate(-0 297.413494 162.553984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="320.469474" y="162.553984" transform="rotate(-0 320.469474 162.553984)">)</text>
    </g>
    <g id="text_80">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="175.993984" transform="rotate(-0 194.213494 175.993984)">s</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="175.993984" transform="rotate(-0 217.269474 175.993984)">s</text>
    </g>
    <g id="text_81">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="204.533494" y="175.993984" transform="rotate(-0 204.533494 175.993984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="227.589474" y="175.993984" transform="rotate(-0 227.589474 175.993984)">=</text>
    </g>
    <g id="text_82">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="214.853494" y="175.993984" transform="rotate(-0 214.853494 175.993984)">s</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="237.909474" y="175.993984" transform="rotate(-0 237.909474 175.993984)">s</text>
    </g>
    <g id="text_83">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="175.993984" transform="rotate(-0 220.013494 175.993984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="175.993984" transform="rotate(-0 243.069474 175.993984)">.</text>
    </g>
    <g id="text_84">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="225.173494" y="175.99432" transform="rotate(-0 225.173494 175.99432)">rank</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #e8c97a" x="248.229474" y="175.99432" transform="rotate(-0 248.229474 175.99432)">rank</text>
    </g>
    <g id="text_85">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="245.813494" y="175.993984" transform="rotate(-0 245.813494 175.993984)">(</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="268.869474" y="175.993984" transform="rotate(-0 268.869474 175.993984)">(</text>
    </g>
    <g id="text_86">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="250.973494" y="175.99432" transform="rotate(-0 250.973494 175.99432)">axis</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="274.029474" y="175.99432" transform="rotate(-0 274.029474 175.99432)">axis</text>
    </g>
    <g id="text_87">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="271.613494" y="175.993984" transform="rotate(-0 271.613494 175.993984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="294.669474" y="175.993984" transform="rotate(-0 294.669474 175.993984)">=</text>
    </g>
    <g id="text_88">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="276.773494" y="175.993984" transform="rotate(-0 276.773494 175.993984)">1</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #f5a97f" x="299.829474" y="175.993984" transform="rotate(-0 299.829474 175.993984)">1</text>
    </g>
    <g id="text_89">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="281.933494" y="175.993984" transform="rotate(-0 281.933494 175.993984)">,</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="304.989474" y="175.993984" transform="rotate(-0 304.989474 175.993984)">,</text>
    </g>
    <g id="text_90">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="292.253494" y="175.993984" transform="rotate(-0 292.253494 175.993984)">pct</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="315.309474" y="175.993984" transform="rotate(-0 315.309474 175.993984)">pct</text>
    </g>
    <g id="text_91">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="307.733494" y="175.993984" transform="rotate(-0 307.733494 175.993984)">=</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="330.789474" y="175.993984" transform="rotate(-0 330.789474 175.993984)">=</text>
    </g>
    <g id="text_92">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="312.893494" y="175.993984" transform="rotate(-0 312.893494 175.993984)">True</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #82d8ff" x="335.949474" y="175.993984" transform="rotate(-0 335.949474 175.993984)">True</text>
    </g>
    <g id="text_93">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="333.533494" y="175.993984" transform="rotate(-0 333.533494 175.993984)">)</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="356.589474" y="175.993984" transform="rotate(-0 356.589474 175.993984)">)</text>
    </g>
    <g id="text_94">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="194.213494" y="189.433984" transform="rotate(-0 194.213494 189.433984)">s</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="217.269474" y="189.433984" transform="rotate(-0 217.269474 189.433984)">s</text>
    </g>
    <g id="text_95">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="199.373494" y="189.433984" transform="rotate(-0 199.373494 189.433984)">.</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="222.429474" y="189.433984" transform="rotate(-0 222.429474 189.433984)">.</text>
    </g>
    <g id="text_96">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="204.533494" y="189.457164" transform="rotate(-0 204.533494 189.457164)">loc</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="227.589474" y="189.457164" transform="rotate(-0 227.589474 189.457164)">loc</text>
    </g>
    <g id="text_97">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="220.013494" y="189.43432" transform="rotate(-0 220.013494 189.43432)">[</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="243.069474" y="189.43432" transform="rotate(-0 243.069474 189.43432)">[</text>
    </g>
    <g id="text_98">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="225.173494" y="189.433984" transform="rotate(-0 225.173494 189.433984)">'2025-03-10'</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #3ee87a" x="248.229474" y="189.433984" transform="rotate(-0 248.229474 189.433984)">'2025-03-10'</text>
    </g>
    <g id="text_99">
-    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="287.093494" y="189.43432" transform="rotate(-0 287.093494 189.43432)">]</text>
+    <text style="font-size: 8.6px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="310.149474" y="189.43432" transform="rotate(-0 310.149474 189.43432)">]</text>
    </g>
    <g id="text_100">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="479.049398" y="78.016953" transform="rotate(-0 479.049398 78.016953)">JPM</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="501.84" y="78.016953" transform="rotate(-0 501.84 78.016953)">JPM</text>
    </g>
    <g id="text_101">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="554.345783" y="78.016953" transform="rotate(-0 554.345783 78.016953)">1.00</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="577.023158" y="78.016953" transform="rotate(-0 577.023158 78.016953)">1.00</text>
    </g>
    <g id="text_102">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="479.049398" y="98.176953" transform="rotate(-0 479.049398 98.176953)">AAPL</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="501.84" y="98.176953" transform="rotate(-0 501.84 98.176953)">AAPL</text>
    </g>
    <g id="text_103">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="554.345783" y="98.176953" transform="rotate(-0 554.345783 98.176953)">0.80</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="577.023158" y="98.176953" transform="rotate(-0 577.023158 98.176953)">0.80</text>
    </g>
    <g id="text_104">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="479.049398" y="118.336953" transform="rotate(-0 479.049398 118.336953)">MSFT</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="501.84" y="118.336953" transform="rotate(-0 501.84 118.336953)">MSFT</text>
    </g>
    <g id="text_105">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="554.345783" y="118.336953" transform="rotate(-0 554.345783 118.336953)">0.60</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="577.023158" y="118.336953" transform="rotate(-0 577.023158 118.336953)">0.60</text>
    </g>
    <g id="text_106">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="479.049398" y="138.496953" transform="rotate(-0 479.049398 138.496953)">CVX</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="501.84" y="138.496953" transform="rotate(-0 501.84 138.496953)">CVX</text>
    </g>
    <g id="text_107">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="554.345783" y="138.496953" transform="rotate(-0 554.345783 138.496953)">0.40</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="577.023158" y="138.496953" transform="rotate(-0 577.023158 138.496953)">0.40</text>
    </g>
    <g id="text_108">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="479.049398" y="158.656953" transform="rotate(-0 479.049398 158.656953)">XOM</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="501.84" y="158.656953" transform="rotate(-0 501.84 158.656953)">XOM</text>
    </g>
    <g id="text_109">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="554.345783" y="158.656953" transform="rotate(-0 554.345783 158.656953)">0.20</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="577.023158" y="158.656953" transform="rotate(-0 577.023158 158.656953)">0.20</text>
    </g>
    <g id="text_110">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="669.643373" y="78.016953" transform="rotate(-0 669.643373 78.016953)">JPM</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="692.147368" y="78.016953" transform="rotate(-0 692.147368 78.016953)">JPM</text>
    </g>
    <g id="text_111">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="744.939759" y="78.016953" transform="rotate(-0 744.939759 78.016953)">+0.33</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="767.330526" y="78.016953" transform="rotate(-0 767.330526 78.016953)">+0.33</text>
    </g>
    <g id="text_112">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="669.643373" y="98.176953" transform="rotate(-0 669.643373 98.176953)">AAPL</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="692.147368" y="98.176953" transform="rotate(-0 692.147368 98.176953)">AAPL</text>
    </g>
    <g id="text_113">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="744.939759" y="98.176953" transform="rotate(-0 744.939759 98.176953)">+0.17</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="767.330526" y="98.176953" transform="rotate(-0 767.330526 98.176953)">+0.17</text>
    </g>
    <g id="text_114">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="669.643373" y="118.336953" transform="rotate(-0 669.643373 118.336953)">MSFT</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="692.147368" y="118.336953" transform="rotate(-0 692.147368 118.336953)">MSFT</text>
    </g>
    <g id="text_115">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="744.939759" y="118.336953" transform="rotate(-0 744.939759 118.336953)">0.00</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="767.330526" y="118.336953" transform="rotate(-0 767.330526 118.336953)">0.00</text>
    </g>
    <g id="text_116">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="669.643373" y="138.496953" transform="rotate(-0 669.643373 138.496953)">CVX</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="692.147368" y="138.496953" transform="rotate(-0 692.147368 138.496953)">CVX</text>
    </g>
    <g id="text_117">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="744.939759" y="138.496953" transform="rotate(-0 744.939759 138.496953)">−0.17</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="767.330526" y="138.496953" transform="rotate(-0 767.330526 138.496953)">−0.17</text>
    </g>
    <g id="text_118">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="669.643373" y="158.656953" transform="rotate(-0 669.643373 158.656953)">XOM</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: start; fill: #c0c4cf" x="692.147368" y="158.656953" transform="rotate(-0 692.147368 158.656953)">XOM</text>
    </g>
    <g id="text_119">
-    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="744.939759" y="158.656953" transform="rotate(-0 744.939759 158.656953)">−0.33</text>
+    <text style="font-size: 13px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: end; fill: #c0c4cf" x="767.330526" y="158.656953" transform="rotate(-0 767.330526 158.656953)">−0.33</text>
    </g>
    <g id="patch_6">
-    <path d="M 157.748647 108.24 
-Q 169.631383 108.24 179.054443 108.24 
+    <path d="M 181.022409 108.24 
+Q 192.884135 108.24 202.286187 108.24 
 " style="fill: none; stroke: #c0c4cf; stroke-width: 2.2; stroke-linecap: round"/>
-    <path d="M 170.254443 103.84 
-L 179.054443 108.24 
-L 170.254443 112.64 
+    <path d="M 193.486187 103.84 
+L 202.286187 108.24 
+L 193.486187 112.64 
 z
 " style="fill: #c0c4cf; stroke: #c0c4cf; stroke-width: 2.2; stroke-linecap: round"/>
    </g>
    <g id="patch_7">
-    <path d="M 423.639009 108.24 
-Q 435.521744 108.24 444.944805 108.24 
+    <path d="M 446.512935 108.24 
+Q 458.374661 108.24 467.776713 108.24 
 " style="fill: none; stroke: #c0c4cf; stroke-width: 2.2; stroke-linecap: round"/>
-    <path d="M 436.144805 103.84 
-L 444.944805 108.24 
-L 436.144805 112.64 
+    <path d="M 458.976713 103.84 
+L 467.776713 108.24 
+L 458.976713 112.64 
 z
 " style="fill: #c0c4cf; stroke: #c0c4cf; stroke-width: 2.2; stroke-linecap: round"/>
    </g>
    <g id="patch_8">
-    <path d="M 585.996323 108.24 
-Q 603.759369 108.24 619.062741 108.24 
+    <path d="M 608.626103 108.24 
+Q 626.362438 108.24 641.639098 108.24 
 " style="fill: none; stroke: #c0c4cf; stroke-width: 2.2; stroke-linecap: round"/>
-    <path d="M 610.262741 103.84 
-L 619.062741 108.24 
-L 610.262741 112.64 
+    <path d="M 632.839098 103.84 
+L 641.639098 108.24 
+L 632.839098 112.64 
 z
 " style="fill: #c0c4cf; stroke: #c0c4cf; stroke-width: 2.2; stroke-linecap: round"/>
    </g>
    <g id="text_120">
-    <text style="font-size: 11.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #6b7280" x="516.69759" y="222.107754" transform="rotate(-0 516.69759 222.107754)">March 10, 2025</text>
+    <text style="font-size: 11.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #6b7280" x="539.431579" y="222.107754" transform="rotate(-0 539.431579 222.107754)">March 10, 2025</text>
    </g>
    <g id="text_121">
-    <text style="font-size: 11.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #6b7280" x="707.291566" y="222.107305" transform="rotate(-0 707.291566 222.107305)">sum 0, gross 1</text>
+    <text style="font-size: 11.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #6b7280" x="729.738947" y="222.107305" transform="rotate(-0 729.738947 222.107305)">sum 0, gross 1</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="paa1f3f1f16">
-   <rect x="10.8" y="10.8" width="781.2" height="221.76"/>
+  <clipPath id="p3df240aacf">
+   <rect x="10.8" y="10.8" width="803.52" height="221.76"/>
   </clipPath>
  </defs>
 </svg>

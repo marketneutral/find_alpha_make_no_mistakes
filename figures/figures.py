@@ -290,8 +290,8 @@ def fig_nutshell():
     """Alpha research in a nutshell: a belief, the code, its scores, the portfolio weights. The code box is the usual
     pandas middle, written out in full; the scores and weights are the running example on March 10, 2025
     (rank(-returns(5)) from the closes on the data slide, then demeaned and scaled to gross one)."""
-    fig, ax = plt.subplots(figsize=(14.0, 4.0))
-    ws, gaps, h = [2.9, 4.9, 2.7, 3.4], [0.75, 0.75, 1.0], 2.7
+    fig, ax = plt.subplots(figsize=(14.4, 4.0))
+    ws, gaps, h = [3.4, 4.9, 2.7, 3.4], [0.75, 0.75, 1.0], 2.7
     xs = [0.0]
     for w, g in zip(ws[:-1], gaps): xs.append(xs[-1] + w + g)
     heads = ["a belief", "code", "scores", "portfolio weights"]
