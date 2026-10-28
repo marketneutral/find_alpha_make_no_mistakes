@@ -338,8 +338,9 @@ def fig_trial():
     for yr in range(2004, 2019, 2):
         a1.text(yr, 0.62, str(yr), ha="center", va="bottom", color=MUTED, fontsize=12)
     a1.text(2003.75, 0, "deal 1", ha="right", va="center", color=INK2, fontsize=14)
-    a1.text(2018.15, 0, "12 blocks, 21-day embargo\nat each edge, dealt at\nrandom into 6 folds of 2", ha="left", va="center", color=MUTED, fontsize=11.5, linespacing=1.35)
-    a1.set_xlim(2001.6, 2022.4); a1.set_ylim(-0.6, 1.0); a1.axis("off")
+    a1.text(2011.0, -0.62, "12 blocks, 21-day embargo at each edge, dealt at random into 6 folds of 2",
+            ha="center", va="top", color=MUTED, fontsize=11.5)
+    a1.set_ylim(-1.05, 1.0); a1.axis("off")
     y = np.arange(6)[::-1]
     for yi, k in zip(y, range(1, 7)):
         yrs, v = folds[k]; bad = k == worst_k
@@ -354,6 +355,13 @@ def fig_trial():
     a2.set_xlabel("each fold scored on its own days (the final book)", fontsize=12)
     for sp in ("top", "right", "left"): a2.spines[sp].set_visible(False)
     a2.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
+    # centre the strip over the whole chart below, its fold labels included, not just over the bars' plot area
+    fig.canvas.draw()
+    bb = a2.get_tightbbox(fig.canvas.get_renderer()).transformed(fig.transFigure.inverted())
+    pos = a1.get_position()
+    a1.set_position([bb.x0, pos.y0, bb.width, pos.height])
+    span = 14 / 0.62                                          # the 14 years take 62% of the width
+    a1.set_xlim(2011.0 - span / 2, 2011.0 + span / 2)
     save(fig, "eval-trial", pad=0.25)
 
 def fig_worth():
