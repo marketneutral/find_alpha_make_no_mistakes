@@ -335,7 +335,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 
 ::: {.incremental}
 1. **Require the claim before the test**: mechanism, counterparty, persistence, and a prediction of *where* it helps
-2. **Make the evaluator move**: purged, randomized cross-validation; keep only if the median fold improves and the worst does not fall
+2. **Make the evaluator move**: purged, randomized cross-validation; keep only if the median fold improves by more than its noise and the worst falls by no more than its noise
 3. **Charge for complexity**: fit minus a charge per parameter, AIC in spirit
 4. **Count the trials**: deflate the winner's Sharpe (Bailey and López de Prado 2014)
 5. **Seed the search** with grounded, plausible, and/or causal claims
