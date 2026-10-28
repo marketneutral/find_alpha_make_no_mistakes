@@ -314,6 +314,7 @@ def fig_nutshell():
     KW, FN, STR, NUM, TXT, COM = "#82d8ff", "#e8c97a", "#3ee87a", "#f5a97f", "#c0c4cf", "#6b7280"
     tok = re.compile(r"(#.*$)|('[^']*')|\b(import|as|None|True|False)\b|(\d+)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)|(\s+)|(.)")
     fs, cw, lh = 8.6, 8.6 * 0.6, 0.215                         # monospace: every character advances 0.6 em
+    wide = max(map(len, mess))                                  # centre the widest line in the box
     top = (h - 0.55) / 2 + (len(mess) - 1) / 2 * lh            # centred under the header
     for k, line in enumerate(mess):
         y, col = top - k * lh, 0
@@ -321,7 +322,7 @@ def fig_nutshell():
             t = m.group(0)
             c = COM if m.group(1) else STR if m.group(2) else KW if m.group(3) else NUM if m.group(4) else FN if m.group(5) else TXT
             if not m.group(7):
-                ax.annotate(t, (xs[1] + 0.16, y), xytext=(col * cw, 0), textcoords="offset points",
+                ax.annotate(t, (xs[1] + ws[1] / 2, y), xytext=((col - wide / 2) * cw, 0), textcoords="offset points",
                             ha="left", va="center", color=c, fontsize=fs)
             col += len(t)
     rows = [("JPM", "1.00", "+0.33"), ("AAPL", "0.80", "+0.17"), ("MSFT", "0.60", "0.00"), ("CVX", "0.40", "\u22120.17"), ("XOM", "0.20", "\u22120.33")]
