@@ -1808,24 +1808,26 @@ in decay_linear(score / vol, 10)</code></pre>
 <li class="fragment"><strong>Fitness:</strong> Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)</li>
 <li class="fragment">Trading turnover is not charged below 12.5% a day, and the agent will notice</li>
 <li class="fragment"><strong>Nodes:</strong> the nodes of the expression’s qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.</li>
-<li class="fragment"><strong>Eligible, or −∞:</strong> a fold scores −∞ if, over its days, the book’s median holding is under 50 names or its average daily turnover is outside 1–70%. The whole validation book must also earn a margin of ≥ 5 bps per dollar traded.</li>
+<li class="fragment"><strong>−∞:</strong> a fold scores −∞ if, over its days, the book’s median holding is under 50 names or its average daily turnover is outside 1–70%</li>
 </ul>
 </section>
 <section id="the-keep-rule" class="slide level2 smaller">
 <h2>The keep rule</h2>
-<p>Karpathy’s rule is one line: keep if the score improves. Here a change is compared with the <strong>best book kept so far</strong>, the one it edits, and kept only if all three hold:</p>
+<p>Karpathy’s rule is one line: keep if the score improves. Here a change is kept only if all three hold:</p>
 <p><span class="math display">
-\underbrace{\Delta\,\text{score}_{\text{median}} \;&gt;\; 0.03}_{\text{climb}}
-\qquad\wedge\qquad
-\underbrace{\Delta\,\text{score}_{\text{worst}} \;\ge\; -0.13}_{\text{hold the floor}}
-\qquad\wedge\qquad
+\underbrace{\Delta\,\text{median} &gt; 0.03}_{\text{climb}}
+\quad\wedge\quad
+\underbrace{\Delta\,\text{worst} \ge -0.13}_{\text{hold the floor}}
+\quad\wedge\quad
 \underbrace{\text{eligible}}_{\text{stay tradeable}}
 </span></p>
-<p><span class="math inline">\text{score}_{\text{median}}</span>, <span class="math inline">\text{score}_{\text{worst}}</span>: the score on the median fold and on the worst fold, averaged over the evaluator’s deals (next slides). <span class="math inline">\Delta</span>: against the best kept book. Eligibility binds once the best is eligible; the seed was not, and trial 2 made it so.</p>
-<p>The two numbers are the evaluator’s own noise on the seed, measured before the run; where they come from follows the evaluator.</p>
-<div class="fragment">
-<p>Otherwise <code>git checkout &lt;best&gt; -- alpha.qex</code>. Either way the attempt is logged: claim, outcome, numbers.</p>
-</div>
+<ul>
+<li class="fragment"><strong>Median, worst:</strong> the score on the median and worst fold, averaged over the evaluator’s deals (next slides)</li>
+<li class="fragment"><strong>Δ:</strong> against the best book kept so far, the one the change edits</li>
+<li class="fragment"><strong>Eligible:</strong> yes or no, over the whole validation period, every day included: average daily turnover in 1–70% and a margin of ≥ 5 bps per dollar traded. It binds once the best book is eligible; the seed was not, and trial 2 made it so.</li>
+<li class="fragment"><strong>0.03 and 0.13:</strong> the evaluator’s own noise on the seed, measured before the run (explained after the evaluator)</li>
+<li class="fragment"><strong>Otherwise</strong> <code>git checkout &lt;best&gt; -- alpha.qex</code>. Either way, the attempt is logged: claim, outcome, numbers.</li>
+</ul>
 </section>
 <section id="the-evaluator-run-once-grade-many-times" class="slide level2 mid">
 <h2>The evaluator: run once, grade many times</h2>
