@@ -1600,7 +1600,7 @@ It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 50
 
 The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
 
-## The final book, by hand in pandas {.smaller}
+## The final alpha, by hand in pandas {.smaller}
 
 ::: {.columns .xlate}
 ::: {.column width="40%"}

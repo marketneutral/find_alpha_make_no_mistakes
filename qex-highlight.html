@@ -6,6 +6,7 @@
 .reveal pre.qex code, .reveal pre code.qex, .reveal pre.pyx code { color: #c0c4cf; background: transparent; text-indent: 0 !important;
                   padding-left: 0 !important; white-space: pre; max-height: none; }
 .reveal .qx-kw { color: #82d8ff; font-weight: 600; }
+.reveal pre.pyx .qx-kw { font-weight: normal; }
 .reveal .qx-fn { color: #e8c97a; }
 .reveal .qx-num { color: #f5a97f; }
 .reveal .qx-str { color: #3ee87a; }
@@ -27,8 +28,8 @@
 (function () {
   const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
   // a line ending in " #+" was added or changed by a trial, " #-" removed: tinted, marker dropped (figures/trial_diffs.py)
-  // ```pyx blocks get the same colours with Python's keywords
-  function highlight(src, kw = "let|in") {
+  // ```pyx blocks get the nutshell figure's Python colours: Python's keywords, no bound-name purple
+  function highlight(src, kw = "let|in", vars = true) {
     const lines = src.split("\n"), marks = lines.map((l) => / #([+-])$/.exec(l));
     const clean = lines.map((l, i) => (marks[i] ? l.slice(0, marks[i].index) : l));
     const bound = new Set([...clean.join("\n").matchAll(/(?:^[ \t]*(?:let[ \t]+)?|\blet[ \t]+)([A-Za-z_]\w*)[ \t]*=(?!=)/gm)].map((m) => m[1]));
@@ -44,7 +45,7 @@
         else if (m[4]) out += span("str", m[4]);
         else if (m[5]) out += span("num", m[5]);
         else if (m[6]) out += span("fn", m[6]);
-        else if (m[7]) out += bound.has(m[7]) ? span("var", m[7]) : esc(m[7]);
+        else if (m[7]) out += vars && bound.has(m[7]) ? span("var", m[7]) : esc(m[7]);
         else if (m[8]) out += span("op", m[8]);
         else out += esc(m[9]);
       }
@@ -55,6 +56,6 @@
   window.qexHighlight = highlight;                        // the run chart's tooltips colour qex the same way
   document.querySelectorAll("pre.qex code, code.qex").forEach((el) => { el.innerHTML = highlight(el.textContent); });
   document.querySelectorAll("pre.pyx code").forEach((el) => {
-    el.innerHTML = highlight(el.textContent, "import|as|def|return|for|in|None|True|False"); });
+    el.innerHTML = highlight(el.textContent, "import|as|def|return|for|in|None|True|False", false); });
 })();
 </script>

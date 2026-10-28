@@ -1,4 +1,4 @@
-"""Run 3's final book by hand in pandas (the Appendix A slide), checked cell by cell against qex. Run from the repo root:
+"""Run 3's final alpha by hand in pandas (the Appendix A slide), checked cell by cell against qex. Run from the repo root:
 
     git -C ~/dev/alpha_lab archive run3 | tar -x -C /tmp/run3lab        # the lab as run 3 had it: eval.py, qex 0.3.1
     ln -s ~/dev/alpha_lab/data_20260811_pre_mcapfix /tmp/run3lab/data   # and its data
