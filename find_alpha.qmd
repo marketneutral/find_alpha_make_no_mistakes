@@ -274,14 +274,21 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 - FunSearch (2024), AlphaEvolve (2025): LLM proposals against an automatic evaluator found new mathematics
 :::
 
-## Karpathy's autoresearch (March 2026) {.mid}
+## Karpathy's autoresearch (March 2026) {.smaller}
 
+::: columns
+::: {.column width="56%"}
 **The question:** can we use an LLM as the hypothesis generator in the scientific method loop, and find a better way to train a neural network overnight?
 
 ::: {.incremental}
 - **The task:** train a small language model on one GPU, for exactly five minutes. Score: `val_bpb`, how well it predicts held-out text. Lower is better.
 - **What the agent may change:** anything in the training script. The recipe (learning rates, batch size, warmup) *and* the architecture (depth, attention windows, positional encoding).
 - **What it may not:** the data, the test, or the five-minute budget. A fixed budget makes every trial a fair comparison.
+:::
+:::
+::: {.column width="44%"}
+![](images/karpathy-tweet-crop.png){.tweet}
+:::
 :::
 
 ## How autoresearch works {.smaller}
@@ -324,7 +331,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - It's Karpathy's "red dot" error magnified
 :::
 
-## Ideas for a finance-friendly loop {.mid}
+## My ideas for a finance-friendly loop {.mid}
 
 ::: {.incremental}
 1. **Require the claim before the test**: mechanism, counterparty, persistence, and a prediction of *where* it helps
@@ -355,8 +362,8 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 ![](images/alpha-periods.svg){width="92%" fig-align="center"}
 
 ::: {.incremental}
-- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything, through `explore.py`. For debugging expressions and forming hunches; never scored.
-- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary numbers, never a price.
+- **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything. For debugging expressions and forming hunches; never scored.
+- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary numbers, never granular data or results.
 - **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
@@ -418,7 +425,7 @@ in decay_linear(score / vol, 10)
 
 ## Twelve beliefs codified in `program.md` {.smaller}
 
-I wrote these twelve from the literature. The agent starts from them and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
+I wrote these twelve: nine grounded in published research, three from practitioner rules of thumb. The agent starts from them and may test, combine, or abandon any of them, or go beyond the list. Every change must name the belief it bears on. The papers behind them run from 1990 to 2016, all before the test period.
 
 ::: columns
 ::: {.column width="50%" .belief-left}
@@ -443,7 +450,7 @@ I wrote these twelve from the literature. The agent starts from them and may tes
 
 ![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-The loop with the finance changes; the next slides define each box. What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never a price.**
+The loop with the finance changes; the next slides define each box. What the agent sees after each trial: score, worst fold, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never granular data or results.**
 
 ## The score {.smaller}
 
@@ -1634,7 +1641,7 @@ $S$: the data. $W$: the strategy chosen. $n$: the sample size. A choice that car
 [A guide, not a number. The bounds on these three slides assume independent samples and a fixed hypothesis class; trading days are correlated and the agent's class is everything qex can express. Take the direction and the levers, not the digits.]{.pq-note}
 
 ::: {.incremental}
-- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never a price**.
+- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never granular data or results**.
 - **Few, small steps.** Sixty one-line edits in a closed grammar.
 - **A threshold.** A keep must clear the noise, so small, lucky wins are not kept.
 :::
