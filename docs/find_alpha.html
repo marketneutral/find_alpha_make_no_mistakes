@@ -1613,9 +1613,10 @@ in scale(decay_linear(book, 10))</code></pre>
 <section id="what-about-finance" class="slide level2 mid">
 <h2>What about finance?</h2>
 <ul>
-<li class="fragment">The obvious mapping: the artifact is signal code, the score is a backtest Sharpe on a hold-out, keep if it goes up</li>
+<li class="fragment"><strong>The baseline:</strong> the artifact is signal code, the score is a backtest Sharpe, keep if it goes up</li>
 <li class="fragment">That is the one thing quant finance spent decades learning not to do</li>
 <li class="fragment">Wiecki et al. (2016), <em>All that Glitters Is Not Gold</em>: 888 Quantopian strategies with 6+ months live. Backtest Sharpe explained almost none of live performance, <span class="math inline">R^2 &lt; 0.025</span></li>
+<li class="fragment"><strong>Keep a hold-out?</strong> The natural fix, and not enough on its own:</li>
 <li class="fragment"><strong>Hill-climbing on a hold-out leaks it into the strategy, one keep at a time</strong></li>
 <li class="fragment">A hold-out is one draw of history; a win may only be a bet that succeeds on <em>that</em> draw</li>
 <li class="fragment">It’s Karpathy’s “red dot” error magnified</li>

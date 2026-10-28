@@ -316,9 +316,10 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 ## What about finance? {.mid}
 
 ::: {.incremental}
-- The obvious mapping: the artifact is signal code, the score is a backtest Sharpe on a hold-out, keep if it goes up
+- **The baseline:** the artifact is signal code, the score is a backtest Sharpe, keep if it goes up
 - That is the one thing quant finance spent decades learning not to do
 - Wiecki et al. (2016), *All that Glitters Is Not Gold*: 888 Quantopian strategies with 6+ months live. Backtest Sharpe explained almost none of live performance, $R^2 < 0.025$
+- **Keep a hold-out?** The natural fix, and not enough on its own:
 - **Hill-climbing on a hold-out leaks it into the strategy, one keep at a time**
 - A hold-out is one draw of history; a win may only be a bet that succeeds on *that* draw
 - It's Karpathy's "red dot" error magnified
