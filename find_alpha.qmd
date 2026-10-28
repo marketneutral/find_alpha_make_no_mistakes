@@ -338,8 +338,8 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 2. **Make the evaluator move**: purged, randomized cross-validation; keep only if the median fold improves and the worst does not fall
 3. **Charge for complexity**: fit minus a charge per parameter, AIC in spirit
 4. **Count the trials**: deflate the winner's Sharpe (Bailey and López de Prado 2014)
-5. **Seed the search** with the firm's own view
-6. **Measure the consensus**: McLean and Pontiff (2016), returns 26% lower out of sample, 58% lower after publication
+5. **Seed the search** with grounded, plausible, and/or causal claims
+6. **Measure the consensus**: McLean and Pontiff (2016), anomaly returns 26% lower out of sample, 58% lower after publication
 7. **Keep one period the loop never touches**, and use it once
 :::
 
