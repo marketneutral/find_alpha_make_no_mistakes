@@ -840,15 +840,13 @@ Nothing in the beliefs pointed here. The agent read it off the shape of the scor
 
 The final book with only its last step changed. The tails go from a third of the book to three quarters; the return doubles at about the same Sharpe.
 
-## Why the cube pays {.smaller}
+## Why the cube pays {.mid}
 
 ::: {.incremental}
 - **Gross is fixed**, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
 - **About the same Sharpe, twice the return** per dollar of gross, in sample and out
-- **At the same Sharpe, nothing is created:** 2× leverage on the linear book gives the same P&L and risk. Fitness rewards it anyway, because it is return *on gross one*: the dollar is fixed, so the cube is the only way to make it work harder.
-- **The real-world case:** the same P&L from half the gross is half the financing, borrow and impact
-- **A rediscovery** of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
-- **The limit:** the fifth power has a higher validation return but a lower Sharpe, and does worse out of sample (trial 35)
+- **A "discovery"** of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
+- **The limit: why not a⁵?** The agent tried it at trial 35. Return barely rose (13.0% → 13.8%), the Sharpe fell (1.28 → 1.10), and turnover crossed the 12.5% free line (one fold at 21%). The score fell from 1.32 to 1.06 and the worst fold dropped 0.18, through the floor. Its verdict: *"past the cube the extra concentration is noise and churn."*
 :::
 
 ## Trial 22: soft beats hard {.smaller}
@@ -1330,7 +1328,7 @@ In sample, the 2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. Out
 
 [No one trades a single signal alone; a real book combines many, under risk limits. What is on test here is the method.]{.pq-note}
 
-## Is it real? Bayes has entered the chat {.smaller}
+## Real alpha? Bayes has entered the chat {.smaller}
 
 ![](images/bayes-shades.png){.absolute top="222" left="327" width="219" style="border-radius: 4px;"}
 
