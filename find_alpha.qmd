@@ -75,7 +75,7 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 
 ::: {.incremental}
 - The belief is the research. The weights are what trades.
-- Everything in between should be one line of code, and nothing else.
+- Everything in between should be the bare minimum of code.
 :::
 
 ## The idea {.mid}
