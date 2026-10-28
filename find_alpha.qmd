@@ -69,6 +69,15 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 
 # qex
 
+## Alpha research in a nutshell
+
+![](images/nutshell.svg){width="100%" fig-align="center"}
+
+::: {.incremental}
+- The belief is the research. The weights are what trades.
+- Everything in between should be one line of code, and nothing else.
+:::
+
 ## The idea {.mid}
 
 An **alpha** is a recipe for portfolio weights: every day, a number for every stock. Buy the high numbers, sell the low ones; the bigger the number, the bigger the bet. It starts as a stated belief:

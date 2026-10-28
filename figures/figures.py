@@ -286,6 +286,31 @@ def fig_cube():
         a.grid(axis="y", color=RULE, alpha=0.5, lw=0.6, zorder=0)
     save(fig, "alpha-cube")
 
+def fig_nutshell():
+    """Alpha research in a nutshell: a belief, an expression, portfolio weights; with the deck's running example
+    (the weights are rank(-returns(5)) on March 10, 2025, made into a book)."""
+    fig, ax = plt.subplots(figsize=(13.0, 3.6))
+    w, h, gap = 3.9, 2.1, 0.75
+    xs = [0, w + gap, 2 * (w + gap)]
+    heads = ["a belief", "an expression in code", "portfolio weights"]
+    for x, head in zip(xs, heads):
+        ax.add_patch(FancyBboxPatch((x, 0), w, h, boxstyle="round,pad=0,rounding_size=0.12", fc=PANEL,
+                                    ec=ACC if head == heads[1] else RULE, lw=1.6))
+        ax.text(x + w / 2, h - 0.36, head, ha="center", va="center", color=ACC, fontsize=15, fontweight="bold")
+    ax.text(xs[0] + w / 2, 0.8, "\u201cStocks that fell last\nweek tend to bounce back.\u201d", ha="center", va="center",
+            color=INK2, fontsize=12.5, style="italic", linespacing=1.5)
+    ax.text(xs[1] + w / 2, 0.8, "rank(-returns(5))", ha="center", va="center", color="#e8c97a", fontsize=15)
+    # rank(-returns(5)) on March 10, 2025, from the closes on the data slide, demeaned and scaled to gross one
+    for k, (tk, wt) in enumerate((("JPM", "+0.33"), ("AAPL", "+0.17"), ("MSFT", "0.00"), ("CVX", "\u22120.17"), ("XOM", "\u22120.33"))):
+        y = 1.36 - k * 0.27
+        ax.text(xs[2] + 1.15, y, tk, ha="left", va="center", color=INK2, fontsize=13.5)
+        ax.text(xs[2] + 2.75, y, wt, ha="right", va="center", color=INK2, fontsize=13.5)
+    for x in xs[:2]:
+        ax.annotate("", xy=(x + w + gap - 0.08, h / 2), xytext=(x + w + 0.08, h / 2),
+                    arrowprops=dict(arrowstyle="-|>", color=INK2, lw=2.2, mutation_scale=22))
+    ax.set_xlim(-0.1, xs[2] + w + 0.1); ax.set_ylim(-0.1, h + 0.1); ax.axis("off")
+    save(fig, "nutshell", pad=0.15)
+
 def fig_worth():
     # utility change when the agent took a part out, in the book of the day (results.tsv)
     parts = [("residual momentum", "T56", 1.473, 0.592), ("crash switch", "T27", 1.101, 0.622),
@@ -312,4 +337,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_nutshell(); fig_worth()
