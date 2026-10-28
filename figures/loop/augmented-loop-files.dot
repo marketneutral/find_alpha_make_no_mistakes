@@ -31,12 +31,13 @@ digraph augmented {
   T    [label="keep it", shape=hexagon, style="filled", fillcolor="#0a0e1a",
         color="#3ee87a", fontcolor="#3ee87a", margin="0.04,0.02", width=2.2, height=0.85, fixedsize=true];
   LOG  [label="log claim, outcome,\nregime split;\ncount the trials\n(results.tsv)", color="#ffb347", fontcolor="#ffb347", fontsize=12, width=2.4, height=1.05];
-  YOU  [label="you read the\nnotebook\n(summary.md)", style="rounded,dashed", color="#9aa1ad", fontcolor="#c0c4cf", fontsize=14];
+  YOU  [label="you read the\nnotebook", style="rounded,dashed", color="#9aa1ad", fontcolor="#c0c4cf", fontsize=14];
+  SUM  [label="agent writes\nits report\n(summary.md)", color="#9aa1ad", fontcolor="#c0c4cf", fontsize=13];
   OOS  [label="2018-2026:\nrun once, at the end\n(test.py)", style="rounded,dashed", color="#ffb347", fontcolor="#ffb347", width=2.6, fontsize=14];
 
   { rank=same; PM; READ; H; C; P; }
   { rank=same; T; D; R; X; }
-  { rank=same; YOU; LOG; OOS; }
+  { rank=same; YOU; LOG; SUM; OOS; }
 
   PM -> READ;
   READ -> H;
@@ -51,5 +52,6 @@ digraph augmented {
   D -> LOG [label="every attempt,\nkept or not"];
   YOU -> LOG [dir=back, style=dashed];
   YOU -> PM [constraint=false, style=dashed, label="revise", fontcolor="#9aa1ad"];
-  LOG -> OOS [style=dashed, label="after the\nlast trial"];
+  LOG -> SUM [style=dashed, label="after the\nlast trial"];
+  SUM -> OOS [style=dashed];
 }
