@@ -357,13 +357,13 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 - The agent chooses *which* stocks get weight, never how big the book is, so every expression is judged on the same dollar
 :::
 
-## Three periods, never mixed {.nostretch .mid}
+## Three periods, never mixed {.nostretch .smaller}
 
 ![](images/alpha-periods.svg){width="92%" fig-align="center"}
 
 ::: {.incremental}
 - **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything. For debugging expressions, testing ideas in-sample, or forming hunches.
-- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary statistics only: the scores, whole-period and regime-split Sharpes, one deal's folds. Never prices or daily P&L.
+- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent keeps or discards a change on summary statistics only: two scores and an eligibility check. It also sees whole-period and regime-split Sharpes, and the score of each fold for one random split, with the years it covers; never prices or daily P&L.
 - **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
@@ -447,7 +447,7 @@ I wrote these twelve: nine grounded in published research, three from practition
 :::
 :::
 
-## The augmented loop
+## The augmented loop {.mid}
 
 ![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
