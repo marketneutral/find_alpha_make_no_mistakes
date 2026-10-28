@@ -517,8 +517,15 @@ rank mean|x| 0.25   p99 0.495
 ![](images/eval-trial.svg){.r-stretch fig-align="center"}
 
 ::: {.incremental}
-- **One deal:** run the expression once over 2004–⁠2017 (nothing fit), cut it into 12 blocks, deal them into 6 folds of 2, score each fold, take the **median** and the **worst**
-- **Fifty fresh deals:** `eval.py` reports the **mean of the 50 medians** and the **mean of the 50 worsts**
+- **One deal:** run once over 2004–2017 (nothing fit), 12 blocks into 6 folds of 2, score each fold. **Fifty fresh deals**, summarized:
+:::
+
+::: {.small-math}
+$$
+\text{utility} = \frac{1}{50}\sum_{d=1}^{50}\ \operatorname*{median}_{f\in d}\ \text{score}_f
+\qquad\qquad
+\text{worst} = \frac{1}{50}\sum_{d=1}^{50}\ \min_{f\in d}\ \text{score}_f
+$$
 :::
 
 [This is López de Prado's combinatorial purged cross-validation (CPCV) with 12 groups, 2 per test set. With nothing to fit, the training side drops out; we summarize each split by its median and worst fold rather than by whole paths.]{.pq-note}
@@ -551,7 +558,7 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 Karpathy's rule is one line: keep if the score improves. Here a change is kept only if all three hold:
 
 $$
-\underbrace{\Delta\,\text{median} > 0.03}_{\text{climb}}
+\underbrace{\Delta\,\text{utility} > 0.03}_{\text{climb}}
 \quad\wedge\quad
 \underbrace{\Delta\,\text{worst} \ge -0.13}_{\text{hold the floor}}
 \quad\wedge\quad
@@ -559,10 +566,10 @@ $$
 $$
 
 ::: {.incremental}
-- **Median, worst:** the score on the median and worst fold, averaged over the 50 deals
+- **Utility, worst:** as defined on `trial.sh`, the mean over 50 deals of the median and the worst fold score
 - **Δ:** against the best book kept so far, the one the change edits
 - **Eligible:** yes or no, over the whole validation period, every day included: average daily turnover in 1–70% and a margin of ≥ 5 bps per dollar traded. It binds once the best book is eligible; the seed was not, and trial 2 made it so.
-- **0.03 and 0.13:** the evaluator's own noise on the seed, measured before the run (explained after the evaluator)
+- **0.03 and 0.13:** the evaluator's own noise on the seed, measured before the run (after the two noise slides)
 - **Otherwise** `git checkout <best> -- alpha.qex`. Either way, the attempt is logged: claim, outcome, numbers.
 :::
 
