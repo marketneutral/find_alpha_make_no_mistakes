@@ -1879,7 +1879,7 @@ return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11
 <li><strong>Or work on the raw data</strong> with its own Python, here sizing the reversal sleeve against momentum:</li>
 </ul>
 <pre class="evaluator evalprint"><code>$ uv run python -c &quot;
-import explore; d = explore.data()          # 1998-2003 prices, volume, membership, sector
+import explore; d = explore.data()          # 1998-2003 prices, volume, membership, mcap, sector
 for n, b in [(&#39;mom&#39;, ...), (&#39;rev&#39;, ...), (&#39;rank&#39;, ...)]:
     x = qex(H + b).evaluate(d).where(d[&#39;member&#39;].notna()).loc[&#39;1999&#39;:]
     print(n, &#39;mean|x|&#39;, ..., &#39;p99&#39;, ...)&quot;
