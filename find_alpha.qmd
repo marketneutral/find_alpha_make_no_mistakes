@@ -511,7 +511,7 @@ rank mean|x| 0.25   p99 0.495
 
 ## What `eval.py` prints {.smaller}
 
-After every trial (trial 27's output, trimmed):
+One printout per trial, after all 50 deals (trial 27's, trimmed):
 
 ```{.evaluator .evalprint}
 utility: 0.622
@@ -528,8 +528,8 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 ```
 
 ::: {.incremental}
-- **Decides the keep:** the first three lines. `utility` is the score on the median fold, `worst` on the worst fold, each averaged over the 50 deals; then eligibility, yes or no.
-- **Informs the agent, never counts:** everything below. Whole-period Sharpe, one deal's folds with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
+- **Decides the keep:** the first three lines. `utility` is the mean of the 50 deals' median folds, `worst` the mean of their worst folds; then eligibility, yes or no, over the whole period.
+- **Informs the agent, never counts:** everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
 :::
 
 ## The score {.smaller}

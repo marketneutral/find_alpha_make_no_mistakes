@@ -1899,7 +1899,7 @@ rank mean|x| 0.25   p99 0.495</code></pre>
 </section>
 <section id="what-eval.py-prints" class="slide level2 smaller">
 <h2>What <code>eval.py</code> prints</h2>
-<p>After every trial (trial 27’s output, trimmed):</p>
+<p>One printout per trial, after all 50 deals (trial 27’s, trimmed):</p>
 <pre class="evaluator evalprint"><code>utility: 0.622
 worst:   -0.510
 eligible: yes  (whole validation: margin 12.8 bps, needs &gt;= 5; turnover 0.11, needs 0.01-0.70)
@@ -1912,8 +1912,8 @@ by regime: dispersion high  Sharpe  0.25;  low  Sharpe  1.10
            first half       Sharpe  0.33;  second half Sharpe  0.96
 trials: 28  deflated Sharpe probability of this expression: 0.372</code></pre>
 <ul>
-<li class="fragment"><strong>Decides the keep:</strong> the first three lines. <code>utility</code> is the score on the median fold, <code>worst</code> on the worst fold, each averaged over the 50 deals; then eligibility, yes or no.</li>
-<li class="fragment"><strong>Informs the agent, never counts:</strong> everything below. Whole-period Sharpe, one deal’s folds with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.</li>
+<li class="fragment"><strong>Decides the keep:</strong> the first three lines. <code>utility</code> is the mean of the 50 deals’ median folds, <code>worst</code> the mean of their worst folds; then eligibility, yes or no, over the whole period.</li>
+<li class="fragment"><strong>Informs the agent, never counts:</strong> everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.</li>
 </ul>
 </section>
 <section id="the-score" class="slide level2 smaller">
