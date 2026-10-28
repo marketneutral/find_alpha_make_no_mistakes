@@ -587,7 +587,7 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 [Both numbers were measured on the seed, where the noise is small. The noise grows with the score; hold that thought.]{.pq-note}
 
-## Sixty decisions, one map {.mid}
+## Sixty trials, one map {.mid}
 
 ![](images/alpha-keep-applied.svg){.r-stretch fig-align="center"}
 
