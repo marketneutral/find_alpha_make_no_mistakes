@@ -363,7 +363,7 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 
 ::: {.incremental}
 - **Inspection, 1999–⁠2003.** The agent may look: prices, charts, anything. For debugging expressions, testing ideas in-sample, or forming hunches.
-- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees aggregate summary numbers over random folds, never granular data or results.
+- **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent sees summary statistics only: the scores, whole-period and regime-split Sharpes, one deal's folds. Never prices or daily P&L.
 - **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
 :::
 
@@ -451,7 +451,7 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 ![](images/alpha-augmented-loop.svg){.r-stretch fig-align="center"}
 
-The loop with the finance changes; the next slides define each box. What the agent sees after each trial: median-fold and worst-fold score, eligibility, whole-period numbers, one deal's six folds, regime splits, the deflated Sharpe. **Never granular data or results.**
+The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that never do: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe. The agent reads them to check its predictions, which leaks some information about all of 2004–⁠2017. **Never prices or daily P&L.**
 
 ## The score {.smaller}
 
@@ -494,7 +494,7 @@ $$
 - **Run once.** The expression runs day by day over 2004–2017: one continuous series of daily P&L. Nothing is fit. The evaluator only chooses *which days count*.
 - **Cut.** The 3,524 trading days become 12 blocks of about 14 months, with 21 days trimmed from both ends of every block.
 - **Deal.** Shuffle the 12 blocks and deal them into 6 folds of 2 blocks each: 10,395 possible deals (the count is in the appendix).
-- **Grade.** Score each fold on its own days: six scores. Keep the **median** and the **worst**.
+- **Grade.** Score each fold on its own days: six scores. Return the **median** and **worst**.
 - **Repeat.** 50 deals, fixed in `eval.py`. The agent sees two numbers: the average of the 50 medians, and the average of the 50 worsts.
 :::
 
@@ -1360,7 +1360,7 @@ Overfitting is the second one. The deals shrink the first; nothing in-sample tou
 
 ## A hold-out nobody planned {.smaller}
 
-The embargo trims the **same 504 days** on every deal. They are never scored, so the agent climbed sixty trials without them: a hold-out inside 2004–⁠2017.
+The embargo trims the **same 504 days** on every deal. They never enter the score, so the keep rule climbed without them: a hold-out inside 2004–⁠2017. The agent did see them, folded into whole-period summaries.
 
 | | scored: 3,020 days | never scored: 504 days |
 |---|---:|---:|
@@ -1403,6 +1403,8 @@ $$
 | complexity charge, closed grammar | description length, $L(h)$ |
 | deflated Sharpe | the winner's curse over $N$ trials |
 | sealed test, run once | fitting the whole fourteen years |
+
+[These protect the score, not the agent's attention: it reads diagnostics on all of 2004–⁠2017. Only the sealed test is out of its sight.]{.pq-note}
 
 ## What I learned {.mid}
 
@@ -1641,7 +1643,7 @@ $S$: the data. $W$: the strategy chosen. $n$: the sample size. A choice that car
 [A guide, not a number. The bounds on these three slides assume independent samples and a fixed hypothesis class; trading days are correlated and the agent's class is everything qex can express. Take the direction and the levers, not the digits.]{.pq-note}
 
 ::: {.incremental}
-- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never granular data or results**.
+- **Coarse feedback.** What moves the book each trial is one bit, keep or reset. The agent sees more (scores, regime splits), but **never prices or daily P&L**.
 - **Few, small steps.** Sixty one-line edits in a closed grammar.
 - **A threshold.** A keep must clear the noise, so small, lucky wins are not kept.
 :::
