@@ -504,10 +504,10 @@ rank mean|x| 0.25   p99 0.495
 
 ::: {.incremental}
 - **One deal:** run the expression once over 2004–⁠2017 (nothing fit), cut it into 12 blocks, deal them into 6 folds of 2, score each fold, take the **median** and the **worst**
-- **Fifty fresh deals:** `eval.py` reports the **mean of the 50 medians** and the **mean of the 50 worsts**, not the single worst fold
+- **Fifty fresh deals:** `eval.py` reports the **mean of the 50 medians** and the **mean of the 50 worsts**
 :::
 
-[A cousin of López de Prado's combinatorial purged cross-validation (CPCV): the same purging and combining of blocks, but nothing is fit, so there is no training side.]{.pq-note}
+[This is López de Prado's combinatorial purged cross-validation (CPCV) with 12 groups, 2 per test set. With nothing to fit, the training side drops out; we summarize each split by its median and worst fold rather than by whole paths.]{.pq-note}
 
 ## What `eval.py` prints {.smaller}
 
