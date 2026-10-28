@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-28T14:16:35.984578</dc:date>
+    <dc:date>2026-10-28T16:08:18.912777</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 15.607385 18.192 15.607385 27.0624
 L 15.607385 175.6416 
 Q 15.607385 184.512 21.376246 184.512 
 z
-" clip-path="url(#p2ad38a574b)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p2be8332917)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 206.460554 184.512 
@@ -53,7 +53,7 @@ Q 200.691692 18.192 200.691692 27.0624
 L 200.691692 175.6416 
 Q 200.691692 184.512 206.460554 184.512 
 z
-" clip-path="url(#p2ad38a574b)" style="fill: #131927; stroke: #ff6b4a; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p2be8332917)" style="fill: #131927; stroke: #ff6b4a; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 425.196554 184.512 
@@ -66,7 +66,7 @@ Q 419.427692 18.192 419.427692 27.0624
 L 419.427692 175.6416 
 Q 419.427692 184.512 425.196554 184.512 
 z
-" clip-path="url(#p2ad38a574b)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p2be8332917)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 619.895631 184.512 
@@ -79,7 +79,7 @@ Q 614.126769 18.192 614.126769 27.0624
 L 614.126769 175.6416 
 Q 614.126769 184.512 619.895631 184.512 
 z
-" clip-path="url(#p2ad38a574b)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p2be8332917)" style="fill: #131927; stroke: #2a3344; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 14.5px; font-family: 'IBM Plex Mono', 'DejaVu Sans Mono', monospace; text-anchor: middle; fill: #3ee87a" x="87.718154" y="47.477124" transform="rotate(-0 87.718154 47.477124)">a belief</text>
@@ -221,7 +221,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p2ad38a574b">
+  <clipPath id="p2be8332917">
    <rect x="10.8" y="10.8" width="781.2" height="210.672"/>
   </clipPath>
  </defs>

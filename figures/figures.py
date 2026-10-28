@@ -320,6 +320,42 @@ def fig_nutshell():
     ax.set_xlim(-0.1, xs[3] + ws[3] + 0.1); ax.set_ylim(-0.5, h + 0.1); ax.axis("off")
     save(fig, "nutshell", pad=0.15)
 
+def fig_trial():
+    """One call of trial.sh in one picture: 2004-2017 cut into 12 blocks (embargo hatched), dealt into 6 folds (deal 1,
+    the final book's), each fold scored on its own days; median and worst; then the same for 50 fresh deals."""
+    folds = {1: ("2008\u201309 + 2016\u201317", 0.782), 2: ("2007\u201308 + 2011\u201312", 3.150), 3: ("2004\u201305 + 2006\u201307", 0.197),
+             4: ("2009\u201310 + 2015\u201316", 2.045), 5: ("2005\u201306 + 2014\u201315", 2.144), 6: ("2012\u201313 + 2013\u201314", 1.044)}
+    u = np.array([folds[k][1] for k in range(1, 7)]); med, worst_k = float(np.median(u)), int(np.argmin(u)) + 1
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(12.0, 5.6), gridspec_kw=dict(height_ratios=[1.0, 2.3], hspace=0.3))
+    h = 0.62
+    for b in range(12):
+        x0, x1 = EDGES[b], EDGES[b + 1]; k0, k1 = KEPT[b]; f = DEAL1[b]; bad = f == worst_k
+        a1.add_patch(FancyBboxPatch((k0, -h / 2), k1 - k0, h, boxstyle="round,pad=0,rounding_size=0.06",
+                                    fc=RED if bad else PANEL, ec=RED if bad else RULE, lw=1.0))
+        for e0, e1 in ((x0, k0), (k1, x1)):
+            a1.add_patch(Rectangle((e0 + 0.01, -h / 2), e1 - e0 - 0.02, h, fc="none", ec="#46516a", lw=0, hatch="////"))
+        a1.text((k0 + k1) / 2, 0, str(f), ha="center", va="center", fontsize=14, color=BG if bad else INK, fontweight="bold" if bad else "normal")
+    for yr in range(2004, 2019, 2):
+        a1.text(yr, 0.62, str(yr), ha="center", va="bottom", color=MUTED, fontsize=12)
+    a1.text(2003.75, 0, "deal 1", ha="right", va="center", color=INK2, fontsize=14)
+    a1.text(2018.15, 0, "12 blocks, 21-day embargo\nat each edge, dealt at\nrandom into 6 folds of 2", ha="left", va="center", color=MUTED, fontsize=11.5, linespacing=1.35)
+    a1.set_xlim(2001.6, 2022.4); a1.set_ylim(-0.6, 1.0); a1.axis("off")
+    y = np.arange(6)[::-1]
+    for yi, k in zip(y, range(1, 7)):
+        yrs, v = folds[k]; bad = k == worst_k
+        a2.barh(yi, v, height=0.62, color=RED if bad else "#4b5563", zorder=2)
+        a2.text(-0.06, yi, f"fold {k} \u00b7 {yrs}", ha="right", va="center", color=INK2, fontsize=12.5)
+        a2.text(v + 0.05, yi, f"{v:.2f}" + ("  worst" if bad else ""), ha="left", va="center", color=RED if bad else INK2, fontsize=12.5)
+    a2.plot([med, med], [-0.6, 5.5], color=INK, lw=1.4, ls=(0, (4, 3)), zorder=3)
+    a2.text(med, 5.6, f"median {med:.2f}", ha="center", va="bottom", color=INK, fontsize=12.5)
+    a2.text(4.0, 2.5, "\u00d7 50 fresh deals, averaged:\n\nmedian  1.54 \u2192 1.47\nworst   0.20 \u2192 0.40\n\nthe two scores the\nkeep rule reads",
+            ha="left", va="center", color=ACC, fontsize=13, linespacing=1.4)
+    a2.set_xlim(0, 5.6); a2.set_ylim(-0.6, 6.2); a2.set_yticks([]); a2.tick_params(length=0, labelsize=11)
+    a2.set_xlabel("each fold scored on its own days (the final book)", fontsize=12)
+    for sp in ("top", "right", "left"): a2.spines[sp].set_visible(False)
+    a2.grid(axis="x", color=RULE, alpha=0.5, lw=0.6, zorder=0)
+    save(fig, "eval-trial", pad=0.25)
+
 def fig_worth():
     # utility change when the agent took a part out, in the book of the day (results.tsv)
     parts = [("residual momentum", "T56", 1.473, 0.592), ("crash switch", "T27", 1.101, 0.622),
@@ -346,4 +382,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_nutshell(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_nutshell(); fig_trial(); fig_worth()
