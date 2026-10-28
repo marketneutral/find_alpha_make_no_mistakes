@@ -135,7 +135,7 @@ Each clause is one operator. No loops, no index alignment, no `axis=`, no warmup
 
 ## Three axes: the data {.smaller}
 
-Tickers across the columns, dates down the rows. Real closes, March 2025:
+Tickers across the columns, dates down the rows. **Every** field has this shape, and every operator returns it, so any output can feed any input: that is what makes composition easy. Real closes, March 2025:
 
 | close() | AAPL | MSFT | XOM | CVX | JPM |
 |---|---:|---:|---:|---:|---:|
@@ -249,32 +249,6 @@ $$
 w_{i,t} = \frac{s_{i,t} - \bar{s}_t}{\sum_j \lvert s_{j,t} - \bar{s}_t \rvert}, \qquad r^{p}_{t+1} = \sum_i w_{i,t}\, r_{i,t+1}
 $$
 
-## Lazy trees, no lookahead, shared work {.smaller}
-
-::: {.incremental}
-- Parsing builds a directed acyclic graph (DAG); nothing is computed until `evaluate(data)`
-- **Every operation looks backward.** `delay(x, -1)` is an error, not a too-good backtest.
-- Event-aware operators for sparse data (earnings): roll over the last *N observations*, not *N days*
-- A DAG can include multiple alphas; each unique node is computed once and can be reused
-:::
-
-![](images/qex-signal-graph.svg){.r-stretch fig-align="center"}
-
-## Why the cross-section? {.smaller}
-
-Grinold's **Fundamental Law of Active Management**:
-
-$$
-\Large \mathrm{IR} \;\approx\; \mathrm{IC} \times \sqrt{\mathrm{BR}}
-$$
-
-::: {.incremental}
-- $\mathrm{IC}$: the skill of each forecast, the correlation between the signal and the next return. For a real alpha, a few hundredths at best.
-- $\mathrm{BR}$: breadth, the number of independent bets
-- For example, $\mathrm{IC} = 0.02$ and $\mathrm{BR} = 500$ bets a year: $\;\mathrm{IR} \approx 0.02 \sqrt{500} \approx 0.45$
-- Small skill becomes a meaningful information ratio only when it is applied to many stocks, every day
-:::
-
 ## Example: reversal, technician-style {.smaller}
 
 ```qex
@@ -292,10 +266,6 @@ in scale(decay_linear(book, 10))
 - Khandani and Lo (2007): *the* stat arb strategy of August 2007
 - Technicians call it *Williams %R*; it works once you think cross-sectionally
 :::
-
-## The DAG qex builds
-
-![](images/qex-range-graph.svg){.r-stretch fig-align="center"}
 
 ## Does this alpha "work"?
 
@@ -646,7 +616,7 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 ## Trial 1: the crash switch {.smaller}
 
-Before each test the agent writes a **claim**: which belief, the mechanism, and where the score should move. It is committed to git before the evaluator runs. After it, an **outcome**. Sixty of them, in its own words. On the right, the change to `alpha.qex`.
+The seed loses most of its money in the crash state, so the agent starts there. Before each test it writes a **claim**: which belief, the mechanism, where the score should move. It is committed to git before the evaluator runs. After it, an **outcome**, in its own words. On the right, the change to `alpha.qex`.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -676,7 +646,9 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 :::
 :::
 
-## Act 1, trial 2: delete a line {.smaller}
+## Trial 2: delete a line {.smaller}
+
+The switch works, but at 4.2 bps per dollar traded the book is not yet eligible.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -706,7 +678,9 @@ in decay_linear(where(crash, -score, score), 10) #+
 :::
 :::
 
-## Act 1, trial 4: the right volatility {.smaller}
+## Trial 4: the right volatility {.smaller}
+
+Eligible at last. Next, the volatility each stock's momentum is divided by.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -736,7 +710,9 @@ in decay_linear(where(crash, -score, score), 10)
 :::
 :::
 
-## Act 2, trial 6: a second, faster bet {.smaller}
+## Trial 6: a second, faster bet {.smaller}
+
+One slow bet so far: momentum trades about 5% of the book a day.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
@@ -766,7 +742,9 @@ in decay_linear(where(crash, -score, score), 10)
 :::
 :::
 
-## Act 2, trial 8: residual momentum {.smaller}
+## Trial 8: residual momentum {.smaller}
+
+Trial 7, not shown, shortened the crash state's look-back from two years to one. Now, the momentum itself.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -793,6 +771,42 @@ let mr    = returns(1) * field('member'),
     mom   = delay(ts_sum(rr, 231), 21), #+
     score = group_demean(mom / vol, 'sector')
 in decay_linear(where(crash, -score, score), 10)
+   - group_demean(returns(21) / vol, 'sector')
+```
+:::
+:::
+
+## Trial 11: wrong, and it says why {.smaller}
+
+With residual momentum in, the agent asks which momentum the crash flip should reverse.
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .reset}
+[T11 · reset · the crash flip on raw momentum]{.t-head}
+
+[claim]{.t-lab} In the crash state, flip raw (beta-loaded) momentum instead of residual. *The rebound payoff is the high-beta past losers.* Predict crash-state Sharpe up.
+
+::: {.fragment}
+[outcome]{.t-lab} Crash-state Sharpe fell 2.45 to 1.80, **the opposite of the prediction.** The residual flip pays more: the beta bet is noisier than the stock-specific reversal.
+:::
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 11 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 252) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    vol   = volatility(252),
+    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+in decay_linear(where(crash, -score, score), 10) #-
+    raw   = group_demean(delay(returns(231), 21) / vol, #+
+                         'sector') #+
+in decay_linear(where(crash, -raw, score), 10) #+
    - group_demean(returns(21) / vol, 'sector')
 ```
 :::
@@ -844,7 +858,9 @@ Nothing in the beliefs pointed here. The agent read it off the shape of the scor
 - A rediscovery of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
 :::
 
-## Act 3, trial 22: soft beats hard {.smaller}
+## Trial 22: soft beats hard {.smaller}
+
+Back to the switch. It is still all-or-nothing: full momentum or full reversal.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -880,7 +896,9 @@ in decay_linear(power(a, 3), 3)
 :::
 :::
 
-## Act 3, trial 24: a beta hedge {.smaller}
+## Trial 24: a beta hedge {.smaller}
+
+The cube can tilt the book toward high- or low-beta stocks, a bet nobody chose.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -924,9 +942,9 @@ in decay_linear(s #+
 :::
 :::
 
-## Trial 27, as the agent saw it {.smaller}
+## Trial 27: is the switch still needed? {.smaller}
 
-The book is now beta-hedged. Is the crash switch still needed?
+The book is now beta-hedged, so the agent questions its own premise.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="46%"}
@@ -1069,84 +1087,9 @@ in decay_linear(s
 :::
 :::
 
-## Trial 11: wrong, and it says why {.smaller}
-
-::: {.columns .diff .wide .long}
-::: {.column width="40%"}
-::: {.trial .reset}
-[T11 · reset · the crash flip on raw momentum]{.t-head}
-
-[claim]{.t-lab} In the crash state, flip raw (beta-loaded) momentum instead of residual. *The rebound payoff is the high-beta past losers.* Predict crash-state Sharpe up.
-
-::: {.fragment}
-[outcome]{.t-lab} Crash-state Sharpe fell 2.45 to 1.80, **the opposite of the prediction.** The residual flip pays more: the beta bet is noisier than the stock-specific reversal.
-:::
-:::
-:::
-::: {.column width="60%"}
-[alpha.qex after trial 11 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
-```qex
-let mr    = returns(1) * field('member'),
-    mk    = mr - demean(mr),
-    crash = (ts_sum(mk, 252) < 0)
-            & (ts_std(mk, 21) > ts_std(mk, 252)),
-    vol   = volatility(252),
-    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk,
-    mom   = delay(ts_sum(rr, 231), 21),
-    score = group_demean(mom / vol, 'sector'),
-in decay_linear(where(crash, -score, score), 10) #-
-    raw   = group_demean(delay(returns(231), 21) / vol, #+
-                         'sector') #+
-in decay_linear(where(crash, -raw, score), 10) #+
-   - group_demean(returns(21) / vol, 'sector')
-```
-:::
-:::
-
-## Trial 54: wrong the other way {.smaller}
-
-::: {.columns .diff .wide .long}
-::: {.column width="40%"}
-::: {.trial .keep}
-[T54 · kept · removal · drop the agent's own hedge]{.t-head}
-
-[claim]{.t-lab} Measure what the T24 hedge is worth now. Predict median down 0.05–0.15.
-
-::: {.fragment}
-[outcome]{.t-lab} +0.10: **the prediction was wrong.** With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. ***A component that paid in T24 stopped paying after later changes.***
-:::
-:::
-:::
-::: {.column width="60%"}
-[alpha.qex after trial 54 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
-```qex
-let mr    = returns(1) * field('member'),
-    mk    = mr - demean(mr),
-    m1    = ts_sum(mk, 252),
-    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
-                  max(min(10 * m1, 1), -1),
-                  max(min(10 * m1 + 1, 1), -1)),
-    b     = ts_beta(returns(1), mk, 504),
-    rr    = returns(1) - b * mk,
-    mom   = delay(ts_sum(rr, 231), 21),
-    score = group_demean(mom, 'sector'),
-    a     = decay_linear(w * score, 10)
-            - group_demean(returns(21), 'sector')
-    s     = power(a, 3) * field('member'), #-
-    bd    = demean(b * field('member')), #-
-    sb    = s * bd, #-
-    bb    = bd * bd #-
-in decay_linear(s #-
-                - bd #-
-                * (sb - demean(sb)) #-
-                / (bb - demean(bb)), #-
-                3) #-
-in decay_linear(power(a, 3), 3) #+
-```
-:::
-:::
-
 ## Trial 50: the same book, written shorter {.smaller}
+
+Two more keeps since trial 31: no vol scaling (trial 33) and a two-year beta (trial 47).
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1193,7 +1136,54 @@ in decay_linear(s
 :::
 :::
 
+## Trial 54: wrong again, and it says why {.smaller}
+
+Late in the run, the agent takes parts out one at a time, to see what each is worth.
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .keep}
+[T54 · kept · removal · drop the agent's own hedge]{.t-head}
+
+[claim]{.t-lab} Measure what the T24 hedge is worth now. Predict median down 0.05–0.15.
+
+::: {.fragment}
+[outcome]{.t-lab} +0.10: **the prediction was wrong.** With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. ***A component that paid in T24 stopped paying after later changes.***
+:::
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 54 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1) * field('member'),
+    mk    = mr - demean(mr),
+    m1    = ts_sum(mk, 252),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
+                  max(min(10 * m1, 1), -1),
+                  max(min(10 * m1 + 1, 1), -1)),
+    b     = ts_beta(returns(1), mk, 504),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21), 'sector')
+    s     = power(a, 3) * field('member'), #-
+    bd    = demean(b * field('member')), #-
+    sb    = s * bd, #-
+    bb    = bd * bd #-
+in decay_linear(s #-
+                - bd #-
+                * (sb - demean(sb)) #-
+                / (bb - demean(bb)), #-
+                3) #-
+in decay_linear(power(a, 3), 3) #+
+```
+:::
+:::
+
 ## Trial 55: a safer book {.smaller}
+
+Trial 54's book is the one the run ends with. The agent tries to make it safer.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1239,7 +1229,7 @@ T38, earlier: ***"A safer book the keep rule does not reward."***
 - **The final book:** its folds disagree far more (0.20 to 3.15), so ±0.06. Near the top the keep rule is partly a coin flip. **T50 saw it: the same book, written two ways, scored 0.058 apart.**
 :::
 
-## Act 4: what each part is worth
+## What each part is worth
 
 ![](images/alpha-worth.svg){.r-stretch fig-align="center"}
 
@@ -1546,6 +1536,36 @@ $$
 - Questions? Comments?
 
 # Appendix
+
+## Lazy trees, no lookahead, shared work {.smaller}
+
+::: {.incremental}
+- Parsing builds a directed acyclic graph (DAG); nothing is computed until `evaluate(data)`
+- **Every operation looks backward.** `delay(x, -1)` is an error, not a too-good backtest.
+- Event-aware operators for sparse data (earnings): roll over the last *N observations*, not *N days*
+- A DAG can include multiple alphas; each unique node is computed once and can be reused
+:::
+
+![](images/qex-signal-graph.svg){.r-stretch fig-align="center"}
+
+## The reversal example, as a DAG
+
+![](images/qex-range-graph.svg){.r-stretch fig-align="center"}
+
+## Why the cross-section? {.smaller}
+
+Grinold's **Fundamental Law of Active Management**:
+
+$$
+\Large \mathrm{IR} \;\approx\; \mathrm{IC} \times \sqrt{\mathrm{BR}}
+$$
+
+::: {.incremental}
+- $\mathrm{IC}$: the skill of each forecast, the correlation between the signal and the next return. For a real alpha, a few hundredths at best.
+- $\mathrm{BR}$: breadth, the number of independent bets
+- For example, $\mathrm{IC} = 0.02$ and $\mathrm{BR} = 500$ bets a year: $\;\mathrm{IR} \approx 0.02 \sqrt{500} \approx 0.45$
+- Small skill becomes a meaningful information ratio only when it is applied to many stocks, every day
+:::
 
 ## How many ways are there to deal? {.mid}
 
