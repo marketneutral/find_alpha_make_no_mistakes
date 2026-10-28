@@ -290,8 +290,8 @@ def fig_nutshell():
     """Alpha research in a nutshell: a belief, the code, its scores, the portfolio weights. The code box is the usual
     pandas middle, written out in full; the scores and weights are the running example on March 10, 2025
     (rank(-returns(5)) from the closes on the data slide, then demeaned and scaled to gross one)."""
-    fig, ax = plt.subplots(figsize=(14.0, 4.6))
-    ws, gaps, h = [2.9, 4.9, 2.7, 3.4], [0.75, 0.75, 1.0], 3.2
+    fig, ax = plt.subplots(figsize=(14.0, 4.0))
+    ws, gaps, h = [2.9, 4.9, 2.7, 3.4], [0.75, 0.75, 1.0], 2.7
     xs = [0.0]
     for w, g in zip(ws[:-1], gaps): xs.append(xs[-1] + w + g)
     heads = ["a belief", "code", "scores", "portfolio weights"]
@@ -304,16 +304,17 @@ def fig_nutshell():
     # the usual pandas middle, in full, coloured like the deck's code: keywords, functions, strings, numbers, comments
     mess = ["import pandas as pd",
             "raw = pd.read_parquet('prices.parquet')",
+            "univ = pd.read_parquet('universe.parquet')",
             "px = raw.pivot_table('close', 'dt', 'id')",
             "px = px.ffill(limit=3)",
             "r5 = px.pct_change(5, fill_method=None)",
-            "r5 = r5.where(px > 5)",
             "r5 = r5.iloc[5:]",
-            "s = (-r5).rank(axis=1, pct=True)",
+            "s = (-r5).where(univ)",
+            "s = s.rank(axis=1, pct=True)",
             "s.loc['2025-03-10']"]
     KW, FN, STR, NUM, TXT, COM = "#82d8ff", "#e8c97a", "#3ee87a", "#f5a97f", "#c0c4cf", "#6b7280"
     tok = re.compile(r"(#.*$)|('[^']*')|\b(import|as|None|True|False)\b|(\d+)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)|(\s+)|(.)")
-    fs, cw, lh = 8.6, 8.6 * 0.6, 0.215                         # monospace: every character advances 0.6 em
+    fs, cw, lh = 8.6, 8.6 * 0.6, 0.2                         # monospace: every character advances 0.6 em
     wide = max(map(len, mess))                                  # centre the widest line in the box
     top = (h - 0.55) / 2 + (len(mess) - 1) / 2 * lh            # centred under the header
     for k, line in enumerate(mess):
