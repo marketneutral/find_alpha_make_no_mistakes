@@ -1867,7 +1867,7 @@ in decay_linear(score / vol, 10)</code></pre>
 </section>
 <section id="the-score" class="slide level2 smaller">
 <h2>The score</h2>
-<p>Any stretch of history gets a <strong>score</strong> from its cost-free P&amp;L. The numbers the agent climbs are this score, on folds of history. <code>eval.py</code> prints it as <code>utility</code>:</p>
+<p>Karpathy’s score was validation loss, <code>val_bpb</code>: how well the model predicts held-out text. A trading book needs a score that rewards what an investor wants, return per unit of risk and of trading, and charges for complexity. Ours, on any stretch of history’s cost-free P&amp;L:</p>
 <p><span class="math display">
 \text{score} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
 </span></p>
@@ -1924,7 +1924,7 @@ by regime: dispersion high  Sharpe  0.25;  low  Sharpe  1.10
            first half       Sharpe  0.33;  second half Sharpe  0.96
 trials: 28  deflated Sharpe probability of this expression: 0.372</code></pre>
 <ul>
-<li class="fragment"><strong>Decides the keep:</strong> the first three lines. <code>utility</code> is the mean of the 50 deals’ median folds, <code>worst</code> the mean of their worst folds; then eligibility, yes or no, over the whole period.</li>
+<li class="fragment"><strong>Decides the keep:</strong> the first three lines. <code>utility</code> is <code>eval.py</code>‘s name for the score: the mean of the 50 deals’ median folds. <code>worst</code> is the mean of their worst folds; then eligibility, yes or no, over the whole period.</li>
 <li class="fragment"><strong>Informs the agent, never counts:</strong> everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.</li>
 </ul>
 </section>

@@ -472,7 +472,7 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 ## The score {.smaller}
 
-Any stretch of history gets a **score** from its cost-free P&L. The numbers the agent climbs are this score, on folds of history. `eval.py` prints it as `utility`:
+Karpathy's score was validation loss, `val_bpb`: how well the model predicts held-out text. A trading book needs a score that rewards what an investor wants, return per unit of risk and of trading, and charges for complexity. Ours, on any stretch of history's cost-free P&L:
 
 $$
 \text{score} = \underbrace{\text{Sharpe} \times \sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}_{\text{fitness}} \; - \; \underbrace{0.003 \times \text{nodes}\vphantom{\sqrt{\frac{\lvert \text{annual return} \rvert}{\max(\text{turnover},\ 0.125)}}}}_{\text{complexity penalty}}
@@ -542,7 +542,7 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 ```
 
 ::: {.incremental}
-- **Decides the keep:** the first three lines. `utility` is the mean of the 50 deals' median folds, `worst` the mean of their worst folds; then eligibility, yes or no, over the whole period.
+- **Decides the keep:** the first three lines. `utility` is `eval.py`'s name for the score: the mean of the 50 deals' median folds. `worst` is the mean of their worst folds; then eligibility, yes or no, over the whole period.
 - **Informs the agent, never counts:** everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
 :::
 
