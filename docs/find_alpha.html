@@ -1874,7 +1874,7 @@ in decay_linear(score / vol, 10)</code></pre>
 <ul>
 <li class="fragment"><strong>Fitness:</strong> Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)</li>
 <li class="fragment">Trading turnover is not charged below 12.5% a day, and the agent will notice</li>
-<li class="fragment"><strong>Nodes:</strong> the nodes of the expression’s qex DAG, every operator, constant and field. Each costs 0.003, so ten nodes cost 0.03, the keep rule’s bar: it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.</li>
+<li class="fragment"><strong>Nodes:</strong> the nodes of the expression’s qex DAG, every operator, constant and field. Each costs 0.003. This is the Akaike information criterion (AIC) in spirit, and it rewards terser expressions; the 0.003 was chosen, not fitted.</li>
 </ul>
 </section>
 <section id="what-explore.py-gives-the-agent" class="slide level2 smaller">

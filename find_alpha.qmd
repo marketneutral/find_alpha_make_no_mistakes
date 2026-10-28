@@ -481,7 +481,7 @@ $$
 ::: {.incremental}
 - **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
 - Trading turnover is not charged below 12.5% a day, and the agent will notice
-- **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003, so ten nodes cost 0.03, the keep rule's bar: it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.
+- **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003. This is the Akaike information criterion (AIC) in spirit, and it rewards terser expressions; the 0.003 was chosen, not fitted.
 :::
 
 ## What `explore.py` gives the agent {.smaller}
