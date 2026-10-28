@@ -1868,12 +1868,16 @@ in decay_linear(score / vol, 10)</code></pre>
 <section id="what-explore.py-gives-the-agent" class="slide level2 smaller">
 <h2>What <code>explore.py</code> gives the agent</h2>
 <p>The inspection period, 1999–⁠2003, with 1998 as warmup. Nothing after 2003 is loaded.</p>
-<p><span class="panel-lab">score any expression, on the same book as <code>eval.py</code> (the agent’s first look at the seed, before trial 1)</span></p>
+<ul>
+<li><strong>Score any expression</strong> on the same book as <code>eval.py</code>. The agent’s first look at the seed, before trial 1:</li>
+</ul>
 <pre class="evaluator evalprint"><code>$ uv run python explore.py
 1999-2003  Sharpe 0.65  fitness 0.38  return/yr +4.3%  turnover 0.05  margin 30.8 bps  breadth 1309
 rank IC by horizon: {1: 0.007, 2: 0.0101, 5: 0.0124, 10: 0.0121, 20: 0.0114}  lag-1 autocorr 1.00
 return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11, 2003: -0.014}</code></pre>
-<p><span class="panel-lab">or work on the raw data with its own Python (sizing the reversal sleeve against momentum)</span></p>
+<ul>
+<li><strong>Or work on the raw data</strong> with its own Python, here sizing the reversal sleeve against momentum:</li>
+</ul>
 <pre class="evaluator evalprint"><code>$ uv run python -c &quot;
 import explore; d = explore.data()          # 1998-2003 prices, volume, membership, mcap, sector
 for n, b in [(&#39;mom&#39;, ...), (&#39;rev&#39;, ...), (&#39;rank&#39;, ...)]:

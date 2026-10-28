@@ -474,7 +474,7 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 The inspection period, 1999–⁠2003, with 1998 as warmup. Nothing after 2003 is loaded.
 
-[score any expression, on the same book as `eval.py` (the agent's first look at the seed, before trial 1)]{.panel-lab}
+- **Score any expression** on the same book as `eval.py`. The agent's first look at the seed, before trial 1:
 
 ```{.evaluator .evalprint}
 $ uv run python explore.py
@@ -483,7 +483,7 @@ rank IC by horizon: {1: 0.007, 2: 0.0101, 5: 0.0124, 10: 0.0121, 20: 0.0114}  la
 return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11, 2003: -0.014}
 ```
 
-[or work on the raw data with its own Python (sizing the reversal sleeve against momentum)]{.panel-lab}
+- **Or work on the raw data** with its own Python, here sizing the reversal sleeve against momentum:
 
 ```{.evaluator .evalprint}
 $ uv run python -c "
