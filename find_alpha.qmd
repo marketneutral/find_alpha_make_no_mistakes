@@ -453,6 +453,30 @@ I wrote these twelve: nine grounded in published research, three from practition
 
 The loop with the finance changes; the next slides define each box. After each trial `eval.py` prints the two scores and eligibility, which decide the keep, and diagnostics that inform the agent but don't count in the keep decision: whole-period Sharpe, regime splits, one deal's folds, the deflated Sharpe.
 
+## What `eval.py` prints {.smaller}
+
+After every trial (trial 27's output, trimmed):
+
+```{.evaluator .evalprint}
+utility: 0.622
+worst:   -0.510
+eligible: yes  (whole validation: margin 12.8 bps, needs >= 5; turnover 0.11, needs 0.01-0.70)
+sharpe:  0.616  (whole validation, cost-free)   return/yr +3.6%  turnover 0.11  nodes 31
+  first of 50 random partitions:
+  fold 0: utility -0.349  Sharpe -0.48  return/yr -3.6%  years 2009-2011
+  ...
+by regime: dispersion high  Sharpe  0.25;  low  Sharpe  1.10
+           crash state      Sharpe -1.53 return/yr -15.1% (137 days);  calm Sharpe 0.78
+           first half       Sharpe  0.33;  second half Sharpe  0.96
+trials: 28  deflated Sharpe probability of this expression: 0.372
+```
+
+::: {.incremental}
+- **Decides the keep:** the first three lines. `utility` is the score on the median fold, `worst` on the worst fold, each averaged over the 50 deals; then eligibility, yes or no.
+- **Informs the agent, never counts:** everything below. Whole-period Sharpe, one deal's folds with their years, the regime splits, the deflated Sharpe.
+- The agent reads these to check its predictions: trial 27 predicted a collapse in the crash state, and the crash-state line is where it looked.
+:::
+
 ## The score {.smaller}
 
 A *fold*, one stretch of history (next slide), gets a score from its cost-free P&L. `eval.py` prints it as `utility`, and the agent's notes use that word too:
@@ -912,27 +936,18 @@ in decay_linear(s #+
 Deletes the switch: `w` is gone and momentum runs in every state. Now that the book is hedged, is it still needed?
 
 ::: {.columns .diff .wide .long}
-::: {.column width="46%"}
+::: {.column width="40%"}
 ::: {.trial .reset}
 [T27 · reset · belief 7 against Grundy and Martin]{.t-head}
 
 [claim]{.t-lab} Remove the crash switch now that the book is beta-hedged. *Grundy–Martin: hedging factor exposure removes most momentum crash risk, and the crash is a beta event.* Predict crash-state Sharpe falls sharply, worst falls; **if worst falls more than 0.13, belief 7 still earns its keep.**
-:::
 
-```{.evaluator}
-utility: 0.622     (best 1.101)
-worst:   -0.510    (best 0.023)
-  fold 0: Sharpe -0.48  return/yr -3.6%  years 2009-2011
-  crash state  Sharpe -1.53  return/yr -15.1%  (137 days)
-```
-
-[The evaluator's own output; it counts folds from 0.]{.pq-note}
-
-::: {.trial .reset .fragment}
-[outcome]{.t-lab} **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset.
+::: {.fragment}
+[outcome]{.t-lab} Worst 0.02 to −0.51; crash-state Sharpe 2.16 to −1.53. **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset. [score 1.10 → 0.62 · worst 0.02 → −0.51]{.t-num}
 :::
 :::
-::: {.column width="54%"}
+:::
+::: {.column width="60%"}
 [alpha.qex after trial 27 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
 let mr    = returns(1) * field('member'),
