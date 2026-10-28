@@ -1600,6 +1600,69 @@ It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 50
 
 The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
 
+## The final book, by hand in pandas {.smaller}
+
+::: {.columns .xlate}
+::: {.column width="40%"}
+[qex · 32 nodes]{.panel-lab}
+```qex
+let mr    = returns(1),
+    mk    = mr - demean(mr),
+    m1    = ts_sum(mk, 252),
+    w     = where(ts_std(mk, 21) > ts_std(mk, 252),
+                  max(min(10 * m1, 1), -1),
+                  max(min(10 * m1 + 1, 1), -1)),
+    b     = ts_beta(returns(1), mk, 504),
+    rr    = returns(1) - b * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom, 'sector'),
+    a     = decay_linear(w * score, 10)
+            - group_demean(returns(21), 'sector')
+in decay_linear(power(a, 3), 3)
+```
+:::
+::: {.column width="60%"}
+[pandas, written by hand]{.panel-lab}
+```pyx
+import numpy as np
+import pandas as pd
+close  = pd.read_parquet('close.parquet')
+member = pd.read_parquet('member.parquet')
+sector = pd.read_parquet('sector.parquet')
+
+def group_demean(x, g):
+    s = pd.DataFrame({'x': x.stack(), 'g': g.stack()})
+    s = s.dropna(subset=['g'])
+    day = s.index.get_level_values(0)
+    s['x'] -= s.groupby([day, 'g'])['x'].transform('mean')
+    return s['x'].unstack().reindex_like(x)
+
+def decay_linear(x, n):
+    w = np.arange(1, n + 1) / (n * (n + 1) / 2)
+    return sum(w[k] * x.shift(n - 1 - k) for k in range(n))
+
+r1    = close.pct_change(1)
+mr    = r1 * member
+mk    = mr * 0 + mr.mean(axis=1).to_numpy()[:, None]
+m1    = mk.rolling(252, min_periods=20).sum()
+s21   = mk.rolling(21, min_periods=20).std()
+s252  = mk.rolling(252, min_periods=20).std()
+calm  = (10 * m1 + 1).clip(-1, 1)
+w     = (10 * m1).clip(-1, 1).where(s21 > s252, calm)
+cov   = r1.rolling(504, min_periods=20).cov(mk)
+b     = cov / mk.rolling(504, min_periods=20).var()
+rr    = r1 - b * mk
+mom   = rr.rolling(231, min_periods=20).sum().shift(21)
+score = group_demean(mom, sector)
+rev   = group_demean(close.pct_change(21), sector)
+a     = decay_linear(w * score, 10) - rev
+alpha = decay_linear(a ** 3, 3)
+```
+:::
+:::
+
+[The two agree on all 17.6M cells of the validation period, to 1e‑13 (`figures/run3/pandas_twin.py`). Matching qex meant reading its source: the market return exists only on each stock's member days, and every rolling window starts at day 20.]{.pq-note}
+
 # Appendix B: counting the deals
 
 ## The evaluator: run once, grade many times {.mid}

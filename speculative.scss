@@ -95,3 +95,6 @@ $presentation-h2-font-size: 1.3em;
 // the sealed test row of the final book, in the accent wash
 .reveal .final-test tbody tr:last-child td { background: rgba(62, 232, 122, 0.13); }
 .reveal .final-test tbody tr:last-child td:nth-child(-n+2), .reveal .final-test tbody tr:last-child td:nth-child(-n+2) strong { color: #3ee87a; }
+// Appendix A: the final book in qex beside the same book in pandas
+.reveal .xlate pre.qex, .reveal .xlate pre.pyx { font-size: 0.4em; line-height: 1.32; margin: 0.1em 0; }
+.reveal .xlate .column { padding: 0 0.3em; box-sizing: border-box; }
