@@ -71,7 +71,7 @@ Can an AI agent do real quant research? Can an agent find alpha that persists ou
 
 ## The idea {.mid}
 
-An **alpha** is a recipe for portfolio weights: every day, a number for every stock. High numbers are bought, low numbers sold. It starts as a stated belief:
+An **alpha** is a recipe for portfolio weights: every day, a number for every stock. Buy the high numbers, sell the low ones; the bigger the number, the bigger the bet. It starts as a stated belief:
 
 > *"Stocks that fell last week tend to bounce back."*
 
