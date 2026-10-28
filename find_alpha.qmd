@@ -97,7 +97,7 @@ rank(-returns(5))
 :::
 
 ::: {.refs}
-qex is open source: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser).
+qex is open source on my GitHub: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser).
 :::
 
 ## From a belief to a line {.smaller .ladder}
@@ -267,30 +267,13 @@ in scale(decay_linear(book, 10))
 - Technicians call it *Williams %R*; it works once you think cross-sectionally
 :::
 
-## Does this alpha "work"?
-
-![](images/qex-quintiles.svg){.r-stretch fig-align="center"}
-
-It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 500 members today (survivorship-biased!), 2010–⁠2025, gross of costs.
-
 ## How it did, through time, with tcosts {.smaller}
 
 ![](images/qex-gross-vs-net.svg){.r-stretch fig-align="center"}
 
-Cumulative return on gross, 2010–⁠2025, dollar-neutral and rebalanced daily. Gross, both versions end near +78%. Net of 2 bps tcost, the unsmoothed book ends at −8% and the ten-day decay at **+39%**.
+Cumulative return on gross, S&P 500 members today (survivorship-biased!), 2010–⁠2025, dollar-neutral and rebalanced daily. Gross, both versions end near +78%. Net of 2 bps tcost, the unsmoothed book ends at −8% and the ten-day decay at **+39%**.
 
-## Smoothing is (almost) a free lunch {.smaller}
-
-| Range, daily | Turnover / day | Gross on GMV | Gross Sharpe | Net at 2 bps tcost | Net Sharpe | Max DD |
-|---|---:|---:|---:|---:|---:|---:|
-| unsmoothed | 84% | +3.8% | 0.98 | −0.5% | −0.13 | −21% |
-| **decay 10** | **32%** | **+3.8%** | **0.90** | **+2.2%** | **0.52** | **−15%** |
-
-. . .
-
-![](images/qex-ic-by-horizon.svg){.r-stretch fig-align="center"}
-
-The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
+- **Sidebar: smoothing is (almost) a free lunch!** A ten-day decay cuts turnover from 84% to 32% a day and keeps nearly all the gross return (appendix).
 
 ## qex takeaways
 
@@ -373,7 +356,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - It's Karpathy's "red dot" error magnified
 :::
 
-## Ideas for an amended loop {.mid}
+## Ideas for a finance-friendly loop {.mid}
 
 ::: {.incremental}
 1. **Require the claim before the test**: mechanism, counterparty, persistence, and a prediction of *where* it helps
@@ -435,7 +418,7 @@ in decay_linear(score / vol, 10)
 
 ## The experiment {.smaller}
 
-**The question:** given a real problem and a sealed test, does what the amended loop builds hold up on data it never saw?
+**The question:** given a real problem and a sealed test, does what the finance-friendly loop builds hold up on data it never saw?
 
 ::: {.incremental}
 - **The problem:** earn a momentum premium, and avoid the crashes (Daniel and Moskowitz 2016)
@@ -1566,6 +1549,25 @@ $$
 - For example, $\mathrm{IC} = 0.02$ and $\mathrm{BR} = 500$ bets a year: $\;\mathrm{IR} \approx 0.02 \sqrt{500} \approx 0.45$
 - Small skill becomes a meaningful information ratio only when it is applied to many stocks, every day
 :::
+
+## Does this alpha "work"?
+
+![](images/qex-quintiles.svg){.r-stretch fig-align="center"}
+
+It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 500 members today (survivorship-biased!), 2010–⁠2025, gross of costs.
+
+## Smoothing is (almost) a free lunch {.smaller}
+
+| Range, daily | Turnover / day | Gross on GMV | Gross Sharpe | Net at 2 bps tcost | Net Sharpe | Max DD |
+|---|---:|---:|---:|---:|---:|---:|
+| unsmoothed | 84% | +3.8% | 0.98 | −0.5% | −0.13 | −21% |
+| **decay 10** | **32%** | **+3.8%** | **0.90** | **+2.2%** | **0.52** | **−15%** |
+
+. . .
+
+![](images/qex-ic-by-horizon.svg){.r-stretch fig-align="center"}
+
+The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
 
 ## How many ways are there to deal? {.mid}
 
