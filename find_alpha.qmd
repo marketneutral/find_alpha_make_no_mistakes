@@ -61,7 +61,7 @@ This presentation is available at [github.com/marketneutral/find_alpha_make_no_m
 Can an AI agent do real quant research? Can an agent find alpha that persists out-of-sample?
 
 ::: {.incremental}
-1. **qex**: a small language for alphas
+1. **qex**: a grammar for alphas
 2. **autoresearch**: Karpathy's loop for the scientific method
 3. **"find alpha. make no mistakes."**: the loop adjusted for finance
 :::
@@ -249,7 +249,6 @@ Cumulative return on gross, S&P 500 members today (survivorship-biased!), 2010â€
 - **A closed vocabulary makes generated work checkable.** The only thing an expression can be wrong about is the idea.
 - **The grammar is a search space.** Every point is a valid alpha; neighbors are one operator or window away.
 - **A small grammar limits overfitting.** Information theory supports this (more later!)
-- Which is exactly what an agent needs to search in
 :::
 
 # autoresearch
