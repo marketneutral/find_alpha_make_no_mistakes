@@ -94,3 +94,4 @@ $presentation-h2-font-size: 1.3em;
 .reveal .small-math { font-size: 0.75em; margin: -0.3em 0; }
 // the sealed test row of the final book, in the accent wash
 .reveal .final-test tbody tr:last-child td { background: rgba(62, 232, 122, 0.13); }
+.reveal .final-test tbody tr:last-child td:nth-child(-n+2), .reveal .final-test tbody tr:last-child td:nth-child(-n+2) strong { color: #3ee87a; }

@@ -9,7 +9,7 @@ saw it) and images/alpha-worth.svg (what each part of the
 book is worth: the score change when the agent removed it). Every number is from the run's notebook
 (results.tsv) or the evaluator's output for the final trial; nothing here is recomputed.
 """
-import csv, itertools, json
+import csv, itertools, json, re
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -287,34 +287,54 @@ def fig_cube():
     save(fig, "alpha-cube")
 
 def fig_nutshell():
-    """Alpha research in a nutshell: a belief, an expression, its scores, the portfolio weights. The running example on
-    March 10, 2025, from the closes on the data slide: rank(-returns(5)), then demeaned and scaled to gross one."""
-    fig, ax = plt.subplots(figsize=(14.0, 3.8))
-    ws, gaps, h = [3.0, 3.7, 2.8, 3.6], [0.85, 0.85, 1.25], 2.25
+    """Alpha research in a nutshell: a belief, the code, its scores, the portfolio weights. The code box is the usual
+    pandas middle, written out in full; the scores and weights are the running example on March 10, 2025
+    (rank(-returns(5)) from the closes on the data slide, then demeaned and scaled to gross one)."""
+    fig, ax = plt.subplots(figsize=(14.0, 4.6))
+    ws, gaps, h = [2.9, 4.7, 2.7, 3.4], [0.75, 0.75, 1.0], 3.2
     xs = [0.0]
     for w, g in zip(ws[:-1], gaps): xs.append(xs[-1] + w + g)
     heads = ["a belief", "code", "scores", "portfolio weights"]
     for x, w, head in zip(xs, ws, heads):
         ax.add_patch(FancyBboxPatch((x, 0), w, h, boxstyle="round,pad=0,rounding_size=0.12", fc=PANEL,
                                     ec=RED if head == "code" else RULE, lw=1.6))
-        ax.text(x + w / 2, h - 0.34, head, ha="center", va="center", color=ACC, fontsize=14.5, fontweight="bold")
-    ax.text(xs[0] + ws[0] / 2, 0.85, "\u201cStocks that fell\nlast week tend to\nbounce back.\u201d", ha="center", va="center",
+        ax.text(x + w / 2, h - 0.3, head, ha="center", va="center", color=ACC, fontsize=14.5, fontweight="bold")
+    ax.text(xs[0] + ws[0] / 2, h / 2 - 0.1, "\u201cStocks that fell\nlast week tend to\nbounce back.\u201d", ha="center", va="center",
             color=INK2, fontsize=13, style="italic", linespacing=1.45)
-    mess = ["d = raw[['dt','id','px']]", "d['r5'] = d.px.pct_change(5)", "d['r5'] = d['r5'].shift(1)",
-            "d.loc[d.px < 2, 'r5'] = None", "d = d[d.dt.isin(cal)]", "s = d.pivot('dt','id','r5')",
-            "s = (-s).rank(axis=1)", "s = s.loc[s.index > t0]"]
+    # the usual pandas middle, in full, coloured like the deck's code: keywords, functions, strings, numbers, comments
+    mess = ["import pandas as pd",
+            "raw = pd.read_parquet('prices.parquet')",
+            "raw = raw.drop_duplicates(['dt', 'id'])",
+            "px = raw.pivot_table('close', 'dt', 'id')",
+            "px = px.asfreq('B').ffill(limit=3)",
+            "r5 = px.pct_change(5, fill_method=None)",
+            "r5 = r5.shift(1)        # lookahead!",
+            "r5 = r5.where(px.shift(1) > 5)",
+            "r5 = r5.iloc[6:]        # warmup",
+            "s = (-r5).rank(axis=1, pct=True)",
+            "s = s.dropna(how='all')"]
+    KW, FN, STR, NUM, TXT, COM = "#82d8ff", "#e8c97a", "#3ee87a", "#f5a97f", "#c0c4cf", "#6b7280"
+    tok = re.compile(r"(#.*$)|('[^']*')|\b(import|as|None|True|False)\b|(\d+)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)|(\s+)|(.)")
+    fs, cw, lh = 8.6, 8.6 * 0.6, 0.215                         # monospace: every character advances 0.6 em
+    top = h - 0.7
     for k, line in enumerate(mess):
-        ax.text(xs[1] + 0.18, 1.52 - k * 0.19, line, ha="left", va="center", color=MUTED, fontsize=9.2)
+        y, col = top - k * lh, 0
+        for m in tok.finditer(line):
+            t = m.group(0)
+            c = COM if m.group(1) else STR if m.group(2) else KW if m.group(3) else NUM if m.group(4) else FN if m.group(5) else TXT
+            if not m.group(7):
+                ax.annotate(t, (xs[1] + 0.16, y), xytext=(col * cw, 0), textcoords="offset points",
+                            ha="left", va="center", color=c, fontsize=fs)
+            col += len(t)
     rows = [("JPM", "1.00", "+0.33"), ("AAPL", "0.80", "+0.17"), ("MSFT", "0.60", "0.00"), ("CVX", "0.40", "\u22120.17"), ("XOM", "0.20", "\u22120.33")]
-    for col, x, w in ((1, xs[2], ws[2]), (2, xs[3], ws[3])):
+    for col_i, x, w in ((1, xs[2], ws[2]), (2, xs[3], ws[3])):
         for k, r in enumerate(rows):
-            y = 1.48 - k * 0.29
-            ax.text(x + w / 2 - 0.85, y, r[0], ha="left", va="center", color=INK2, fontsize=13)
-            ax.text(x + w / 2 + 0.85, y, r[col], ha="right", va="center", color=INK2, fontsize=13)
+            y = h / 2 + 0.5 - k * 0.3
+            ax.text(x + w / 2 - 0.8, y, r[0], ha="left", va="center", color=INK2, fontsize=13)
+            ax.text(x + w / 2 + 0.8, y, r[col_i], ha="right", va="center", color=INK2, fontsize=13)
     for k in range(3):
         a, b = xs[k] + ws[k] + 0.08, xs[k + 1] - 0.08
         ax.annotate("", xy=(b, h / 2), xytext=(a, h / 2), arrowprops=dict(arrowstyle="-|>", color=INK2, lw=2.2, mutation_scale=22))
-    mid = xs[2] + ws[2] + gaps[2] / 2
     ax.text(xs[2] + ws[2] / 2, -0.3, "March 10, 2025", ha="center", va="center", color=MUTED, fontsize=11.5)
     ax.text(xs[3] + ws[3] / 2, -0.3, "sum 0, gross 1", ha="center", va="center", color=MUTED, fontsize=11.5)
     ax.set_xlim(-0.1, xs[3] + ws[3] + 0.1); ax.set_ylim(-0.5, h + 0.1); ax.axis("off")
