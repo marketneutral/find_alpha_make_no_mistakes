@@ -6,7 +6,8 @@
 Both expressions come from the lab's git history (results.tsv names the commits). Long lines are reflowed with
 the formatter the run chart's tooltips use, so the two sides line up and a textual diff shows only the change.
 A trailing ' #+' marks a line the trial added or changed, ' #-' one it removed; qex-highlight.html tints them
-and draws a + or − in the gutter. The code is the agent's, verbatim.
+and draws a + or − in the gutter. The code is the agent's, verbatim apart from its `* field('member')`
+membership masks, which the deck leaves out for clarity (the book is restricted to members anyway).
 """
 import csv, difflib, os, re, subprocess, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "progress"))
@@ -19,7 +20,7 @@ def expr(commit, width):
     progress.WIDTH = width
     commit = progress.SEED_COMMIT if commit == "seed" else commit
     e = subprocess.check_output(["git", "-C", LAB, "show", f"{commit}:alpha.qex"], text=True)
-    e = e.strip()
+    e = re.sub(r"\s*\*\s*field\('member'\)", "", e).strip()          # the membership mask, left out of the deck for clarity
     return [l for line in e.splitlines() for l in progress.wrap_line(line.rstrip())]
 
 def trial(n, width=46):

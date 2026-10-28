@@ -649,7 +649,7 @@ Adds a crash-state flag built from the equal-weight market, and flips the moment
 ::: {.column width="60%"}
 [alpha.qex after trial 1 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'), #+
+let mr    = returns(1), #+
     mk    = mr - demean(mr), #+
     crash = (ts_sum(mk, 504) < 0) #+
             & (ts_std(mk, 21) > ts_std(mk, 252)), #+
@@ -681,7 +681,7 @@ Deletes the final `/ vol`. The `score` was already divided by volatility, so the
 ::: {.column width="60%"}
 [alpha.qex after trial 2 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     crash = (ts_sum(mk, 504) < 0)
             & (ts_std(mk, 21) > ts_std(mk, 252)),
@@ -713,7 +713,7 @@ Measures each stock's volatility over 252 days instead of 60.
 ::: {.column width="60%"}
 [alpha.qex after trial 4 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     crash = (ts_sum(mk, 504) < 0)
             & (ts_std(mk, 21) > ts_std(mk, 252)),
@@ -745,7 +745,7 @@ Adds a second bet: minus last month's return, sector-relative. A 1-month reversa
 ::: {.column width="60%"}
 [alpha.qex after trial 6 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     crash = (ts_sum(mk, 504) < 0)
             & (ts_std(mk, 21) > ts_std(mk, 252)),
@@ -777,7 +777,7 @@ Ranks on the residual: each stock's return minus its beta times the market. (Tri
 ::: {.column width="60%"}
 [alpha.qex after trial 8 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     crash = (ts_sum(mk, 252) < 0)
             & (ts_std(mk, 21) > ts_std(mk, 252)),
@@ -811,7 +811,7 @@ In the crash state, reverses raw momentum instead of residual: a new `raw` term 
 ::: {.column width="60%"}
 [alpha.qex after trial 11 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     crash = (ts_sum(mk, 252) < 0)
             & (ts_std(mk, 21) > ts_std(mk, 252)),
@@ -896,7 +896,7 @@ Replaces the on/off crash flag with a weight `w`: when vol is high, it slides fr
 ::: {.column width="60%"}
 [alpha.qex after trial 22 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     crash = (ts_sum(mk, 252) < 0) #-
             & (ts_std(mk, 21) > ts_std(mk, 252)), #-
@@ -934,7 +934,7 @@ Projects the cubed signal off each stock's beta every day, so the book is beta-n
 ::: {.column width="60%"}
 [alpha.qex after trial 24 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252),
                   max(min(10 * ts_sum(mk, 252), 1), -1),
@@ -948,8 +948,8 @@ let mr    = returns(1) * field('member'),
     a     = decay_linear(w * score, 10)
             - group_demean(returns(21) / vol, 'sector'),
 in decay_linear(power(a, 3), 3) #-
-    s     = power(a, 3) * field('member'), #+
-    bd    = demean(b * field('member')), #+
+    s     = power(a, 3), #+
+    bd    = demean(b), #+
     sb    = s * bd, #+
     bb    = bd * bd #+
 in decay_linear(s #+
@@ -980,7 +980,7 @@ Deletes the switch: `w` is gone and momentum runs in every state. Now that the b
 ::: {.column width="60%"}
 [alpha.qex after trial 27 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252), #-
                   max(min(10 * ts_sum(mk, 252), 1), -1), #-
@@ -993,9 +993,8 @@ let mr    = returns(1) * field('member'),
     a     = decay_linear(w * score, 10) #-
     a     = decay_linear(score, 10) #+
             - group_demean(returns(21) / vol, 'sector'),
-    s     = power(a, 3) * field('member'), #-
-    s     = power(a, 3), #+
-    bd    = demean(b * field('member')),
+    s     = power(a, 3),
+    bd    = demean(b),
     sb    = s * bd,
     bb    = bd * bd
 in decay_linear(s
@@ -1026,7 +1025,7 @@ Drops the vol condition: `w` now depends only on how far the market has fallen. 
 ::: {.column width="60%"}
 [alpha.qex after trial 30 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252), #-
                   max(min(10 * ts_sum(mk, 252), 1), -1), #-
@@ -1039,8 +1038,8 @@ let mr    = returns(1) * field('member'),
     score = group_demean(mom / vol, 'sector'),
     a     = decay_linear(w * score, 10)
             - group_demean(returns(21) / vol, 'sector'),
-    s     = power(a, 3) * field('member'),
-    bd    = demean(b * field('member')),
+    s     = power(a, 3),
+    bd    = demean(b),
     sb    = s * bd,
     bb    = bd * bd
 in decay_linear(s
@@ -1071,7 +1070,7 @@ Keeps both: the vol rule when vol is high, the depth rule when it is calm.
 ::: {.column width="60%"}
 [alpha.qex after trial 31 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     m1    = ts_sum(mk, 252), #+
     w     = where(ts_std(mk, 21) > ts_std(mk, 252),
@@ -1086,8 +1085,8 @@ let mr    = returns(1) * field('member'),
     score = group_demean(mom / vol, 'sector'),
     a     = decay_linear(w * score, 10)
             - group_demean(returns(21) / vol, 'sector'),
-    s     = power(a, 3) * field('member'),
-    bd    = demean(b * field('member')),
+    s     = power(a, 3),
+    bd    = demean(b),
     sb    = s * bd,
     bb    = bd * bd
 in decay_linear(s
@@ -1118,7 +1117,7 @@ Rewrites `w` in one line: the same switch, fewer nodes. (Trials 33 and 47, kept,
 ::: {.column width="60%"}
 [alpha.qex after trial 50 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     m1    = ts_sum(mk, 252), #-
     w     = where(ts_std(mk, 21) > ts_std(mk, 252), #-
@@ -1134,9 +1133,8 @@ let mr    = returns(1) * field('member'),
     score = group_demean(mom, 'sector'),
     a     = decay_linear(w * score, 10)
             - group_demean(returns(21), 'sector'),
-    s     = power(a, 3) * field('member'), #-
-    s     = power(a, 3), #+
-    bd    = demean(b * field('member')),
+    s     = power(a, 3),
+    bd    = demean(b),
     sb    = s * bd,
     bb    = bd * bd
 in decay_linear(s
@@ -1167,7 +1165,7 @@ Deletes the beta hedge: the projection goes and `power(a, 3)` comes back.
 ::: {.column width="60%"}
 [alpha.qex after trial 54 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     m1    = ts_sum(mk, 252),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252),
@@ -1179,8 +1177,8 @@ let mr    = returns(1) * field('member'),
     score = group_demean(mom, 'sector'),
     a     = decay_linear(w * score, 10)
             - group_demean(returns(21), 'sector')
-    s     = power(a, 3) * field('member'), #-
-    bd    = demean(b * field('member')), #-
+    s     = power(a, 3), #-
+    bd    = demean(b), #-
     sb    = s * bd, #-
     bb    = bd * bd #-
 in decay_linear(s #-
@@ -1212,7 +1210,7 @@ Wraps the combined signal in `winsorize(…, 0.002)` before the cube, clipping t
 ::: {.column width="60%"}
 [alpha.qex after trial 55 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     m1    = ts_sum(mk, 252),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252),
@@ -1271,7 +1269,7 @@ The agent's own removal tests, each measured against the best book at the time. 
 ## What it built
 
 ```qex
-let mr    = returns(1) * field('member'),
+let mr    = returns(1),
     mk    = mr - demean(mr),
     m1    = ts_sum(mk, 252),
     w     = where(ts_std(mk, 21) > ts_std(mk, 252),
@@ -1328,8 +1326,6 @@ bet most where they agree and almost nothing where they are lukewarm.
 . . .
 
 Validation 2004–⁠2017, test 2018 to Aug 2026. Net of 10 bps per dollar traded, a conservative all-in cost for liquid US equities. The return held; volatility rose (12% → 18%), so Sharpe fell by about 40%. The seed earned nothing over the same years.
-
-[Run as recorded. The universe screen later turned out to leak future share splits into market cap; re-scored on corrected data, the test Sharpe is 0.76 instead of 0.77.]{.pq-note}
 
 ## The crash switch, out of sample
 
