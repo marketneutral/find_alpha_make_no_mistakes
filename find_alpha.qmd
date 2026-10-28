@@ -487,7 +487,7 @@ return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11
 
 ```{.evaluator .evalprint}
 $ uv run python -c "
-import explore; d = explore.data()          # 1998-2003 prices, volume, membership, mcap, sector
+import explore; d = explore.data()          # 1998-2003 prices, volume, membership, sector
 for n, b in [('mom', ...), ('rev', ...), ('rank', ...)]:
     x = qex(H + b).evaluate(d).where(d['member'].notna()).loc['1999':]
     print(n, 'mean|x|', ..., 'p99', ...)"
