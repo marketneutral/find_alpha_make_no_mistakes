@@ -595,9 +595,11 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 ## The run
 
+[Into the mind of the agent.]{.run-sub}
+
 <figure id="progress" class="ph-fig"><img src="images/alpha-progress.svg" alt="The run: score and worst slice over sixty trials"></figure>
 
-[Hover on any dot. Top: the agent's claim and its change to `alpha.qex`. Bottom: what the evaluator said back. Sixty trials, inside the mind of the agent.]{.run-note}
+[Hover on any dot. Top: the agent's claim, its diff to `alpha.qex`, and the keep/discard decision. Bottom: the evaluator's internals.]{.run-note}
 
 ## Trial 1: the crash switch {.smaller}
 
