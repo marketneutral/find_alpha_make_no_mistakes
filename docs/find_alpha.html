@@ -1806,7 +1806,7 @@ in decay_linear(score / vol, 10)</code></pre>
 </span></p>
 <ul>
 <li class="fragment"><strong>Fitness:</strong> Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)</li>
-<li class="fragment">Turnover, the share of the book traded each day, is not charged below 12.5%, and the agent will notice</li>
+<li class="fragment">Trading turnover is not charged below 12.5% a day, and the agent will notice</li>
 <li class="fragment"><strong>Nodes:</strong> the nodes of the expression’s qex DAG, every operator, constant and field. Each costs 0.003, set so ten nodes cost one keep bar (0.03): it breaks ties and punishes bloat. AIC in spirit; chosen, not fitted.</li>
 <li class="fragment"><strong>Eligible, or −∞:</strong> a fold scores −∞ if, over its days, the book’s median holding is under 50 names or its average daily turnover is outside 1–70%. The whole validation book must also earn a margin of ≥ 5 bps per dollar traded.</li>
 </ul>
