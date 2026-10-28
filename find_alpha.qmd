@@ -542,7 +542,7 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 ```
 
 ::: {.incremental}
-- **Decides the keep:** the first three lines. `utility` is `eval.py`'s name for the score: the mean of the 50 deals' median folds. `worst` is the mean of their worst folds; then eligibility, yes or no, over the whole period.
+- **Decides the keep:** the first three lines. `utility` is `eval.py`'s name for the score: the mean of the 50 deals' median fold scores. `worst` is the mean of their worst fold scores; then eligibility, yes or no, over the whole period.
 - **Informs the agent, never counts:** everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
 :::
 
