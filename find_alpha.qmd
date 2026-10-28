@@ -99,7 +99,7 @@ rank(-returns(5))
 qex is open source on my GitHub: [github.com/marketneutral/alpha-parser](https://github.com/marketneutral/alpha-parser). Every operator, with examples: [the qex operations reference](https://marketneutral.github.io/alpha-parser/reference/operations/).
 :::
 
-## Three axes: the data {.smaller}
+## The data shape contract {.smaller}
 
 Tickers across the columns, dates down the rows. **Every** field has this shape, and every operator returns it, so any output can feed any input: that is what makes composition easy. Real closes, March 2025:
 
@@ -179,7 +179,7 @@ group_demean(returns(1), 'sector')
 | Mar 7 | +1.25 | −1.25 | −0.46 | +0.46 | 0.00 |
 | Mar 10 | **−0.75** | **+0.75** | **+0.88** | **−0.88** | **0.00** |
 
-AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. What is left is each stock against its peers.
+AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Technology −4.10% on average, so AAPL (−4.85%) is −0.75% against its sector. JPM, alone in its sector, is always zero. **What is left is each stock against its peers.**
 
 ## From a signal to a book {.smaller}
 
