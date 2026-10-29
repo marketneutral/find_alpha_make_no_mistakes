@@ -48,7 +48,7 @@ def fig_progress(trials):
     fig, (a1, a2) = plt.subplots(2, 1, figsize=(12.2, 7.4), sharex=True, gridspec_kw=dict(height_ratios=[1.6, 1], hspace=0.08))
     fig.subplots_adjust(left=0.08, right=0.97, top=0.97, bottom=0.08)
     last = x[-1]
-    for ax, y, name in ((a1, u, "score on the median fold"), (a2, w, "score on the worst fold")):
+    for ax, y, name in ((a1, u, "utility (median fold)"), (a2, w, "worst (worst fold)")):
         ax.scatter(x[~kept], y[~kept], s=16, color=MUTED, alpha=0.55, lw=0, zorder=2, label="discarded")
         ax.step(np.append(x[kept], last), np.append(y[kept], y[kept][-1]), where="post", color=ACC, lw=1.8, zorder=3, label="best so far")
         ax.scatter(x[kept], y[kept], s=46, color=ACC, edgecolor=BG, lw=1.2, zorder=4, label="kept")
