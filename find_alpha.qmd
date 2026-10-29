@@ -1229,9 +1229,9 @@ in decay_linear(s
 :::
 :::
 
-## Trial 54: wrong again, and it says why {.smaller}
+## Trial 54: a surprise from an ablation {.smaller}
 
-Deletes the beta hedge: the projection goes and `power(a, 3)` comes back.
+The run's final keep. Deletes the beta hedge: the projection goes and `power(a, 3)` comes back.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
