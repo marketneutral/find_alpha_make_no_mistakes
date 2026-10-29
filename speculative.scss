@@ -112,3 +112,5 @@ $presentation-h2-font-size: 1.3em;
 .reveal .stat p { margin: 0; }
 .reveal .stat .n { display: block; font-size: 1.9em; font-weight: 700; color: #3ee87a; line-height: 1.1; }
 .reveal .stat .l { display: block; font-size: 0.62em; line-height: 1.35; color: #c0c4cf; margin-top: 0.2em; }
+// the utility / worst line on every card stays on one line
+.reveal .trial .t-num { white-space: nowrap; font-size: 0.74em; letter-spacing: -0.01em; }

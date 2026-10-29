@@ -652,6 +652,32 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 
 [Top: the agent's claim, its diff to `alpha.qex`, and the keep/discard decision. Bottom: the evaluator's&nbsp;internals.]{.run-note}
 
+## Trial 0: the seed {.smaller}
+
+Nothing is run here. This is the book the agent starts from; every card that follows is a change to the best book kept so far, starting with this one.
+
+::: {.columns .diff .wide}
+::: {.column width="40%"}
+::: {.trial}
+[T0 · the seed · textbook momentum]{.t-head}
+
+[what]{.t-lab} Sector-relative 12–1 momentum, scaled by each stock's volatility, sized by 1/vol, smoothed over 10 days. Beliefs 1–4, 10 and 11, as written in `program.md`.
+
+[validation]{.t-lab} Sharpe −0.25, and **−1.96 in the crash state**. Margin −8.4 bps: **not eligible.** The bar every trial must clear starts here.
+[utility −0.09 · worst −0.96]{.t-num}
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex, the seed]{.panel-lab}
+```qex
+let mom   = delay(returns(231), 21),
+    vol   = volatility(60),
+    score = group_demean(mom / vol, 'sector')
+in decay_linear(score / vol, 10)
+```
+:::
+:::
+
 ## Trial 1: the crash switch {.smaller}
 
 Adds a crash-state flag built from the equal-weight market, and flips the momentum score's sign when it is on. Left: the claim, committed before the test, and the outcome. Right: the change to `alpha.qex`.
@@ -716,14 +742,14 @@ in decay_linear(where(crash, -score, score), 10) #+
 :::
 :::
 
-## Trial 4: the right volatility {.smaller}
+## Trial 4: one window for return and risk {.smaller}
 
 Measures each stock's volatility over 252 days instead of 60.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
 ::: {.trial .keep}
-[T4 · kept · belief 4 · the right volatility]{.t-head}
+[T4 · kept · belief 4 · one window for return and risk]{.t-head}
 
 [claim]{.t-lab} Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. *60-day vol is noisy and spikes right after big moves, so it mis-ranks names.* Predict a small median gain.
 
@@ -884,6 +910,41 @@ Cube it instead, one node fewer. **As predicted, larger than expected.** 0.78 �
 
 Nothing in the beliefs pointed here. The agent read it off the shape of the score, and a hunch that "the edge sits in the tails".
 
+## Trial 17: cube it {.smaller}
+
+Replaces a·|a| with a³: one node fewer, and more of the book in the tails.
+
+::: {.columns .diff .wide .long}
+::: {.column width="40%"}
+::: {.trial .keep}
+[T17 · kept · new: concentration · cube it]{.t-head}
+
+[claim]{.t-lab} Cube the combined signal, `power(a, 3)`, instead of a·|a|; one node fewer. *Mechanism as T16: the edge sits in the tails and gross is fixed at one, so more weight on the extremes raises return.* Predict return up ~1%/yr, turnover toward 0.13, **Sharpe flat to slightly down, median up**; worst may fall.
+
+::: {.fragment}
+[outcome]{.t-lab} Return 5.8% to 6.9%, Sharpe 1.03 to 1.00, turnover 0.12, margin 22.3 bps, eligible. **As predicted, larger than expected.** [utility 0.78 → 0.89 · worst −0.03 → −0.02]{.t-num}
+:::
+:::
+:::
+::: {.column width="60%"}
+[alpha.qex after trial 17 · [+ added]{.lg-ins} · [− removed]{.lg-del}]{.panel-lab}
+```qex
+let mr    = returns(1),
+    mk    = mr - demean(mr),
+    crash = (ts_sum(mk, 252) < 0)
+            & (ts_std(mk, 21) > ts_std(mk, 252)),
+    vol   = volatility(252),
+    rr    = returns(1) - ts_beta(returns(1), mk, 252) * mk,
+    mom   = delay(ts_sum(rr, 231), 21),
+    score = group_demean(mom / vol, 'sector'),
+    a     = decay_linear(where(crash, -score, score), 10)
+            - group_demean(returns(21) / vol, 'sector')
+in decay_linear(a * abs(a), 3) #-
+in decay_linear(power(a, 3), 3) #+
+```
+:::
+:::
+
 ## The cube
 
 ![](images/alpha-cube.svg){.r-stretch fig-align="center"}
@@ -894,9 +955,9 @@ The final book with only its last step changed. The tails go from a third of the
 
 ::: {.incremental}
 - **Gross is fixed**, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
-- **About the same Sharpe, twice the return** per dollar of gross, in sample and out
+- **About the same Sharpe, twice the return** per dollar of gross, on validation
 - **A "discovery"** of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
-- **The limit: why not a⁵?** The agent tried it at trial 35. Return barely rose (13.0% → 13.8%), the Sharpe fell (1.28 → 1.10), and turnover crossed the 12.5% free line (one fold at 21%). The score fell from 1.32 to 1.06 and the worst fold dropped 0.18, through the floor. Its verdict: *"past the cube the extra concentration is noise and churn."*
+- **The limit: why not a⁵?** The agent tried it at trial 35, on the beta-hedged book it had then. Return barely rose (13.0% → 13.8%), the Sharpe fell (1.28 → 1.10), and turnover crossed the 12.5% free line (one fold at 21%). Utility fell from 1.32 to 1.06 and the worst fold dropped 0.18, through the floor. Its verdict: *“past the cube the extra concentration is noise and churn.”* On the final, unhedged book, a⁵ keeps its Sharpe: where the limit sits depended on the path.
 :::
 
 ## Trial 22: soft beats hard {.smaller}
@@ -1358,6 +1419,12 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. Net of 10 bps per dollar trade
 ![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
 
 In sample, the 2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. Out of sample the switch fired in Q4 2018, COVID and 2022, and no test-period bear market cost more than 5%.
+
+## The cube, out of sample
+
+![](images/alpha-cube-test.svg){.r-stretch fig-align="center"}
+
+The cube held: from a to a³ the test return goes from 7.7% to 13.6% a year at about the same Sharpe (0.81 to 0.77), as validation said. a⁵ would have added return and given up more Sharpe.
 
 ## The drawdown it did not see {.mid}
 

@@ -256,9 +256,10 @@ def fig_noise_runs():
         ax.set_title(name, loc="left", fontsize=15.5, color=INK, pad=4)
     save(fig, "eval-noise-runs", pad=0.3)
 
-def fig_cube():
+def fig_cube(test=False):
     """The final book with only its power changed, from figures/run3/lab/stats.txt (run 3 as it ran); type sized for a
-    slide. Tail shares (the 10% most extreme stocks, 5% each side, validation) are the run-3 analysis figure's."""
+    slide. Tail shares (the 10% most extreme stocks, 5% each side, validation) are the run-3 analysis figure's.
+    Without test it shows validation only, for the run section; with it, the test bars too, for after the seal."""
     labs = ["a", "a\u00b7|a|", "a\u00b3", "a\u2075"]
     tails = [0.32, 0.58, 0.74, 0.82]
     val = [(0.071, 1.37), (0.107, 1.25), (0.148, 1.26), (0.186, 1.24)]          # return/yr, Sharpe
@@ -270,9 +271,10 @@ def fig_cube():
         a1.text(xi, t + 0.02, f"{t:.0%}", ha="center", va="bottom", fontsize=15, color=INK2)
     a1.set_ylim(0, 1.0); a1.set_yticks([0, 0.25, 0.5, 0.75, 1.0]); a1.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
     a1.set_title("share of the book in the 10%\nmost extreme stocks", loc="left", fontsize=15, color=INK, pad=10)
-    wd = 0.38
-    for k, (series, c, name) in enumerate(((val, ACC, "validation"), (tst, INK2, "test"))):
-        xs = x + (k - 0.5) * wd
+    groups = ((val, ACC, "validation"), (tst, INK2, "test")) if test else ((val, ACC, "validation"),)
+    wd = 0.38 if test else 0.62
+    for k, (series, c, name) in enumerate(groups):
+        xs = x + (k - (len(groups) - 1) / 2) * wd
         a2.bar(xs, [r for r, _ in series], width=wd, color=c, zorder=3, label=name)
         for xi, (r, sh) in zip(xs, series):
             a2.text(xi, r + 0.004, f"{sh:.2f}", ha="center", va="bottom", fontsize=11, color=INK2)
@@ -284,7 +286,7 @@ def fig_cube():
         a.tick_params(length=0, labelsize=13); a.tick_params(axis="x", labelsize=16)
         for sp in ("top", "right", "left"): a.spines[sp].set_visible(False)
         a.grid(axis="y", color=RULE, alpha=0.5, lw=0.6, zorder=0)
-    save(fig, "alpha-cube")
+    save(fig, "alpha-cube-test" if test else "alpha-cube")
 
 def fig_nutshell():
     """Alpha research in a nutshell: a belief, the code, its scores, the portfolio weights. The code box is the usual
@@ -410,4 +412,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_nutshell(); fig_trial(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_cube(test=True); fig_nutshell(); fig_trial(); fig_worth()
