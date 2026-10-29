@@ -2,3 +2,4 @@
 *_files/
 
 **/*.quarto_ipynb
+__pycache__/
