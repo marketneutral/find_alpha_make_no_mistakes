@@ -256,29 +256,41 @@ def fig_noise_runs():
         ax.set_title(name, loc="left", fontsize=15.5, color=INK, pad=4)
     save(fig, "eval-noise-runs", pad=0.3)
 
-def fig_cube(test=False):
-    """The final book with only its power changed, from figures/run3/lab/stats.txt (run 3 as it ran); type sized for a
-    slide. Tail shares (the 10% most extreme stocks, 5% each side, validation) are the run-3 analysis figure's.
-    Without test it shows validation only, for the run section; with it, the test bars too, for after the seal."""
-    labs = ["a", "a\u00b7|a|", "a\u00b3", "a\u2075"]
-    tails = [0.32, 0.58, 0.74, 0.82]
-    val = [(0.071, 1.37), (0.107, 1.25), (0.148, 1.26), (0.186, 1.24)]          # return/yr, Sharpe
-    tst = [(0.077, 0.81), (0.121, 0.85), (0.136, 0.77), (0.150, 0.73)]
+def fig_cube(which="t17"):
+    """The cube, two ways. "t17": trial 17's book with only its final power changed, validation only, from
+    figures/run3/lab/cube_t17.json (cube_t17.py), for the run. "final": the final book with its power changed, validation
+    and test, from figures/run3/lab/stats.txt (run 3 as it ran), for the appendix. Tail shares are the 10% most
+    extreme stocks, 5% each side, on validation."""
+    if which == "t17":
+        d = json.load(open("figures/run3/lab/cube_t17.json"))
+        labs = list(d)
+        tails = [d[k]["tails"] for k in labs]
+        groups = (([(d[k]["ret"], d[k]["sharpe"]) for k in labs], ACC, "validation"),)
+        hi = len(labs) - 1
+    else:
+        labs = ["a", "a\u00b7|a|", "a\u00b3", "a\u2075"]
+        tails = [0.32, 0.58, 0.74, 0.82]
+        val = [(0.071, 1.37), (0.107, 1.25), (0.148, 1.26), (0.186, 1.24)]          # return/yr, Sharpe
+        tst = [(0.077, 0.81), (0.121, 0.85), (0.136, 0.77), (0.150, 0.73)]
+        groups = ((val, ACC, "validation"), (tst, INK2, "test"))
+        hi = 2
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(12.0, 4.6), gridspec_kw=dict(width_ratios=[1, 1.25], wspace=0.28))
-    x = np.arange(4)
-    a1.bar(x, tails, width=0.62, color=[ACC if i == 2 else "#4b5563" for i in x], zorder=3)
+    x = np.arange(len(labs))
+    a1.bar(x, tails, width=0.62, color=[ACC if i == hi else "#4b5563" for i in x], zorder=3)
     for xi, t in zip(x, tails):
         a1.text(xi, t + 0.02, f"{t:.0%}", ha="center", va="bottom", fontsize=15, color=INK2)
     a1.set_ylim(0, 1.0); a1.set_yticks([0, 0.25, 0.5, 0.75, 1.0]); a1.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
     a1.set_title("share of the book in the 10%\nmost extreme stocks", loc="left", fontsize=15, color=INK, pad=10)
-    groups = ((val, ACC, "validation"), (tst, INK2, "test")) if test else ((val, ACC, "validation"),)
-    wd = 0.38 if test else 0.62
+    wd = 0.38 if len(groups) > 1 else 0.62
+    top = max(r for g in groups for r, _ in g[0])
     for k, (series, c, name) in enumerate(groups):
         xs = x + (k - (len(groups) - 1) / 2) * wd
         a2.bar(xs, [r for r, _ in series], width=wd, color=c, zorder=3, label=name)
         for xi, (r, sh) in zip(xs, series):
-            a2.text(xi, r + 0.004, f"{sh:.2f}", ha="center", va="bottom", fontsize=11, color=INK2)
-    a2.set_ylim(0, 0.22); a2.set_yticks([0, 0.05, 0.10, 0.15, 0.20]); a2.set_yticklabels(["0%", "5%", "10%", "15%", "20%"])
+            a2.text(xi, r + top * 0.02, f"{sh:.2f}", ha="center", va="bottom", fontsize=11 if len(groups) > 1 else 13, color=INK2)
+    ymax = 0.22 if which == "final" else 0.09
+    ticks = [0, 0.05, 0.10, 0.15, 0.20] if which == "final" else [0, 0.02, 0.04, 0.06, 0.08]
+    a2.set_ylim(0, ymax); a2.set_yticks(ticks); a2.set_yticklabels([f"{t:.0%}" for t in ticks])
     a2.set_title("return per year; Sharpe on each bar", loc="left", fontsize=15, color=INK, pad=10)
     a2.legend(frameon=False, fontsize=13, loc="upper left", labelcolor=INK2)
     for a in (a1, a2):
@@ -286,7 +298,63 @@ def fig_cube(test=False):
         a.tick_params(length=0, labelsize=13); a.tick_params(axis="x", labelsize=16)
         for sp in ("top", "right", "left"): a.spines[sp].set_visible(False)
         a.grid(axis="y", color=RULE, alpha=0.5, lw=0.6, zorder=0)
-    save(fig, "alpha-cube-test" if test else "alpha-cube")
+    save(fig, "alpha-cube" if which == "t17" else "alpha-cube-final")
+
+def fig_tree():
+    """Path dependence as a tree. Every trial is a branch from the best book kept before it (results.tsv): kept
+    trials make the green trunk, resets end in grey twigs; x is the trial, y the utility the evaluator reported.
+    The trunk is orange while the book carries trial 24's beta hedge (removed at trial 54). The dashed branch is a⁵
+    on the final book, never tried in the run: its gain is the exact difference over all 10,395 deals
+    (figures/run3/a5_counterfactual.py), added to the final book's reported utility."""
+    from matplotlib.path import Path
+    from matplotlib.patches import PathPatch
+    rows = list(csv.DictReader(open("figures/progress/lab/results.tsv"), delimiter="\t"))
+    cf = json.load(open("figures/run3/lab/a5_counterfactual.json"))
+    gain = cf["final with a^5"]["utility"] - cf["final"]["utility"]
+    ORANGE = "#f5a97f"
+    fig, ax = plt.subplots(figsize=(13.0, 5.6))
+    def branch(x0, y0, x1, y1, **kw):
+        xm = x0 + (x1 - x0) * 0.55
+        ax.add_patch(PathPatch(Path([(x0, y0), (xm, y0), (xm, y1), (x1, y1)], [Path.MOVETO, Path.CURVE4, Path.CURVE4, Path.CURVE4]),
+                               fc="none", capstyle="round", **kw))
+    ax.axvspan(24, 54, color=ORANGE, alpha=0.06, lw=0, zorder=0)
+    ax.text(39, 1.78, "the trunk carries the beta hedge, trials 24 to 53", ha="center", va="center", color=ORANGE, fontsize=12)
+    best, pts = 0, {0: (0, float(rows[0]["utility"]))}
+    for i, r in enumerate(rows[1:], 1):
+        u = float(r["utility"]); x0, y0 = pts[best]
+        if r["status"] == "keep":
+            c = ORANGE if 24 <= best < 54 else ACC                      # the branch into T54 is hedged; T54 itself is not
+            branch(x0, y0, i, u, ec=c, lw=3.2, zorder=3)
+            ax.plot(i, u, "o", ms=7, color=ORANGE if 24 <= i < 54 else ACC, zorder=5)
+            best = i
+        else:
+            branch(x0, y0, i, u, ec="#4b5563", lw=1.1, alpha=0.9, zorder=2)
+            ax.plot(i, u, "o", ms=3.5, color="#6b7280", zorder=2)
+        pts[i] = (i, u)
+    ax.plot(0, pts[0][1], "o", ms=7, color=INK2, zorder=5)
+    ax.annotate("seed", pts[0], xytext=(8, -2), textcoords="offset points", color=INK2, fontsize=12, va="center")
+    # the two ends of the story: a⁵ dies on the hedged trunk, and would have lived on the final one
+    x35, y35 = pts[35]
+    ax.plot(x35, y35, "o", ms=9, mfc="none", mec=RED, mew=1.8, zorder=6)
+    ax.annotate("T35: a\u2075 on the hedged book\nreset, \u0394 utility \u22120.27", (x35, y35), xytext=(x35 - 3, 0.55), textcoords="data",
+                color=RED, fontsize=12, ha="center", va="top", arrowprops=dict(arrowstyle="-", color=RED, lw=1))
+    x54, y54 = pts[54]
+    ax.annotate("T54: drop the hedge, +0.10", (x54, y54), xytext=(x54 - 1, 1.66), textcoords="data", color=ACC, fontsize=12,
+                ha="right", va="center", arrowprops=dict(arrowstyle="-", color=ACC, lw=1))
+    xg, yg = 62.5, y54 + gain
+    branch(x54, y54, xg, yg, ec=ACC, lw=2.2, ls=(0, (3, 2.5)), zorder=4)
+    ax.plot(xg, yg, "o", ms=8, mfc=BG, mec=ACC, mew=2, zorder=6)
+    ax.annotate(f"a\u2075 on the final book\n+{gain:.2f}: would be kept,\nnever retried", (xg, yg), xytext=(xg + 1.2, yg - 0.5), textcoords="data",
+                color=ACC, fontsize=12, ha="left", va="top", arrowprops=dict(arrowstyle="-", color=ACC, lw=1))
+    x24, y24 = pts[24]
+    ax.annotate("T24: beta hedge, kept", (x24, y24), xytext=(x24 - 2, 1.45), textcoords="data", color=ORANGE, fontsize=12,
+                ha="right", va="center", arrowprops=dict(arrowstyle="-", color=ORANGE, lw=1))
+    ax.set_xlim(-1.5, 72); ax.set_ylim(-0.2, 1.88)
+    ax.set_xticks(range(0, 61, 10)); ax.set_xlabel("trial", fontsize=13); ax.set_ylabel("utility", fontsize=13)
+    for sp in ("top", "right"): ax.spines[sp].set_visible(False)
+    ax.spines["bottom"].set_bounds(0, 60)
+    ax.tick_params(length=0, labelsize=11); ax.grid(axis="y", color=RULE, alpha=0.5, lw=0.6, zorder=0)
+    save(fig, "alpha-tree")
 
 def fig_nutshell():
     """Alpha research in a nutshell: a belief, the code, its scores, the portfolio weights. The code box is the usual
@@ -412,4 +480,4 @@ def fig_worth():
     save(fig, "alpha-worth")
 
 if __name__ == "__main__":
-    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_cube(test=True); fig_nutshell(); fig_trial(); fig_worth()
+    fig_periods(); fig_deals(); fig_folds(); fig_noise(); fig_noise_runs(); fig_keep(); fig_cube(); fig_cube("final"); fig_tree(); fig_nutshell(); fig_trial(); fig_worth()

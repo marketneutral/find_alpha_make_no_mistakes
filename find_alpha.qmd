@@ -949,15 +949,15 @@ in decay_linear(power(a, 3), 3) #+
 
 ![](images/alpha-cube.svg){.r-stretch fig-align="center"}
 
-The final book with only its last step changed. The tails go from a third of the book to three quarters; the return doubles at about the same Sharpe.
+Trial 17's book with only its last step changed, on validation. The tails go from a quarter of the book to three fifths; the return rises by half at about the same Sharpe.
 
 ## Why the cube pays {.mid}
 
 ::: {.incremental}
 - **Gross is fixed**, so magnitude only allocates the dollar: cubing keeps the ranking and moves weight to the tails
-- **About the same Sharpe, twice the return** per dollar of gross, on validation
+- **About the same Sharpe, half again the return** per dollar of gross, on validation
 - **A "discovery"** of Almgren and Chriss, *Portfolios from Sorts* (2006): optimal weights from a ranking are flat in the middle, steep at the ends
-- **The limit: why not a⁵?** The agent tried it at trial 35, on the beta-hedged book it had then. Return barely rose (13.0% → 13.8%), the Sharpe fell (1.28 → 1.10), and turnover crossed the 12.5% free line (one fold at 21%). Utility fell from 1.32 to 1.06 and the worst fold dropped 0.18, through the floor. Its verdict: *“past the cube the extra concentration is noise and churn.”* On the final, unhedged book, a⁵ keeps its Sharpe: where the limit sits depended on the path.
+- **The limit: why not a⁵?** The agent tried it at trial 35, on the beta-hedged book it had then. Return barely rose (13.0% → 13.8%), the Sharpe fell (1.28 → 1.10), and turnover crossed the 12.5% free line (one fold at 21%). Utility fell from 1.32 to 1.06 and the worst fold dropped 0.18, through the floor. Its verdict: *“past the cube the extra concentration is noise and churn.”* On the final, unhedged book, a⁵ keeps its Sharpe (Appendix A): where the limit sits depended on the path.
 :::
 
 ## Trial 22: soft beats hard {.smaller}
@@ -1276,7 +1276,7 @@ in decay_linear(power(a, 3), 3) #+
 
 ## Trial 55: a safer book {.smaller}
 
-Wraps the combined signal in `winsorize(…, 0.002)` before the cube, clipping the most extreme 0.2% each side.
+Clips the most extreme 0.2% each side before the cube. Better on every whole‑period measure and in the worst fold, but the median fold slipped, so the keep rule reset&nbsp;it.
 
 ::: {.columns .diff .wide .long}
 ::: {.column width="40%"}
@@ -1326,7 +1326,7 @@ T38, earlier: ***"A safer book the keep rule does not reward."***
 
 ![](images/alpha-worth.svg){.r-stretch fig-align="center"}
 
-The agent's own removal tests, each measured against the best book at the time. Residual momentum is the core; the crash switch, the most valuable belief.
+The agent's own ablations, each measured against the best book at the time. Residual momentum is the core; the crash switch, the most valuable belief.
 
 ## The beliefs, scored
 
@@ -1349,7 +1349,7 @@ The agent's own removal tests, each measured against the best book at the time. 
 
 [Twice it reached outside the list, for Nagel (2012) and Chordia, Roll and Subrahmanyam (2008), naming each paper's age first. Both were reset.]{.pq-note}
 
-## What it built
+## The agent's final `alpha.qex`
 
 ```qex
 let mr    = returns(1),
@@ -1419,12 +1419,6 @@ Validation 2004–⁠2017, test 2018 to Aug 2026. Net of 10 bps per dollar trade
 ![](images/alpha-crash-switch.svg){.r-stretch fig-align="center"}
 
 In sample, the 2009 junk rally (Mar–Jun): seed −13.7%, final **+24.7%**. Out of sample the switch fired in Q4 2018, COVID and 2022, and no test-period bear market cost more than 5%.
-
-## The cube, out of sample
-
-![](images/alpha-cube-test.svg){.r-stretch fig-align="center"}
-
-The cube held: from a to a³ the test return goes from 7.7% to 13.6% a year at about the same Sharpe (0.81 to 0.77), as validation said. a⁵ would have added return and given up more Sharpe.
 
 ## The drawdown it did not see {.mid}
 
@@ -1542,15 +1536,22 @@ $$
 
 [These protect the score, not the agent's attention: it reads diagnostics on all of 2004–⁠2017. Only the sealed test is out of its sight.]{.pq-note}
 
-## What I learned {.mid}
+## What I learned {.smaller}
 
 ::: {.incremental}
 - **The written claims were the most valuable output.** Most resets were predicted; the wrong predictions came with explanations.
 - **Measure the noise at the top, not just at the start.** Seed noise ±0.02; the same book written two ways scored 0.058 apart at a score of ~1.4.
 - **The keep rule cannot accept a pure worst-case improvement**, a strange blind spot for a crash problem
-- **The loop finds a local optimum, and which one depends on its path.** The hedge paid at T24 and paid again when removed at T54. Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
+- **The loop finds a local optimum, and which one depends on its path** (next slide). Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
+- **A node charge invites code golf.** T50 rewrote the switch as one dense line to save nodes: the same book, harder to read.
 - **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999–⁠2003, nearly halved the score on 2004–⁠2017.
 :::
+
+## The path it took {.smaller}
+
+![](images/alpha-tree.svg){.r-stretch fig-align="center"}
+
+[Every trial branches from the best book kept before it: kept trials grow the trunk, resets are dead twigs. The same one-line change, a⁵, died on the hedged trunk at trial 35 and would have cleared the bar by +0.14 on the final one (exact, over all 10,395 deals). The loop never goes&nbsp;back.]{.pq-note}
 
 ## Next time: grade every deal {.mid}
 
@@ -1708,6 +1709,12 @@ It appears so! Monotonic quintiles; top-minus-bottom 8.3%/yr. Note: using S&P 50
 ![](images/qex-ic-by-horizon.svg){.r-stretch fig-align="center"}
 
 The signal's horizon is ~2 weeks, so a 10-day decay keeps the forecast and drops the noise.
+
+## The cube on the final book
+
+![](images/alpha-cube-final.svg){.r-stretch fig-align="center"}
+
+[The final book with only its last step changed. On validation the cube doubles the return at about the same Sharpe; on test it held, 7.7% to 13.6% a year at Sharpe 0.81 to 0.77. Here a⁵ keeps its validation Sharpe, unlike on trial 35's hedged book.]{.pq-note}
 
 ## The final alpha, by hand in pandas {.smaller}
 

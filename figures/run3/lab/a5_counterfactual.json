@@ -1,0 +1,30 @@
+{
+ "T33 (best before T35)": {
+  "nodes": 44,
+  "utility": 1.2835,
+  "worst": 0.3455,
+  "margin": 42.5,
+  "turnover": 0.1214
+ },
+ "T35 (a^5 on T33)": {
+  "nodes": 43,
+  "utility": 1.0319,
+  "worst": 0.151,
+  "margin": 38.7,
+  "turnover": 0.1417
+ },
+ "final": {
+  "nodes": 32,
+  "utility": 1.4556,
+  "worst": 0.4111,
+  "margin": 48.7,
+  "turnover": 0.1212
+ },
+ "final with a^5": {
+  "nodes": 32,
+  "utility": 1.5925,
+  "worst": 0.3188,
+  "margin": 54.9,
+  "turnover": 0.1352
+ }
+}
