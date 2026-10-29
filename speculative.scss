@@ -98,3 +98,8 @@ $presentation-h2-font-size: 1.3em;
 // Appendix A: the final book in qex beside the same book in pandas
 .reveal .xlate pre.qex, .reveal .xlate pre.pyx { font-size: 0.4em; line-height: 1.32; margin: 0.1em 0; }
 .reveal .xlate .column { padding: 0 0.3em; box-sizing: border-box; }
+// the opening question: the record of wins, then the question in big type
+.reveal .hook { font-size: 1.7em; font-weight: 700; line-height: 1.15; color: #e8eaf0; margin: 0.45em 0 0.2em; }
+.reveal .hook strong { color: #3ee87a; }
+.reveal .hook-sub { font-size: 0.8em; color: #c0c4cf; }
+.reveal .slides section.center .hook { font-size: 2.3em; margin: 0.25em 0 0.3em; }

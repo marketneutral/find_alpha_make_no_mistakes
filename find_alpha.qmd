@@ -56,9 +56,30 @@ Managing Director at **Columbia Investment Management Co., LLC**, generalist all
 
 This presentation is available at [github.com/marketneutral/find_alpha_make_no_mistakes](https://github.com/marketneutral/find_alpha_make_no_mistakes).
 
+## AI is doing science {.mid}
+
+::: {.incremental}
+- **2024** · AlphaFold's creators win the Chemistry Nobel for cracking protein folding
+- **2025** · AlphaEvolve beats Strassen's 56-year-old matrix-multiplication record
+- **Sep 2026** · 10,000 OpenAI agents, 88 hours: a proof that [Navier–Stokes]{style="white-space: nowrap"} can blow up. A Millennium Prize problem has “apparently been settled” (Clay)
+- **Oct 2026** · OpenAI posts 722 manuscripts on more than 300 open problems, in one day
+:::
+
+[[Navier–Stokes]{style="white-space: nowrap"}: the forced case (Clay statements C and D); the unforced case is open. Both 2026 results are still under expert review.]{.pq-note}
+
+## The question {.center}
+
+::: {.hook}
+Can an agent find **alpha**?
+:::
+
+::: {.fragment .hook-sub}
+Alpha is the scarcest thing in finance, and the people who find it are its most expensive hires. An agent that can do this job changes the&nbsp;industry.
+:::
+
 ## The Plan
 
-Can an AI agent do real quant research? Can an agent find alpha that persists out-of-sample?
+To find out, three pieces, and one test: does what it finds hold up out of sample?
 
 ::: {.incremental}
 1. **qex**: a grammar for alphas
@@ -338,7 +359,7 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 
 Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocations −61%, all 974 tests passing.
 
-## What about finance? {.mid}
+## What about in quant finance? {.mid}
 
 ::: {.incremental}
 - **The baseline:** the artifact is signal code, the score is a backtest Sharpe, keep if it goes up
@@ -350,7 +371,7 @@ Liquid: ~120 experiments, 93 kept commits, parse and render time −53%, allocat
 - It's Karpathy's "red dot" error magnified
 :::
 
-## My ideas for a finance-friendly loop {.mid}
+## Some ideas for a finance-friendly loop {.mid}
 
 ::: {.incremental}
 1. **Require the claim before the test**: mechanism, counterparty, persistence, and a prediction of *where* it helps
@@ -373,7 +394,6 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 - **Point-in-time, survivorship-free:** every US common stock that traded, ~8,600 names, delisted and bankrupt names priced to their last trade. Universe each day: close ≥ \$2, average daily volume ≥ \$5M, market cap ≥ \$300M, from that day's facts only.
 - **Book construction**, the same for every expression: demean; scale to a gross of one, $\sum_i \lvert w_i \rvert = 1$; cap each name at $\lvert w_i \rvert \le 5\%$; repeat until all three hold
 - **Delay 1:** signal from data through the close of $t$, traded at the close of $t+1$
-- The agent chooses *which* stocks get weight, never how big the book is, so every expression is judged on the same dollar
 :::
 
 ## Three periods, never mixed {.nostretch .smaller}
@@ -383,10 +403,10 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 ::: {.incremental}
 - **Inspection, 1999–⁠2003.** The agent may look at any data and operate on it with its own Python code: for debugging expressions, testing ideas in-sample, or forming hunches.
 - **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent keeps or discards a change on summary statistics only: two scores and an eligibility check.
-- **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, after trial 60.
+- **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, and only once, at the end, when the agent's research&nbsp;was&nbsp;complete.
 :::
 
-## Momentum, and how it crashes {.smaller}
+## The seed belief {.smaller}
 
 ::: {.incremental}
 - **Momentum:** own the stocks that did best over the past year, short the ones that did worst, and skip the most recent month (*12–1*). One of the oldest effects in equities (Jegadeesh and Titman 1993), found in every asset class (Asness, Moskowitz and Pedersen 2013).
@@ -395,7 +415,7 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 - **The crash state, as the evaluator measures it:** the market is down over the past two years, *and* its 1-month volatility is above its 1-year volatility.
 :::
 
-## A seed qex
+## The seed qex
 
 ```qex
 let mom   = delay(returns(231), 21),
@@ -422,7 +442,7 @@ in decay_linear(score / vol, 10)
 - **The beliefs:** twelve, most grounded in a paper with a mechanism and a falsifiable prediction; every paper predates the test period
 - **The agent:** Claude Code with Opus 5.5, headless (no human in the loop), one session, 60 trials, 55 minutes, ~$20
 - **Enforced, not trusted:** a tool allowlist: no test, no data, no earlier runs. Not a sandbox; the transcript is the check (Appendix D).
-- **The leak no wall closes:** the model has read about 2020 and 2022. Audited: no year after 2017 in any claim. Watched, not closed.
+- **The leak no wall closes:** Opus 5.5's training data runs through June 2026, nearly the whole test period; it knows how 2020 and 2022 went. Audited: no year after 2017 in any claim. Watched, not closed.
 :::
 
 ## The lab: same shape as Karpathy's
@@ -447,7 +467,7 @@ in decay_linear(score / vol, 10)
 
 ![](images/alpha-augmented-loop-files.svg){.r-stretch fig-align="center"}
 
-Karpathy's loop, same colours. **Orange is what's new:** a whole orange box is a new step; orange words in a grey box, a changed one.
+Same colors as Karpathy's loop. **Orange is what's new:** a whole orange box is a new step; orange words in a gray box, a changed one.
 
 ## Twelve beliefs codified in `program.md` {.smaller}
 
@@ -1691,7 +1711,7 @@ An example: the book the run ends with, on one deal, as the agent saw it: median
 
 ::: {.incremental}
 - **Blocks, not days:** returns cluster in regimes, and a fourteen-month block keeps a regime whole
-- **Embargo:** 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighbouring folds, at a cost of 14% of the data.
+- **Embargo:** 21 days trimmed at every block edge, a habit from purged cross-validation, where a model is fit. Nothing is fit here, so it only weakens the correlation between neighboring folds, at a cost of 14% of the data.
 - **Median fold:** no single stretch can carry the score. The final book's 3.15, the fold with 2008, does not set it.
 - **Worst fold:** the crash guard. 2008 lands in a different fold on every deal, and the worst fold finds it.
 :::
