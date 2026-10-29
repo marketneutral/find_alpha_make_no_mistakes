@@ -54,12 +54,12 @@
     return `<div class="ph-head">${t.trial === 0 ? "Seed" : "Trial " + t.trial} · <span class="${cls}">${t.status}</span>` +
       `${t.label ? " · " + esc(t.label) : ""} · ${what}</div>`;
   };
-  // the slide cards' line: the best book so far -> this trial, e.g. "score −0.09 → 0.01 · worst −0.96 → −0.37"
+  // the slide cards' line: the best book so far -> this trial, e.g. "utility −0.09 → 0.01 · worst −0.96 → −0.37"
   const n3 = (x) => x.toFixed(3).replace("-", "\u2212");
   const n2 = (x) => { const v = x.toFixed(2); return (v === "-0.00" ? "0.00" : v).replace("-", "\u2212"); };
   const move = (t) => `<div class="ph-move">` + (t.best
-    ? `score ${n2(t.best[0])} → ${n2(t.utility)} · worst ${n2(t.best[1])} → ${n2(t.worst)}`
-    : `score ${n2(t.utility)} · worst ${n2(t.worst)}`) + `</div>`;
+    ? `utility ${n2(t.best[0])} → ${n2(t.utility)} · worst ${n2(t.best[1])} → ${n2(t.worst)}`
+    : `utility ${n2(t.utility)} · worst ${n2(t.worst)}`) + `</div>`;
   function slices(folds) {                                  // six bars, Sharpe of each fold, worst fold (by score) in red
     const W = 300, H = 96, top = 12, floor = 62, lo = Math.min(-0.5, ...folds.map((f) => f.sharpe)), hi = Math.max(2.5, ...folds.map((f) => f.sharpe));
     const y = (v) => top + (floor - top) * (hi - v) / (hi - lo), bw = W / folds.length;
@@ -85,7 +85,7 @@
     let h = head(t, "what the evaluator said") + move(t);
     if (t.best) {
       const su = t.utility > t.best[0] + 0.03, sw = t.worst >= t.best[1] - 0.13;
-      h += `<div class="ph-row">score <span class="${su ? "ph-good" : "ph-bad"}">${n3(t.utility)}</span>` +
+      h += `<div class="ph-row">utility <span class="${su ? "ph-good" : "ph-bad"}">${n3(t.utility)}</span>` +
         ` (to keep: above ${n3(t.best[0] + 0.03)}) · worst <span class="${sw ? "ph-good" : "ph-bad"}">${n3(t.worst)}</span>` +
         ` (no lower than ${n3(t.best[1] - 0.13)})</div>`;
     }

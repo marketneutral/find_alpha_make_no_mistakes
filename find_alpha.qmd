@@ -440,7 +440,7 @@ in decay_linear(score / vol, 10)
 - **The artifact:** one qex expression, `alpha.qex`
 - **The seed:** textbook momentum that *loses money* on validation, 2004–⁠2017
 - **The beliefs:** twelve, most grounded in a paper with a mechanism and a falsifiable prediction; every paper predates the test period
-- **The agent:** Claude Code with Opus 5.5, headless (no human in the loop), one session, 60 trials, 55 minutes, ~$20
+- **The agent:** Claude Code with Opus 5.5, headless (no human in the loop), runs the finance‑friendly autoresearch loop for **60 trials**: one session, 55&nbsp;minutes, ~$20
 - **Enforced, not trusted:** a tool allowlist: no test, no data, no earlier runs. Not a sandbox; the transcript is the check (Appendix D).
 - **The leak no wall closes:** Opus 5.5's training data runs through June 2026, nearly the whole test period; it knows how 2020 and 2022 went. Audited: no year after 2017 in any claim. Watched, not closed.
 :::
@@ -664,7 +664,7 @@ Adds a crash-state flag built from the equal-weight market, and flips the moment
 [claim]{.t-lab} Where the crash state holds, the momentum score flips sign to reversal. *Mechanism: the crash is the past losers rebounding hardest.* Predict crash-state Sharpe turns positive, **worst fold improves a lot, median a little.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [score −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
+[outcome]{.t-lab} Crash state Sharpe −1.96 to +3.32. **As predicted, the worst fold moved most.** [utility −0.09 → 0.01 · worst −0.96 → −0.37]{.t-num}
 :::
 :::
 :::
@@ -684,19 +684,19 @@ in decay_linear(where(crash, -score, score) / vol, 10) #+
 :::
 :::
 
-## Trial 2: delete a line {.smaller}
+## Trial 2: divide by vol, not variance {.smaller}
 
 Deletes the final `/ vol`. The `score` was already divided by volatility, so the seed divided twice.
 
 ::: {.columns .diff .wide}
 ::: {.column width="40%"}
 ::: {.trial .keep}
-[T2 · kept · belief 11, removed · delete a line]{.t-head}
+[T2 · kept · belief 11, removed · divide by vol, not variance]{.t-head}
 
 [claim]{.t-lab} Drop the final 1/vol: the score is already mom/vol, so the seed sizes by mom/vol² and the book piles into low-vol names whose momentum carries little return. Predict higher return and margin.
 
 ::: {.fragment}
-[outcome]{.t-lab} Now eligible: margin 14.3 bps. **Belief 11 as written was costing return without buying safety.** [score 0.01 → 0.32 · worst −0.37 → −0.19]{.t-num}
+[outcome]{.t-lab} Now eligible: margin 14.3 bps. **Belief 11 as written was costing return without buying safety.** [utility 0.01 → 0.32 · worst −0.37 → −0.19]{.t-num}
 :::
 :::
 :::
@@ -728,7 +728,7 @@ Measures each stock's volatility over 252 days instead of 60.
 [claim]{.t-lab} Standardize the formation return by 252-day vol, the window it was earned over, instead of 60-day. *60-day vol is noisy and spikes right after big moves, so it mis-ranks names.* Predict a small median gain.
 
 ::: {.fragment}
-[outcome]{.t-lab} Sharpe outside the crash state 0.32 to 0.45, in it unchanged. **Larger than predicted.** [score 0.32 → 0.43 · worst −0.19 → −0.07]{.t-num}
+[outcome]{.t-lab} Sharpe outside the crash state 0.32 to 0.45, in it unchanged. **Larger than predicted.** [utility 0.32 → 0.43 · worst −0.19 → −0.07]{.t-num}
 :::
 :::
 :::
@@ -760,7 +760,7 @@ Adds a second bet: minus last month's return, sector-relative. A 1-month reversa
 [claim]{.t-lab} Add a sector-relative 1-month reversal *sleeve*, a second bet alongside the first. The last month reverses (Jegadeesh 1990; *known 35 years, probably mostly priced*), and **fitness does not charge turnover below 0.125, so a fast sleeve rides free.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [score 0.43 → 0.56 · worst −0.07 → −0.01]{.t-num}
+[outcome]{.t-lab} Reversal is alive in 2004–⁠2017 at the sector-relative level. [utility 0.43 → 0.56 · worst −0.07 → −0.01]{.t-num}
 :::
 :::
 :::
@@ -792,7 +792,7 @@ Ranks on the residual: each stock's return minus its beta times the market. (Tri
 [claim]{.t-lab} Rank on the *residual*: each stock's return net of beta times the market. *Removes time-varying market beta from the ranking* (Blitz, Huij, Martens). Predict median up, **worst up more than median.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [score 0.64 → 0.74 · worst −0.07 → 0.06]{.t-num}
+[outcome]{.t-lab} Worst −0.07 to +0.06, **worst up more than median, as predicted.** Sharpe 1.08. [utility 0.64 → 0.74 · worst −0.07 → 0.06]{.t-num}
 :::
 :::
 :::
@@ -826,7 +826,7 @@ In the crash state, reverses raw momentum instead of residual: a new `raw` term 
 [claim]{.t-lab} In the crash state, flip raw (beta-loaded) momentum instead of residual. *The rebound payoff is the high-beta past losers.* Predict crash-state Sharpe up.
 
 ::: {.fragment}
-[outcome]{.t-lab} Crash-state Sharpe fell 2.45 to 1.80, **the opposite of the prediction.** The residual flip pays more: the beta bet is noisier than the stock-specific reversal. [score 0.74 → 0.71 · worst 0.06 → −0.02]{.t-num}
+[outcome]{.t-lab} Crash-state Sharpe fell 2.45 to 1.80, **the opposite of the prediction.** The residual flip pays more: the beta bet is noisier than the stock-specific reversal. [utility 0.74 → 0.71 · worst 0.06 → −0.02]{.t-num}
 :::
 :::
 :::
@@ -911,7 +911,7 @@ Replaces the on/off crash flag with a weight `w`: when vol is high, it slides fr
 [claim]{.t-lab} When 1-month market vol is above 1-year vol, the momentum weight is clip(10 × 1-year market return, −1, 1) instead of a hard −1. Predict, *per belief 7*, worst slightly lower.
 
 ::: {.fragment}
-[outcome]{.t-lab} **Better than belief 7 predicted: the soft switch beats the hard one on median and worst.** [score 0.89 → 1.00 · worst −0.02 → 0.01]{.t-num}
+[outcome]{.t-lab} **Better than belief 7 predicted: the soft switch beats the hard one on median and worst.** [utility 0.89 → 1.00 · worst −0.02 → 0.01]{.t-num}
 :::
 :::
 :::
@@ -949,7 +949,7 @@ Projects the cubed signal off each stock's beta every day, so the book is beta-n
 [claim]{.t-lab} Make the book beta-neutral too. *Hedging factor exposure keeps the return, drops the risk.* Predict worst up, median flat.
 
 ::: {.fragment}
-[outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [score 1.00 → 1.10 · worst 0.01 → 0.02]{.t-num}
+[outcome]{.t-lab} **Better than predicted: the beta tilt cost money outside the crash too.** [utility 1.00 → 1.10 · worst 0.01 → 0.02]{.t-num}
 :::
 :::
 :::
@@ -995,7 +995,7 @@ Deletes the switch: `w` is gone and momentum runs in every state. Now that the b
 [claim]{.t-lab} Remove the crash switch now that the book is beta-hedged. *Grundy–Martin: hedging factor exposure removes most momentum crash risk, and the crash is a beta event.* Predict crash-state Sharpe falls sharply, worst falls; **if worst falls more than 0.13, belief 7 still earns its keep.**
 
 ::: {.fragment}
-[outcome]{.t-lab} Worst 0.02 to −0.51; crash-state Sharpe 2.16 to −1.53. **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset. [score 1.10 → 0.62 · worst 0.02 → −0.51]{.t-num}
+[outcome]{.t-lab} Worst 0.02 to −0.51; crash-state Sharpe 2.16 to −1.53. **Belief 7 strongly confirmed: residual momentum in a beta-neutral book still crashes; the crash is the stock-specific losers rebounding, not beta.** Reset. [utility 1.10 → 0.62 · worst 0.02 → −0.51]{.t-num}
 :::
 :::
 :::
@@ -1040,7 +1040,7 @@ Drops the vol condition: `w` now depends only on how far the market has fallen. 
 [claim]{.t-lab} Full momentum when the market is up on the year, zero at −10%, full reversal below −20%, with no vol condition.
 
 ::: {.fragment}
-[outcome]{.t-lab} Utility 1.10 to 1.02, reset by the rule, **but worst 0.02 to 0.35, the best worst fold so far.** The deep-bear rule catches the rebound, while the vol condition earns the median. ***Next: combine them.*** [score 1.10 → 1.02 · worst 0.02 → 0.35]{.t-num}
+[outcome]{.t-lab} Utility 1.10 to 1.02, reset by the rule, **but worst 0.02 to 0.35, the best worst fold so far.** The deep-bear rule catches the rebound, while the vol condition earns the median. ***Next: combine them.*** [utility 1.10 → 1.02 · worst 0.02 → 0.35]{.t-num}
 :::
 :::
 :::
@@ -1085,7 +1085,7 @@ Keeps both: the vol rule when vol is high, the depth rule when it is calm.
 [claim]{.t-lab} Combine the two. When 1-month vol is above 1-year vol, w = clip(10 × 1-year return), as now; otherwise w = clip(10 × 1-year return + 1), so a deep bear still shrinks or flips momentum after vol subsides. *T30 showed the depth rule saves the rebound fold while the vol rule earns the median.* Predict worst up strongly, median flat to up.
 
 ::: {.fragment}
-[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [score 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
+[outcome]{.t-lab} **Both halves of the switch pay:** vol rule in shallow high-vol dips, depth rule in the post-crash rebound. *Inspection, 1999–⁠2003, pointed the wrong way.* [utility 1.10 → 1.27 · worst 0.02 → 0.32]{.t-num}
 :::
 :::
 :::
@@ -1132,7 +1132,7 @@ Rewrites `w` in one line: the same switch, fewer nodes. (Trials 33 and 47, kept,
 [claim]{.t-lab} Write the switch in its equivalent short form. Same book, fewer nodes. Predict utility up by the charge saved, ~+0.025.
 
 ::: {.fragment}
-[outcome]{.t-lab} 1.376 to 1.318. The same book, so the −0.058 is partition noise. **A direct read on the noise at this level, about ±0.05; T47's 1.376 was probably a favorable draw.** [score 1.38 → 1.32 · worst 0.38 → 0.35]{.t-num}
+[outcome]{.t-lab} 1.376 to 1.318. The same book, so the −0.058 is partition noise. **A direct read on the noise at this level, about ±0.05; T47's 1.376 was probably a favorable draw.** [utility 1.38 → 1.32 · worst 0.38 → 0.35]{.t-num}
 :::
 :::
 :::
@@ -1180,7 +1180,7 @@ Deletes the beta hedge: the projection goes and `power(a, 3)` comes back.
 [claim]{.t-lab} Measure what the T24 hedge is worth now. Predict median down 0.05–0.15.
 
 ::: {.fragment}
-[outcome]{.t-lab} +0.10: **the prediction was wrong.** With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. ***A component that paid in T24 stopped paying after later changes.*** [score 1.38 → 1.47 · worst 0.38 → 0.40]{.t-num}
+[outcome]{.t-lab} +0.10: **the prediction was wrong.** With a 504-day residual the momentum leg is already beta-light; the hedge was only diluting the cube. ***A component that paid in T24 stopped paying after later changes.*** [utility 1.38 → 1.47 · worst 0.38 → 0.40]{.t-num}
 :::
 :::
 :::
@@ -1225,7 +1225,7 @@ Wraps the combined signal in `winsorize(…, 0.002)` before the cube, clipping t
 [claim]{.t-lab} Winsorize the combined signal at 0.2% / 99.8% before the cube. *Without the hedge, the few most extreme names, takeover jumps, data spikes, stale bankrupt names, carry more cube weight.* Predict Sharpe up, worst up, return down slightly, median flat to up.
 
 ::: {.fragment}
-[outcome]{.t-lab} Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. **Second time this change wins every whole-period measure but not the median fold. Flagged for the human.** [score 1.47 → 1.45 · worst 0.40 → 0.48]{.t-num}
+[outcome]{.t-lab} Whole Sharpe 1.27 to 1.38, worst 0.40 to 0.48. **Second time this change wins every whole-period measure but not the median fold. Flagged for the human.** [utility 1.47 → 1.45 · worst 0.40 → 0.48]{.t-num}
 :::
 :::
 :::
