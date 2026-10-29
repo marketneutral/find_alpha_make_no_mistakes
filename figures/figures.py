@@ -194,8 +194,8 @@ def keep_map(ax, xlim, ylim, fs, long=True):
         ax.text(BAR + 0.008, ylim[0] + 0.03, "the bar: +0.03", color=ACC, fontsize=fs, va="bottom")
         ax.text(xlim[1] - 0.01, FLOOR - 0.025, "the floor: \u22120.13", color=RED, fontsize=fs, va="top", ha="right")
     ax.set_xlim(*xlim); ax.set_ylim(*ylim)
-    ax.set_xlabel("\u0394 median-fold score vs the best book so far", fontsize=fs + 1)
-    ax.set_ylabel("\u0394 worst-fold score vs the best", fontsize=fs + 1)
+    ax.set_xlabel("\u0394 utility vs the best book so far", fontsize=fs + 1)
+    ax.set_ylabel("\u0394 worst vs the best book so far", fontsize=fs + 1)
     for sp in ("top", "right"): ax.spines[sp].set_visible(False)
     ax.tick_params(length=0, labelsize=fs); ax.grid(False)
 
@@ -221,7 +221,7 @@ def fig_keep():
             ax.scatter([cx], [cy], s=30, color=MUTED, alpha=0.8, lw=0, zorder=3, marker="<" if dx < xlim[0] else "o")
     labels = {1: ("T1", 8, 0, "left"), 2: ("T2", 8, 0, "left"), 31: ("T31", 8, 0, "left"),
               19: ("T19", -7, 9, "right"), 32: ("T32", -7, -4, "right"),
-              30: ("T30: worst +0.33, median \u22120.08", -8, 8, "right"), 42: ("T42", 8, 2, "left"), 38: ("T38", -7, -2, "right"),
+              30: ("T30: worst +0.33, utility \u22120.08", -8, 8, "right"), 42: ("T42", 8, 2, "left"), 38: ("T38", -7, -2, "right"),
               55: ("T55", 0, 11, "center"), 51: ("T51", 6, 6, "left"), 50: ("T50", -7, -9, "right"),
               27: ("T27: the switch removed", 8, -4, "left"), 56: ("T56: \u22120.88, raw momentum", 10, 4, "left")}
     P = {i: (max(dx, xlim[0] + 0.012), dy, kept) for i, kept, dx, dy in pts}

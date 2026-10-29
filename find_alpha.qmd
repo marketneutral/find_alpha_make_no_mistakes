@@ -503,14 +503,14 @@ $$
 ::: {.incremental}
 - **Fitness:** Sharpe, up-weighted by return, down by trading (Tulchinsky et al. 2019)
 - Trading turnover is not charged below 12.5% a day, and the agent will notice
-- **Nodes:** the nodes of the expression's qex DAG, every operator, constant and field. Each costs 0.003. This is the Akaike information criterion (AIC) in spirit, and it rewards terser expressions; the 0.003 was chosen, not fitted.
+- **Nodes:** the **count** of the expression's qex DAG, every operator, constant and field. Each costs 0.003. This is the Akaike information criterion (AIC) in spirit, and it rewards terser expressions; the 0.003 was chosen, not fitted.
 :::
 
 ## What `explore.py` gives the agent {.smaller}
 
 The inspection period, 1999–⁠2003, with 1998 as warmup. Nothing after 2003 is loaded.
 
-- **Score any expression** on the same book as `eval.py`. The agent's first look at the seed, before trial 1:
+- **Score any expression** on the same book as `eval.py`. The agent's first look at the seed `alpha.qex`, before trial 1:
 
 ```{.evaluator .evalprint}
 $ uv run python explore.py
@@ -571,8 +571,8 @@ trials: 28  deflated Sharpe probability of this expression: 0.372
 ```
 
 ::: {.incremental}
-- **Decides the keep:** the first three lines. `utility` is `eval.py`'s name for the score: the mean of the 50 deals' median fold scores. `worst` is the mean of their worst fold scores; then eligibility, yes or no, over the whole period.
-- **Informs the agent, never counts:** everything below. Whole-period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
+- **Decides the keep:** the first three lines. `utility` is `eval.py`’s name for the score: the mean of the 50 deals' median fold scores. `worst` is the mean of their worst fold scores; then eligibility, yes or no, over the whole period.
+- **Informs the agent, never enters the keep calculation:** everything below. Whole‑period Sharpe, the folds of the first deal only, with their years, the regime splits, the deflated Sharpe. The agent reads these to check its predictions.
 :::
 
 ## The keep rule {.smaller}
@@ -629,7 +629,7 @@ Before trial 1 I scored the seed eight times with `eval.py`. Same expression, sa
 - **An objective and a constraint.** Climb the median; only guard the worst. Score may not be bought with crash risk.
 - **Why 0.13 is four times 0.03:** the worst fold is a minimum over six, and which fold holds 2008 changes with every deal. The noisier number gets the wider tolerance.
 - **The asymmetry has a cost.** A change that only makes the worst fold better is reset. The rule never climbs safety. Trial 30 will show it.
-- **The floor is relative, so it can creep:** fourteen keeps could give back 14 × 0.13. They did not; the worst rose from −0.96 to +0.40.
+- **The floor follows the best book, not the seed.** Fourteen keeps could each lower the worst by 0.13, 1.8 in all, legally. Instead it rose from −0.96 to&nbsp;+0.40.
 :::
 :::
 :::
