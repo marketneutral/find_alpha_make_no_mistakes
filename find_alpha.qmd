@@ -1778,7 +1778,7 @@ alpha = decay_linear(a ** 3, 3)
 :::
 :::
 
-[The two agree on all 17.6M cells of the validation period, to 1e‑13 (`figures/run3/pandas_twin.py`).]{.pq-note}
+[The two agree on all 17.6M cells of the validation period, to 1e‑13 (`pandas_twin.py`).]{.pq-note}
 
 
 ## The final alpha, as a DAG {.smaller}
