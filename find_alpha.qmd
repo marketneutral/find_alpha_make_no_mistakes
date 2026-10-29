@@ -1397,7 +1397,6 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 ![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
 
-[The steep start is the inspection period, which the agent could look at, and it holds the dot-com bubble and bust: one long momentum trade, then one long reversal.]{.pq-note}
 
 ## Did it hold up? The numbers {.smaller}
 
@@ -1547,7 +1546,7 @@ $$
 - **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999–⁠2003, nearly halved the score on 2004–⁠2017.
 :::
 
-## The path it took {.smaller}
+## Path dependence in the search {.smaller}
 
 ![](images/alpha-tree.svg){.r-stretch fig-align="center"}
 
@@ -1567,7 +1566,7 @@ $$
 ## The answer {.center}
 
 ::: {.hook}
-We [(maybe)]{.maybe} found **alpha**.
+We [maybe]{.maybe} found **alpha**.
 :::
 
 ::: {.stats .fragment}
