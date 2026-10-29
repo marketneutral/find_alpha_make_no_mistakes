@@ -1550,7 +1550,9 @@ $$
 
 ![](images/alpha-tree.svg){.r-stretch fig-align="center"}
 
-[Every trial branches from the best book kept before it: kept trials grow the trunk, resets are dead twigs. The same one-line change, a⁵, died on the hedged trunk at trial 35 and would have cleared the bar by +0.14 on the final one (exact, over all 10,395 deals). The loop never goes&nbsp;back.]{.pq-note}
+At trial 35 the agent tried a⁵ on the beta-hedged book and dropped the idea. Tried again on the final book, it would have cleared the bar by +0.14. A greedy loop never goes back, so where it ends up depends on the path it took. That is the case for beam search or Monte Carlo tree search: keep several books alive, not&nbsp;one.
+
+[Every trial branches from the best book kept before it: kept trials grow the trunk, resets are dead twigs. The +0.14 is exact, over all 10,395 deals, on validation.]{.pq-note}
 
 ## Next time: grade every deal {.mid}
 
@@ -1666,7 +1668,7 @@ We [maybe]{.maybe} found **alpha**.
 - Parsing builds a directed acyclic graph (DAG); nothing is computed until `evaluate(data)`
 - **Every operation looks backward.** `delay(x, -1)` is an error, not a too-good backtest.
 - Event-aware operators for sparse data (earnings): roll over the last *N observations*, not *N days*
-- A DAG can include multiple alphas; each unique node is computed once and can be reused
+- A DAG can include hundreds or thousands of alphas; each unique node is computed once and can be reused
 :::
 
 ![](images/qex-signal-graph.svg){.r-stretch fig-align="center"}
@@ -1737,7 +1739,7 @@ in decay_linear(power(a, 3), 3)
 ```
 :::
 ::: {.column width="60%"}
-[pandas, written by hand]{.panel-lab}
+[pandas, written by hand, yuck!]{.panel-lab}
 ```pyx
 import numpy as np
 import pandas as pd
@@ -1776,7 +1778,14 @@ alpha = decay_linear(a ** 3, 3)
 :::
 :::
 
-[The two agree on all 17.6M cells of the validation period, to 1e‑13 (`figures/run3/pandas_twin.py`). Matching qex meant reading its source: the market return exists only on each stock's member days, and every rolling window starts at day 20.]{.pq-note}
+[The two agree on all 17.6M cells of the validation period, to 1e‑13 (`figures/run3/pandas_twin.py`).]{.pq-note}
+
+
+## The final alpha, as a DAG {.smaller}
+
+![](images/qex-final-graph.svg){.r-stretch fig-align="center"}
+
+[What qex builds from the expression: 30 nodes (32 as run), each computed once. Green outlines are shared, such as `mr` and `mk`, which feed the switch, the beta and the residual.]{.pq-note}
 
 # Appendix B: counting the deals
 

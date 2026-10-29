@@ -106,7 +106,9 @@ $presentation-h2-font-size: 1.3em;
 // the section break before the test: its one-line subtitle
 .reveal .seal-sub { display: block; color: #c0c4cf; font-size: 0.9em; margin-top: 0.4em; }
 // the answer slide: "(maybe)" muted, then three stat tiles
-.reveal .hook .maybe { color: #6b7280; }
+.reveal .hook .maybe { color: transparent; -webkit-background-clip: text; background-clip: text;
+                      background-image: repeating-linear-gradient(45deg, #5b6372 0 1.2px, transparent 1.2px 5px),
+                                        repeating-linear-gradient(-45deg, #5b6372 0 1.2px, transparent 1.2px 5px); }
 .reveal .stats { display: flex; gap: 0.5em; margin-top: 0.7em; }
 .reveal .stat { flex: 1; background: #131927; border: 1px solid #2a3344; border-left: 3px solid #3ee87a; border-radius: 4px; padding: 0.35em 0.6em 0.45em; text-align: left; }
 .reveal .stat p { margin: 0; }
