@@ -1328,6 +1328,10 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 [The book rules are the evaluator's, not the agent's: dollar-neutral, gross one, 5% cap per name.]{.pq-note}
 
+# Breaking the seal
+
+[2018 to August 2026.<br>Eight and a half years the agent never saw, run once.]{.seal-sub}
+
 ## Did it hold up?
 
 ![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
@@ -1490,6 +1494,24 @@ $$
 - It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
 - The randomness was only ever a cheap way to estimate this average.
 - And decide about the embargo: drop it, or keep those 504 days as a deliberate hold-out, scored once
+:::
+
+## The answer {.center}
+
+::: {.hook}
+We [(maybe)]{.maybe} found **alpha**.
+:::
+
+::: {.stats .fragment}
+::: {.stat}
+[0.77]{.n}[Sharpe on 8.6 years the agent never saw, from a seed that lost money]{.l}
+:::
+::: {.stat}
+[+13.6%]{.n}[a year, +10.6% after 10&nbsp;bps costs. P(test&nbsp;Sharpe&nbsp;>&nbsp;0)&nbsp;=&nbsp;0.99]{.l}
+:::
+::: {.stat}
+[~$20]{.n}[60 trials, 55 minutes, no human in the loop]{.l}
+:::
 :::
 
 ## Conclusions {.mid}

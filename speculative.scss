@@ -103,3 +103,12 @@ $presentation-h2-font-size: 1.3em;
 .reveal .hook strong { color: #3ee87a; }
 .reveal .hook-sub { font-size: 0.8em; color: #c0c4cf; }
 .reveal .slides section.center .hook { font-size: 2.3em; margin: 0.25em 0 0.3em; }
+// the section break before the test: its one-line subtitle
+.reveal .seal-sub { display: block; color: #c0c4cf; font-size: 0.9em; margin-top: 0.4em; }
+// the answer slide: "(maybe)" muted, then three stat tiles
+.reveal .hook .maybe { color: #6b7280; font-weight: 400; font-size: 0.6em; vertical-align: 0.2em; }
+.reveal .stats { display: flex; gap: 0.5em; margin-top: 0.7em; }
+.reveal .stat { flex: 1; background: #131927; border: 1px solid #2a3344; border-left: 3px solid #3ee87a; border-radius: 4px; padding: 0.35em 0.6em 0.45em; text-align: left; }
+.reveal .stat p { margin: 0; }
+.reveal .stat .n { display: block; font-size: 1.9em; font-weight: 700; color: #3ee87a; line-height: 1.1; }
+.reveal .stat .l { display: block; font-size: 0.62em; line-height: 1.35; color: #c0c4cf; margin-top: 0.2em; }
