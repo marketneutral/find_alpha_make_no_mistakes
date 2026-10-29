@@ -310,7 +310,7 @@ If the hypothesis is a vector $\theta$ and the score is smooth, $\theta_{k+1} = 
 ::: {.incremental}
 - Most hypotheses are programs, protocols, features, molecules: discrete, and each test is expensive
 - The old options: random or grid search, evolutionary search, Bayesian optimization. All need the hypothesis to be a vector, and none knows anything about the problem.
-- **A language model is a third option:** it has read the field's code and papers, so its guesses are *informed*, and it makes one every few minutes
+- **A language model is a third option:** it has read the field's code and papers, so its guesses are *informed*
 - FunSearch (2024), AlphaEvolve (2025): LLM proposals against an automatic evaluator found new mathematics
 :::
 
@@ -403,7 +403,7 @@ US equities, 1999 to August 2026. One long-short book, rebuilt every day from on
 ::: {.incremental}
 - **Inspection, 1999–⁠2003.** The agent may look at any data and operate on it with its own Python code: for debugging expressions, testing ideas in-sample, or forming hunches.
 - **Validation, 2004–⁠2017.** Scored by the evaluator only. The agent keeps or discards a change on summary statistics only: two scores and an eligibility check.
-- **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, and only once, at the end, when the agent's research&nbsp;was&nbsp;complete.
+- **Test, 2018 to Aug 2026.** Sealed from the agent's tools: the evaluator never loads it. I ran it once, and only once, at the end, when the agent's research was&nbsp;complete.
 :::
 
 ## The seed belief {.smaller}
@@ -519,7 +519,7 @@ rank IC by horizon: {1: 0.007, 2: 0.0101, 5: 0.0124, 10: 0.0121, 20: 0.0114}  la
 return by year (cost-free): {1999: 0.151, 2000: -0.012, 2001: -0.024, 2002: 0.11, 2003: -0.014}
 ```
 
-- **Or work on the raw data** with its own Python, here sizing the reversal sleeve against momentum:
+- **Or work on the raw data** with its own Python. Before trial 13, in its own words: *“Before trying ranks, I'm measuring the typical magnitude of each sleeve so a transform doesn't silently change the mix.”*
 
 ```{.evaluator .evalprint}
 $ uv run python -c "
@@ -532,7 +532,7 @@ rev  mean|x| 0.178  p99 0.738
 rank mean|x| 0.25   p99 0.495
 ```
 
-[Over a hundred `explore.py` runs, and seven raw-data scripts.]{.pq-note}
+[Its reading of the output: a sector rank *“keeps the same mix with thinner tails.”* That became trial 13, and the keep rule reset it. Over a hundred `explore.py` runs, and seven raw-data scripts.]{.pq-note}
 
 ## `trial.sh`: one run, fifty deals {.smaller}
 
@@ -591,7 +591,7 @@ $$
 - **Utility, worst:** as defined on `trial.sh`, the mean over 50 deals of the median and the worst fold score
 - **Δ:** against the best book kept so far, the one the change edits
 - **Eligible:** yes or no, over the whole validation period, every day included: average daily turnover in 1–70% and a margin of ≥ 5 bps per dollar traded. It binds once the best book is eligible; the seed was not, and trial 2 made it so.
-- **0.03 and 0.13:** the evaluator's own noise on the seed, measured before the run (after the two noise slides)
+- **0.03 and 0.13:** the evaluator's own noise on the seed, measured before the run
 - **Otherwise** `git checkout <best> -- alpha.qex`. Either way, the attempt is logged: claim, outcome, numbers.
 :::
 
