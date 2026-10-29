@@ -90,7 +90,7 @@ To find out, three pieces, and one test: does what it finds hold up out of sampl
 
 # qex
 
-## Alpha research in a nutshell {.mid}
+## Alpha research, the cartoon {.mid}
 
 ![](images/nutshell.svg){width="100%" fig-align="center"}
 
@@ -205,7 +205,7 @@ AAPL and MSFT are Technology, XOM and CVX Energy, JPM Financials. March 10: Tech
 ## From a signal to a book {.smaller}
 
 ```qex
-scale(demean(rank(-returns(5))))   # the nutshell's last arrow, unpacked
+scale(demean(rank(-returns(5))))   # the cartoon's last arrow, unpacked
 ```
 
 ::: columns
@@ -280,9 +280,9 @@ Cumulative return on gross, S&P 500 members today (survivorship-biased!), 2010�
 
 - **Sidebar: smoothing is (almost) a free lunch!** A ten-day decay cuts turnover from 84% to 32% a day and keeps nearly all the gross return (Appendix A).
 
-## Agents write the code now.<br>Do we still need qex? {.mid}
+## “So what, it's 2026.<br>My agent can handle the pandas.” {.mid}
 
-**Yes.**
+**Do we still need qex? Yes.**
 
 ::: {.incremental}
 - **The expression is the hypothesis.** The engine does the rest, written once (DRY) and performance-tuned. A simple expression is quickly understandable by a human, who can follow every step of the&nbsp;search.
