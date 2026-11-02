@@ -338,7 +338,7 @@ def fig_tree():
     # the two ends of the story: a⁵ dies on the hedged trunk, and would have lived on the final one
     x35, y35 = pts[35]
     ax.plot(x35, y35, "o", ms=9, mfc="none", mec=RED, mew=1.8, zorder=6)
-    ax.annotate("T35: a\u2075 (sharper tails) on the beta-hedged book\nreset, \u0394 utility \u22120.27", (x35, y35), xytext=(x35 - 3, 0.55), textcoords="data",
+    ax.annotate("T35: a\u2075 (sharper tails) on the beta-hedged book\nreset, \u0394 utility \u22120.27", (x35, y35), xytext=(x35 - 3, 0.42), textcoords="data",
                 color=RED, fontsize=12, ha="center", va="top", arrowprops=dict(arrowstyle="-", color=RED, lw=1))
     x54, y54 = pts[54]
     ax.annotate("T54: drop the hedge, +0.10", (x54, y54), xytext=(x54 - 1, 1.66), textcoords="data", color=ACC, fontsize=12,
