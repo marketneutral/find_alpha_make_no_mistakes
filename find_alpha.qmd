@@ -1541,17 +1541,6 @@ At trial 35 the agent tried a⁵ on the beta-hedged book and dropped the idea. T
 
 [Every trial branches from the best book kept before it: kept trials grow the trunk, resets are dead twigs. The +0.14 is exact, over all 10,395 deals, on validation.]{.pq-note}
 
-## Next time: grade every deal {.mid}
-
-::: {.incremental}
-- **A deal is cheap.** The P&L is computed once; a deal only re-slices it into six folds. Milliseconds.
-- **So grade all 10,395, every call.** The exact average: no noise, the same score every time.
-- The keep bar can then mean *any real improvement*, not *beat the noise*.
-- It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
-- The randomness was only ever a cheap way to estimate this average.
-- And decide about the embargo: drop it, or keep those 504 days as a deliberate hold-out, scored once
-:::
-
 ## The answer {.center}
 
 ::: {.hook}
@@ -1875,6 +1864,17 @@ $$
 . . .
 
 Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
+
+## Next time: grade every deal {.mid}
+
+::: {.incremental}
+- **A deal is cheap.** The P&L is computed once; a deal only re-slices it into six folds. Milliseconds.
+- **So grade all 10,395, every call.** The exact average: no noise, the same score every time.
+- The keep bar can then mean *any real improvement*, not *beat the noise*.
+- It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
+- The randomness was only ever a cheap way to estimate this average.
+- And decide about the embargo: drop it, or keep those 504 days as a deliberate hold-out, scored once
+:::
 
 # Appendix C: overfitting, in theory
 
