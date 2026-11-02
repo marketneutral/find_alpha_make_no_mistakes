@@ -69,7 +69,7 @@ This presentation is available at [github.com/marketneutral/find_alpha_make_no_m
 
 ## The question {.center}
 
-::: {.hook}
+::: {.hook .one-line}
 Can an AI agent find **alpha**?
 :::
 
