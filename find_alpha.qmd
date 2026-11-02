@@ -1476,17 +1476,6 @@ The sharper question: sixty trials climbed a score on 2004–⁠2017. How much o
 - **Reshuffling the deck does not give you a new deck.** Only new data does: the sealed 2018–2026 period, used once, and a count of how many hands were played.
 :::
 
-## Two kinds of noise {.mid}
-
-| noise | where it comes from | size, final book | fixed by |
-|---|---|---|---|
-| **evaluator** | which 50 deals were drawn | ±0.06 score | more deals; none at 10,395 |
-| **history** | 2004–2017 is one draw of history | ±0.27 Sharpe, 1/√14 | only new data |
-
-. . .
-
-Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
-
 ## A hold-out nobody planned {.smaller}
 
 The embargo trims the **same 504 days** on every deal. They never enter the score, so the keep rule climbed without them: a hold-out inside 2004–⁠2017. The agent did see them, folded into whole-period summaries.
@@ -1511,7 +1500,7 @@ $$
 $$
 
 ::: {.incremental}
-- History noise $\sigma \approx 0.27$ Sharpe, $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
+- History noise $\sigma \approx 1/\sqrt{14} \approx 0.27$ Sharpe (Appendix B), $k = 60$ trials: $0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8$
 - That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective $k$ is far smaller.
 - Observed: validation 1.26 → test 0.77, a drop of **0.49**. The **deflated Sharpe ratio** (Bailey and López de Prado 2014) is this calculation done properly: `eval.py` prints it after every trial. It informs the agent and constrains nothing. Appendix C.
 :::
@@ -1875,6 +1864,17 @@ $$
 - **Any two blocks share a fold on 1 deal in 11:** block 1's partner is one of 11, equally likely.
 - **Fifty deals is a 0.5% sample** of the 10,395.
 :::
+
+## Two kinds of noise {.mid}
+
+| noise | where it comes from | size, final book | fixed by |
+|---|---|---|---|
+| **evaluator** | which 50 deals were drawn | ±0.06 score | more deals; none at 10,395 |
+| **history** | 2004–2017 is one draw of history | ±0.27 Sharpe, 1/√14 | only new data |
+
+. . .
+
+Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
 
 # Appendix C: overfitting, in theory
 

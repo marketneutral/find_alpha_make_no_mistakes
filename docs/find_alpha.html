@@ -2826,42 +2826,6 @@ in decay_linear(power(a, 3), 3)</code></pre>
 <li class="fragment"><strong>Reshuffling the deck does not give you a new deck.</strong> Only new data does: the sealed 2018–2026 period, used once, and a count of how many hands were played.</li>
 </ul>
 </section>
-<section id="two-kinds-of-noise" class="slide level2 mid">
-<h2>Two kinds of noise</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>noise</th>
-<th>where it comes from</th>
-<th>size, final book</th>
-<th>fixed by</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>evaluator</strong></td>
-<td>which 50 deals were drawn</td>
-<td>±0.06 score</td>
-<td>more deals; none at 10,395</td>
-</tr>
-<tr class="even">
-<td><strong>history</strong></td>
-<td>2004–2017 is one draw of history</td>
-<td>±0.27 Sharpe, 1/√14</td>
-<td>only new data</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p>Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.</p>
-</div>
-</section>
 <section id="a-hold-out-nobody-planned" class="slide level2 smaller">
 <h2>A hold-out nobody planned</h2>
 <p>The embargo trims the <strong>same 504 days</strong> on every deal. They never enter the score, so the keep rule climbed without them: a hold-out inside 2004–⁠2017. The agent did see them, folded into whole-period summaries.</p>
@@ -2899,7 +2863,7 @@ in decay_linear(power(a, 3), 3)</code></pre>
 \mathbb{E}\Big[\max_{i \le k} \varepsilon_i\Big] \;\approx\; \sigma \sqrt{2 \ln k}
 </span></p>
 <ul>
-<li class="fragment">History noise <span class="math inline">\sigma \approx 0.27</span> Sharpe, <span class="math inline">k = 60</span> trials: <span class="math inline">0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8</span></li>
+<li class="fragment">History noise <span class="math inline">\sigma \approx 1/\sqrt{14} \approx 0.27</span> Sharpe (Appendix B), <span class="math inline">k = 60</span> trials: <span class="math inline">0.27 \times \sqrt{2 \ln 60} \approx 0.27 \times 2.9 \approx 0.8</span></li>
 <li class="fragment">That is the ceiling if the trials were independent. They are one-line edits of each other, so the effective <span class="math inline">k</span> is far smaller.</li>
 <li class="fragment">Observed: validation 1.26 → test 0.77, a drop of <strong>0.49</strong>. The <strong>deflated Sharpe ratio</strong> (Bailey and López de Prado 2014) is this calculation done properly: <code>eval.py</code> prints it after every trial. It informs the agent and constrains nothing. Appendix C.</li>
 </ul>
@@ -3318,6 +3282,42 @@ alpha = decay_linear(a ** 3, 3)</code></pre>
 <li class="fragment"><strong>Any two blocks share a fold on 1 deal in 11:</strong> block 1’s partner is one of 11, equally likely.</li>
 <li class="fragment"><strong>Fifty deals is a 0.5% sample</strong> of the 10,395.</li>
 </ul>
+</section>
+<section id="two-kinds-of-noise" class="slide level2 mid">
+<h2>Two kinds of noise</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>noise</th>
+<th>where it comes from</th>
+<th>size, final book</th>
+<th>fixed by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>evaluator</strong></td>
+<td>which 50 deals were drawn</td>
+<td>±0.06 score</td>
+<td>more deals; none at 10,395</td>
+</tr>
+<tr class="even">
+<td><strong>history</strong></td>
+<td>2004–2017 is one draw of history</td>
+<td>±0.27 Sharpe, 1/√14</td>
+<td>only new data</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.</p>
+</div>
 </section></section>
 <section>
 <section id="appendix-c-overfitting-in-theory" class="title-slide slide level1 center">
