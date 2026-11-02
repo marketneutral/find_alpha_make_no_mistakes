@@ -70,11 +70,7 @@ This presentation is available at [github.com/marketneutral/find_alpha_make_no_m
 ## The question {.center}
 
 ::: {.hook}
-Can an agent find **alpha**?
-:::
-
-::: {.fragment .hook-sub}
-Alpha is the scarcest thing in finance, and the people who find it are its most expensive hires. An agent that can do this job changes the&nbsp;industry.
+Can an AI agent find **alpha**?
 :::
 
 ## The Plan
