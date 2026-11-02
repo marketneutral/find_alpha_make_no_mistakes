@@ -1525,7 +1525,7 @@ $$
 ## Learnings for the next iteration {.smaller}
 
 ::: {.incremental}
-- **Grade every deal.** The keep bar (0.03) was sized from the seed's noise, ±0.01. At the top the noise was ±0.05: T50 re-scored T47's book, written another way, 0.058 lower. A deal costs milliseconds; all 10,395 give a score with no evaluator noise. Appendix B.
+- **Size the keep bar for the top, not the seed.** It was set from the seed's noise, ±0.01; at the top the noise was ±0.05 (T50: the same book, 0.058 lower). Lucky keeps (T47, T54) raised the bar for everything after.
 - **Let equivalent rewrites through for free.** T50 wrote the same book in four fewer nodes to collect the charge, and lost it to noise. If the weights match the best book's, take the shorter form without spending a trial.
 - **Numeric predictions, graded.** 44 of 52 claims predicted the median would rise. "Up" beat the bar 7 times in 30, the same 25% as every trial. The forecasts carried no information; the explanations afterwards always did.
 - **Keep several books alive.** The loop finds a local optimum, and which one depends on its path (next slide). Beam search or MCTS would buy breadth with trials.
@@ -1862,17 +1862,6 @@ $$
 . . .
 
 Overfitting is the second one. The deals shrink the first; nothing in-sample touches the second.
-
-## Next time: grade every deal {.mid}
-
-::: {.incremental}
-- **A deal is cheap.** The P&L is computed once; a deal only re-slices it into six folds. Milliseconds.
-- **So grade all 10,395, every call.** The exact average: no noise, the same score every time.
-- The keep bar can then mean *any real improvement*, not *beat the noise*.
-- It does not make the score any less in-sample: all 10,395 deals still use only 2004–2017.
-- The randomness was only ever a cheap way to estimate this average.
-- And decide about the embargo: drop it, or keep those 504 days as a deliberate hold-out, scored once
-:::
 
 # Appendix C: overfitting, in theory
 
