@@ -148,24 +148,32 @@ YEARS = (2000, 2004, 2008, 2012, 2016, 2020, 2024)
 def years(ax):
     ax.set_xticks(pd.to_datetime([f"{y}-01-01" for y in YEARS])); ax.set_xticklabels([str(y) for y in YEARS]); ax.tick_params(labelsize=10)
 
-# cumulative P&L, % of gross one (a constant book, so P&L adds up)
-fig, ax = plt.subplots(figsize=(9, 5))
-shade(ax)
-lines = [(P["final"].cumsum(), ACCENT, "-", 2, "final book, cost-free"),
-         ((P["final"] - 1e-3 * T["final"]).cumsum(), MUTED, "-", 2, "final book, net of 10 bps"),
-         (P["seed"].cumsum(), INK2, "--", 1.2, "seed, cost-free")]
-for s, color, ls, lw, lab in lines:
-    s = s.iloc[::3]
-    ax.plot(s.index, s.values, color=color, lw=lw, ls=ls, label=lab)
-    ax.annotate(f"{s.iloc[-1]:+.0%}", (s.index[-1], s.iloc[-1]), xytext=(6, 0), textcoords="offset points", va="center", fontsize=10, color=INK2)
-ax.axhline(0, color=RULE, lw=1, zorder=0)
-ax.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
-ax.set_title("cumulative P&L of a dollar-neutral book held at gross one", loc="left", fontsize=11, pad=10)
-ax.set_ylabel("cumulative P&L, % of gross", fontsize=10)
-years(ax); ax.set_xlim(pd.Timestamp("1998-10-01"), P.index[-1] + pd.Timedelta(days=900))
-h, l = ax.get_legend_handles_labels()
-fig.legend(h, l, loc="lower center", bbox_to_anchor=(0.5, -0.06), ncol=3, frameon=False, fontsize=10, handlelength=1.8)
-finish(fig, "gross-vs-net.svg")
+# cumulative P&L, % of gross one (a constant book, so P&L adds up); drawn twice, the second time with the
+# test period still sealed on the same axes, so the deck can show the sealed chart and then break the seal
+def pnl_chart(path, end=None, ylim=None):
+    fig, ax = plt.subplots(figsize=(9, 5))
+    shade(ax)
+    lines = [(P["final"].cumsum(), ACCENT, "-", 2, "final book, cost-free"),
+             ((P["final"] - 1e-3 * T["final"]).cumsum(), MUTED, "-", 2, "final book, net of 10 bps"),
+             (P["seed"].cumsum(), INK2, "--", 1.2, "seed, cost-free")]
+    for s, color, ls, lw, lab in lines:
+        s = s.loc[:end].iloc[::3]
+        ax.plot(s.index, s.values, color=color, lw=lw, ls=ls, label=lab)
+        ax.annotate(f"{s.iloc[-1]:+.0%}", (s.index[-1], s.iloc[-1]), xytext=(6, 0), textcoords="offset points", va="center", fontsize=10, color=INK2)
+    ax.axhline(0, color=RULE, lw=1, zorder=0)
+    ax.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+    ax.set_title("cumulative P&L of a dollar-neutral book held at gross one", loc="left", fontsize=11, pad=10)
+    ax.set_ylabel("cumulative P&L, % of gross", fontsize=10)
+    years(ax); ax.set_xlim(pd.Timestamp("1998-10-01"), P.index[-1] + pd.Timedelta(days=900))
+    if ylim is not None:
+        ax.set_ylim(ylim)
+    ylim = ax.get_ylim()
+    h, l = ax.get_legend_handles_labels()
+    fig.legend(h, l, loc="lower center", bbox_to_anchor=(0.5, -0.06), ncol=3, frameon=False, fontsize=10, handlelength=1.8)
+    finish(fig, path)
+    return ylim
+ylim = pnl_chart("gross-vs-net.svg")
+pnl_chart("gross-vs-net-sealed.svg", end=PERIODS[1][2], ylim=ylim)
 
 # return by calendar year, final book cost-free
 fig, ax = plt.subplots(figsize=(9, 3.6))

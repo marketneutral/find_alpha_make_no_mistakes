@@ -1395,6 +1395,10 @@ bet most where they agree and almost nothing where they are lukewarm.
 
 ## Did it hold up?
 
+![](images/alpha-gross-vs-net-sealed.svg){.r-stretch fig-align="center"}
+
+## Did it hold up?
+
 ![](images/alpha-gross-vs-net.svg){.r-stretch fig-align="center"}
 
 
@@ -1495,8 +1499,6 @@ The embargo trims the **same 504 days** on every deal. They never enter the scor
 |---|---:|---:|
 | seed (not selected) | Sharpe −0.27 | Sharpe −0.05 |
 | **final book (selected)** | **Sharpe 1.41** | **Sharpe 0.54** |
-
-. . .
 
 ::: {.incremental}
 - The selected book shrinks on the days the keep rule never graded; the unselected seed does not
