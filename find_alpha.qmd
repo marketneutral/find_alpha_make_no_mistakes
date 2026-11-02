@@ -1522,7 +1522,7 @@ $$
 
 [These protect the score, not the agent's attention: it reads diagnostics on all of 2004–⁠2017. Only the sealed test is out of its sight.]{.pq-note}
 
-## What I learned {.smaller}
+## Learnings for the next iteration {.smaller}
 
 ::: {.incremental}
 - **The written claims were the most valuable output.** Most resets were predicted; the wrong predictions came with explanations.
