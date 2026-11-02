@@ -317,6 +317,8 @@ def fig_tree():
         xm = x0 + (x1 - x0) * 0.55
         ax.add_patch(PathPatch(Path([(x0, y0), (xm, y0), (xm, y1), (x1, y1)], [Path.MOVETO, Path.CURVE4, Path.CURVE4, Path.CURVE4]),
                                fc="none", capstyle="round", **kw))
+    def step(x0, y0, x1, y1, **kw):                                      # the trunk, as the progress chart draws it: hold, then jump
+        ax.plot([x0, x1, x1], [y0, y0, y1], solid_capstyle="round", solid_joinstyle="round", **kw)
     ax.axvspan(24, 54, color=ORANGE, alpha=0.06, lw=0, zorder=0)
     ax.text(39, 1.78, "the trunk carries the beta hedge, trials 24 to 53", ha="center", va="center", color=ORANGE, fontsize=12)
     best, pts = 0, {0: (0, float(rows[0]["utility"]))}
@@ -324,7 +326,7 @@ def fig_tree():
         u = float(r["utility"]); x0, y0 = pts[best]
         if r["status"] == "keep":
             c = ORANGE if 24 <= best < 54 else ACC                      # the branch into T54 is hedged; T54 itself is not
-            branch(x0, y0, i, u, ec=c, lw=3.2, zorder=3)
+            step(x0, y0, i, u, color=c, lw=3.2, zorder=3)
             ax.plot(i, u, "o", ms=7, color=ORANGE if 24 <= i < 54 else ACC, zorder=5)
             best = i
         else:
@@ -336,13 +338,13 @@ def fig_tree():
     # the two ends of the story: a⁵ dies on the hedged trunk, and would have lived on the final one
     x35, y35 = pts[35]
     ax.plot(x35, y35, "o", ms=9, mfc="none", mec=RED, mew=1.8, zorder=6)
-    ax.annotate("T35: a\u2075 on the hedged book\nreset, \u0394 utility \u22120.27", (x35, y35), xytext=(x35 - 3, 0.55), textcoords="data",
+    ax.annotate("T35: a\u2075 (sharper tails) on the beta-hedged book\nreset, \u0394 utility \u22120.27", (x35, y35), xytext=(x35 - 3, 0.55), textcoords="data",
                 color=RED, fontsize=12, ha="center", va="top", arrowprops=dict(arrowstyle="-", color=RED, lw=1))
     x54, y54 = pts[54]
     ax.annotate("T54: drop the hedge, +0.10", (x54, y54), xytext=(x54 - 1, 1.66), textcoords="data", color=ACC, fontsize=12,
                 ha="right", va="center", arrowprops=dict(arrowstyle="-", color=ACC, lw=1))
     xg, yg = 62.5, y54 + gain
-    branch(x54, y54, xg, yg, ec=ACC, lw=2.2, ls=(0, (3, 2.5)), zorder=4)
+    step(x54, y54, xg, yg, color=ACC, lw=2.2, ls=(0, (3, 2.5)), zorder=4)
     ax.plot(xg, yg, "o", ms=8, mfc=BG, mec=ACC, mew=2, zorder=6)
     ax.annotate(f"a\u2075 on the final book\n+{gain:.2f}: would be kept,\nnever retried", (xg, yg), xytext=(xg + 1.2, yg - 0.5), textcoords="data",
                 color=ACC, fontsize=12, ha="left", va="top", arrowprops=dict(arrowstyle="-", color=ACC, lw=1))
