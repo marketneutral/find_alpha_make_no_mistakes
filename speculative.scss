@@ -117,13 +117,3 @@ $presentation-h2-font-size: 1.3em;
 .reveal .stat .l { display: block; font-size: 0.62em; line-height: 1.35; color: #c0c4cf; margin-top: 0.2em; }
 // the utility / worst line on every card stays on one line
 .reveal .trial .t-num { white-space: nowrap; font-size: 0.74em; letter-spacing: -0.01em; }
-// Appendix E: program.md, verbatim, a page of the file per slide
-.reveal .slides section.prog { font-size: 0.5em; line-height: 1.4; }
-.reveal .slides section.prog h2 { font-size: 2.3em; }
-.reveal .slides section.prog h3 { font-size: 1.15em; color: #9aa1ad; margin: 0.7em 0 0.3em; }
-.reveal .slides section.prog p, .reveal .slides section.prog li { margin: 0.35em 0; }
-.reveal .slides section.prog table { font-size: 0.95em; }
-.reveal .slides section.prog td, .reveal .slides section.prog th { padding: 0.18em 0.6em; }
-.reveal .slides section.prog pre { font-size: 0.95em; width: 100%; margin: 0.4em 0; }
-.reveal .slides section.prog .prog-refs li { font-size: 0.85em; margin: 0.15em 0; }
-.reveal .slides section.prog ol { padding-left: 2.2em; margin-left: 0; }
