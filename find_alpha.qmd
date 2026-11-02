@@ -1527,8 +1527,8 @@ $$
 ::: {.incremental}
 - **Keep the written claims.** Every failure came with a reason, and the reasons added up: T38 and T42 both found that capping the tails buys safety and costs return.
 - **Measure the noise at the top, not just at the start.** Seed noise ±0.01; the same book written two ways scored 0.058 apart at a score of ~1.4.
-- **The loop finds a local optimum, and which one depends on its path** (next slide). Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
 - **A node charge invites code golf.** T50 rewrote the switch as one dense line to save nodes: the same book, harder to read.
+- **The loop finds a local optimum, and which one depends on its path** (next slide). Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
 :::
 
 ## Path dependence in the search {.smaller}
