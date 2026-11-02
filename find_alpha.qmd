@@ -1530,7 +1530,6 @@ $$
 - **The keep rule cannot accept a pure worst-case improvement**, a strange blind spot for a crash problem
 - **The loop finds a local optimum, and which one depends on its path** (next slide). Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
 - **A node charge invites code golf.** T50 rewrote the switch as one dense line to save nodes: the same book, harder to read.
-- **The inspection period was right about structure, wrong about risk.** T40: +0.3 Sharpe on 1999–⁠2003, nearly halved the score on 2004–⁠2017.
 :::
 
 ## Path dependence in the search {.smaller}
