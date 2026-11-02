@@ -1528,7 +1528,7 @@ $$
 - **Grade every deal.** The keep bar (0.03) was sized from the seed's noise, ±0.01. At the top the noise was ±0.05: T50 re-scored T47's book, written another way, 0.058 lower. A deal costs milliseconds; all 10,395 give a score with no evaluator noise. Appendix B.
 - **Let equivalent rewrites through for free.** T50 wrote the same book in four fewer nodes to collect the charge, and lost it to noise. If the weights match the best book's, take the shorter form without spending a trial.
 - **Numeric predictions, graded.** 44 of 52 claims predicted the median would rise. "Up" beat the bar 7 times in 30, the same 25% as every trial. The forecasts carried no information; the explanations afterwards always did.
-- **Keep several books alive.** The loop finds a local optimum, and which one depends on its path (next slide). Beam search or MCTS would buy breadth with trials, and need the trial count to stay honest.
+- **Keep several books alive.** The loop finds a local optimum, and which one depends on its path (next slide). Beam search or MCTS would buy breadth with trials.
 :::
 
 ## Path dependence in the search {.smaller}
